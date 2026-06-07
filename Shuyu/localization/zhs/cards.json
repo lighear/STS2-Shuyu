@@ -1,0 +1,8 @@
+{
+  "SHUYU_CARD_SHUYU_STRIKE.title": "模板打击",
+  "SHUYU_CARD_SHUYU_STRIKE.description": "造成 {Damage:diff()} 点伤害。",
+  "SHUYU_CARD_SHUYU_STRIKE.smartDescription": "造成 {Damage:diff()} 点伤害。",
+  "SHUYU_CARD_SHUYU_DEFEND.title": "模板防御",
+  "SHUYU_CARD_SHUYU_DEFEND.description": "获得 {Block:diff()} 点格挡。",
+  "SHUYU_CARD_SHUYU_DEFEND.smartDescription": "获得 {Block:diff()} 点格挡。"
+}

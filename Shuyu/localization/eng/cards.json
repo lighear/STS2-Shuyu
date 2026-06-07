@@ -1,0 +1,8 @@
+{
+  "SHUYU_CARD_SHUYU_STRIKE.title": "Template Strike",
+  "SHUYU_CARD_SHUYU_STRIKE.description": "Deal {Damage:diff()} damage.",
+  "SHUYU_CARD_SHUYU_STRIKE.smartDescription": "Deal {Damage:diff()} damage.",
+  "SHUYU_CARD_SHUYU_DEFEND.title": "Template Defend",
+  "SHUYU_CARD_SHUYU_DEFEND.description": "Gain {Block:diff()} Block.",
+  "SHUYU_CARD_SHUYU_DEFEND.smartDescription": "Gain {Block:diff()} Block."
+}

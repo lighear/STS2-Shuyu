@@ -1,0 +1,21 @@
+{
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.aromaPrinciple": "[sine][blue]新的旅程，从一份干净模板开始。[/blue][/sine]",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.alive.endTurnPing": "回合结束。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.dead.endTurnPing": "我先撤退。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierDescription": "模板角色的卡牌现在会出现在奖励和商店中。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierTitle": "模板卡牌",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.defeatMessage": "模板还需要继续调整。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.description": "一个用于验证 RitsuLib 模板工程的示例角色。\n复制模板后，把这里替换成你的角色设定。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.eventDeathPrevention": "模板角色继续坚持。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.flavor": "一份干净的模板，等待被改造成新的冒险。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.goldMonologue": "这些金币足够开始测试。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.possessiveAdjective": "他的",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounObject": "他",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounPossessive": "他的",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounSubject": "他",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.selectMessage": "模板角色准备就绪。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.title": "模板角色",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.titleObject": "模板角色",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.unlockText": "用[pink]{Prerequisite}[/pink]进行一局游戏来解锁这个角色。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.victoryMessage": "模板验证完成。"
+}

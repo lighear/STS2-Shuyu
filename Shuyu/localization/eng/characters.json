@@ -1,0 +1,21 @@
+{
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.aromaPrinciple": "[sine][blue]A clean template is ready for a new run.[/blue][/sine]",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.alive.endTurnPing": "Turn complete.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.dead.endTurnPing": "I am out for now.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierDescription": "Template Character cards can now appear in rewards and shops.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierTitle": "Template Cards",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.defeatMessage": "The template still needs a little tuning.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.description": "A sample character used to verify the RitsuLib template project.\nReplace this text with your own character concept after copying the template.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.eventDeathPrevention": "Template Character keeps going.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.flavor": "A clean template waiting to become a new adventure.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.goldMonologue": "This gold is enough to start testing.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.possessiveAdjective": "their",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounObject": "them",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounPossessive": "theirs",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounSubject": "they",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.selectMessage": "Template Character is ready.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.title": "Template Character",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.titleObject": "Template Character",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.unlockText": "Complete a run as [pink]{Prerequisite}[/pink] to unlock this character.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.victoryMessage": "Template verification complete."
+}
