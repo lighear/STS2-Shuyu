@@ -4,5 +4,13 @@
   "SHUYU_CARD_SHUYU_STRIKE.smartDescription": "Deal {Damage:diff()} damage.",
   "SHUYU_CARD_SHUYU_DEFEND.title": "Template Defend",
   "SHUYU_CARD_SHUYU_DEFEND.description": "Gain {Block:diff()} Block.",
-  "SHUYU_CARD_SHUYU_DEFEND.smartDescription": "Gain {Block:diff()} Block."
+  "SHUYU_CARD_SHUYU_DEFEND.smartDescription": "Gain {Block:diff()} Block.",
+  "SHUYU_CARD_BING_SHUANG_CHONG_JI.description": "",
+  "SHUYU_CARD_BING_SHUANG_CHONG_JI.title": "",
+  "SHUYU_CARD_FROZEN_CARD_MODEL.description": "",
+  "SHUYU_CARD_FROZEN_CARD_MODEL.title": "",
+  "SHUYU_CARD_NING_GU.description": "",
+  "SHUYU_CARD_NING_GU.title": "",
+  "SHUYU_CARD_JI_BING_FENG_BAO.description": "",
+  "SHUYU_CARD_JI_BING_FENG_BAO.title": ""
 }
