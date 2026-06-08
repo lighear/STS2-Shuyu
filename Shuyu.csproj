@@ -54,6 +54,7 @@
 
         <Compile Remove="Shuyu/**"/>
         <EmbeddedResource Remove="Shuyu/**"/>
+        <None Include="local.props" />
         <None Include="Shuyu/**"/>
         <None Include="Shuyu.json"/>
         <None Include="project.godot"/>
