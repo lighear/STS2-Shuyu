@@ -1,8 +1,10 @@
-﻿{
+{
 	"SHUYU_CARD_SHUYU_STRIKE.title": "打击",
     "SHUYU_CARD_SHUYU_STRIKE.description": "造成{Damage:diff()}点伤害。",
 	"SHUYU_CARD_SHUYU_DEFEND.title": "防御",
 	"SHUYU_CARD_SHUYU_DEFEND.description": "获得{Block:diff()}点[gold]格挡[/gold]。",
+    "SHUYU_CARD_FROZEN_CARD_MODEL.title": "封冻",
+    "SHUYU_CARD_FROZEN_CARD_MODEL.description": "封冻。",
     "SHUYU_CARD_BING_ZHEN.title":  "冰针",
     "SHUYU_CARD_BING_ZHEN.description":  "造成{Damage:diff()}点伤害。\n施加[gold]寒冷[/gold]。",
     "SHUYU_CARD_E_YUN.title":  "厄运",
