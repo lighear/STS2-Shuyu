@@ -1,42 +1,54 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
+﻿
+
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    [RegisterCard(typeof(TokenCardPool))]
+    public class BingZhen: ModCardTemplate
     {
-        public NingGu() : base(
-            baseCost: 1,
+        public BingZhen() : base(
+            baseCost: 0,
             CardType.Attack,
-            CardRarity.Basic,
+            CardRarity.Token,
             TargetType.AnyEnemy)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Exhaust
+        ];
+
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move)
+            new DamageVar(1, ValueProp.Move)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismHelper.ChooseFromHandAndFreeze(choiceContext, base.Owner, 2, this);
+            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                .FromCard(this)
+                .Targeting(cardPlay.Target!)
+                .Execute(choiceContext);
+
+            await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, base.Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            DynamicVars.Damage.UpgradeValueBy(1);
+            AddKeyword(CardKeyword.Retain);
         }
     }
 }

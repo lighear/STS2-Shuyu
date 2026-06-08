@@ -61,10 +61,9 @@ public sealed class FrozenCardModel : ModCardTemplate
     public override CardPoolModel Pool => _visualCardModel?.Pool ?? base.Pool;
     public override CardPoolModel VisualCardPool => _visualCardModel?.VisualCardPool ?? base.VisualCardPool;
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords =>
-    [
-        CardKeyword.Unplayable,
-            CardKeyword.Retain
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [
+        CardKeyword.Retain,
+        CardKeyword.Unplayable
     ];
 
     public override async Task AfterCardDiscarded(PlayerChoiceContext choiceContext, CardModel card)

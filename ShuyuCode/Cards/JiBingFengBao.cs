@@ -7,11 +7,6 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shuyu.Cards
 {
@@ -25,7 +20,7 @@ namespace Shuyu.Cards
         TargetType.AllEnemies)
         { }
 
-        public override CardAssetProfile AssetProfile => new(PortraitPath: $"res://Test/images/cards/{GetType().Name}.png");
+        public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(10, ValueProp.Move)

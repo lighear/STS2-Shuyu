@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Afflications;
+using Shuyu.Afflictions;
 using Shuyu.Cards;
 
 namespace Shuyu

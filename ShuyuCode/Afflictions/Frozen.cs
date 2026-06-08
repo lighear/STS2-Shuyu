@@ -4,13 +4,8 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 using Shuyu.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shuyu.Afflications
+namespace Shuyu.Afflictions
 {
     [RegisterAffliction]
     public class Frozen : ModAfflictionTemplate

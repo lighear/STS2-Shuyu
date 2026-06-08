@@ -21,7 +21,7 @@ namespace Shuyu.Cards
             TargetType.AnyEnemy)
         { }
 
-        public override CardAssetProfile AssetProfile => new(PortraitPath: $"res://Test/images/cards/{GetType().Name}.png");
+        public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(8, ValueProp.Move)
