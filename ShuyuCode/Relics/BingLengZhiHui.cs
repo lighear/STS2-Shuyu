@@ -1,8 +1,10 @@
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using Shuyu.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -13,15 +15,16 @@ namespace Shuyu.Relics;
 // RegisterCharacterStarterRelic 会把它作为 ShuyuCharacter 的初始遗物。
 [RegisterRelic(typeof(ShuyuRelicPool))]
 [RegisterCharacterStarterRelic(typeof(ShuyuCharacter))]
-public sealed class ShuyuRelic : ModRelicTemplate
+public sealed class BingLengZhiHui : ModRelicTemplate
 {
     // 稀有度。
-    public override RelicRarity Rarity => RelicRarity.Common;
+    public override RelicRarity Rarity => RelicRarity.Starter;
 
     // 遗物的数值。这里会替换本地化中的 {Cards}。
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CardsVar(1)
+        new CardsVar(1),
+        new CardsVar("FrozenAmount", 1)
     ];
 
     // 图片资源统一放在 AssetProfile 里配置。
@@ -34,10 +37,32 @@ public sealed class ShuyuRelic : ModRelicTemplate
         // 大图标（原版 256x256）。
         BigIconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png");
 
-    // 每回合开始时，抽一张牌。
-    // 这里使用 DynamicVars.Cards.IntValue，保证效果和本地化显示保持一致。
+    public override decimal ModifyHandDraw(Player player, decimal count)
+    {
+        if (player != Owner)
+        {
+            return count;
+        }
+        if (Owner.PlayerCombatState!.TurnNumber > 1)
+        {
+            return count;
+        }
+        return count + DynamicVars.Cards.BaseValue;
+    }
+
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, player);
+        if (player != Owner)
+        {
+            return;
+        }
+        if (Owner.PlayerCombatState!.TurnNumber > 1)
+        {
+            return;
+        }
+        foreach (CardModel item in await CardSelectCmd.FromHand(choiceContext, player, new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, DynamicVars["FrozenAmount"].IntValue), null, this))
+        {
+            await ShuyuMechanismCmd.FreezeCard(item);
+        }
     }
 }

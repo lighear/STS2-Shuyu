@@ -14,13 +14,12 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    public class LengFei : ModCardTemplate
     {
-        public NingGu() : base(
+        public LengFei() : base(
             baseCost: 1,
             CardType.Attack,
-            CardRarity.Basic,
+            CardRarity.Common,
             TargetType.AnyEnemy)
         { }
 
@@ -31,19 +30,35 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move),
-            new CardsVar(2)
+            new DamageVar(10, ValueProp.Move),
+            new CardsVar(1),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                .FromCard(this)
+                .Targeting(cardPlay.Target!)
+                .Execute(choiceContext);
+
+            CardModel? cardModel = (await CardSelectCmd
+                .FromHand(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, DynamicVars.Cards.IntValue), null, this))
+                .FirstOrDefault();
+            if (cardModel != null)
+            {
+                await CardCmd.Exhaust(choiceContext, cardModel);
+                if (cardModel.IsFrozen())
+                {
+                    await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
+
+                }
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            DynamicVars.Damage.UpgradeValueBy(3);
         }
     }
 }

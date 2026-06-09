@@ -15,7 +15,7 @@ using Shuyu.Interfaces;
 
 namespace Shuyu
 {
-    public static class ShuyuMechanismHelper
+    public static class ShuyuMechanismCmd
     {
         public static bool IsFrozen(this CardModel card) => card is FrozenCardModel;
 

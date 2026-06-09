@@ -69,9 +69,9 @@ public sealed class FrozenCardModel : ModCardTemplate
         {
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismHelper.IcyDamage(choiceContext, 5 + 5 * Math.Min(EnergyCost.Canonical, 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Min(EnergyCost.Canonical, 0), targets, this);
             }
-            ShuyuMechanismHelper.UnfreezeCard(this);
+            ShuyuMechanismCmd.UnfreezeCard(this);
         }
     }
 }
