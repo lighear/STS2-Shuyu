@@ -1,0 +1,8 @@
+{
+    "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.title": "瓶装冰针",
+    "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.description": "生成[blue]{Cards}[/blue]张[gold]冰针+[/gold]。",
+	"SHUYU_POTION_PING_SU_LENG_JI.title": "速冷剂",
+    "SHUYU_POTION_PING_SU_LENG_JI.description": "抽[blue]{Cards}[/blue]张牌；[gold]封冻[/gold]任意数量的手牌。",
+	"SHUYU_POTION_WEI_SUO_LI_CHANG.title": "微缩力场",
+    "SHUYU_POTION_WEI_SUO_LI_CHANG.description": "获得{IceThronsPower}层[gold]寒冰荆棘[/gold]和{IceShieldPower}层[gold]寒冰护盾[/gold]。"
+}
