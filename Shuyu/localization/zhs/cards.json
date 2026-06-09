@@ -16,7 +16,7 @@
     "SHUYU_CARD_JI_BING_FENG_BAO.title":  "极冰风暴",
     "SHUYU_CARD_JI_BING_FENG_BAO.description":  "对所有敌人造成{Damage:diff()}点伤害；\n丢弃手中所有[gold]封冻牌[/gold]对所有敌人造成掷冰伤害2次。",
     "SHUYU_CARD_WU_MING_BING_ZHANG.title":  "无名冰杖",
-    "SHUYU_CARD_WU_MING_BING_ZHANG.description":  "造成{CalculatedDamage:diff()}点伤害。\n[gold]冰器[/gold]：本场战斗中所有[gold]无名冰杖[/gold]的伤害增加{ExtraDamage:diff()}点。",
+    "SHUYU_CARD_WU_MING_BING_ZHANG.description":  "造成{Damage:diff()}点伤害。\n[gold]冰器[/gold]：本场战斗中所有[gold]无名冰杖[/gold]的伤害增加{ExtraDamage:diff()}点。",
     "SHUYU_CARD_BING_ZHUI_ZHONG_ZI.title":  "冰坠种子",
     "SHUYU_CARD_BING_ZHUI_ZHONG_ZI.description":  "此牌被[gold]封冻[/gold]时，抽{Cards:diff()}张牌。",
     "SHUYU_CARD_ZHE_YAN.title":  "遮掩",

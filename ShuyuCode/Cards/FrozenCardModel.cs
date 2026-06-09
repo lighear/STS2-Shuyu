@@ -11,9 +11,6 @@ namespace Shuyu.Cards;
 [RegisterCard(typeof(ShuyuCardPool))]
 public sealed class FrozenCardModel : ModCardTemplate
 {
-    /*public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"{Entry.ResPath}/images/cards/ShuyuStrike.png");*/
-
     public CardModel? _visualCardModel;
     private List<Creature> targets = new List<Creature>();
     private int count;
@@ -72,7 +69,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         {
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismHelper.IcyDamage(choiceContext, 5 + 5 * Math.Min(base.EnergyCost.Canonical, 0), targets, this);
+                await ShuyuMechanismHelper.IcyDamage(choiceContext, 5 + 5 * Math.Min(EnergyCost.Canonical, 0), targets, this);
             }
             ShuyuMechanismHelper.UnfreezeCard(this);
         }

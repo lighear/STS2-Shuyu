@@ -1,9 +1,13 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Afflictions;
 using Shuyu.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -23,6 +27,10 @@ namespace Shuyu.Cards
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
+        protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+            ..HoverTipFactory.FromAffliction<Frozen>()
+        ];
+
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(8, ValueProp.Move)
         ];
@@ -34,7 +42,7 @@ namespace Shuyu.Cards
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
-            foreach (CardModel card in PileType.Hand.GetPile(base.Owner).Cards.Where(c => c.IsFrozen()).ToList())
+            foreach (CardModel card in PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrozen()).ToList())
             {
                 ((FrozenCardModel)card).SetIcyDamageTargets(cardPlay.Target!);
                 await CardCmd.Discard(choiceContext, card);
