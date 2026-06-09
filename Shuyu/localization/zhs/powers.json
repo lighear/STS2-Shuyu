@@ -1,6 +1,6 @@
 ﻿{
   "SHUYU_POWER_CHILL_POWER.description": "回合开始时，失去[blue]6[/blue]点生命并解除；每当受到负面效果时，失去[blue]6[/blue]点生命（如果该负面效果为[gold]寒冷[/gold]，失去的生命翻倍）。",
-  "SHUYU_POWER_CHILL_POWER.smartDescription": "回合开始时，失去[blue]{Amount}[/blue]点生命并解除；每当受到负面效果时，失去[blue]{Amount}[/blue]点生命（如果该负面效果为[gold]寒冷[/gold]，失去的生命翻倍）。",
+  "SHUYU_POWER_CHILL_POWER.smartDescription": "回合开始时，失去[blue]6[/blue]点生命并解除；每当受到负面效果时，失去[blue]6[/blue]点生命（如果该负面效果为[gold]寒冷[/gold]，失去的生命翻倍）。",
   "SHUYU_POWER_CHILL_POWER.title": "寒冷",
   "SHUYU_POWER_ICE_SHIELD_POWER.description": "获得寒冰护盾时同时获得等量格挡；回合开始时获得等于寒冰护盾层数的格挡；受到伤害大于0的攻击时减少1层。",
   "SHUYU_POWER_ICE_SHIELD_POWER.smartDescription": "获得寒冰护盾时同时获得等量格挡；回合开始时获得[blue]{Amount}[/blue]点格挡；受到伤害大于0的攻击时减少1层。",
