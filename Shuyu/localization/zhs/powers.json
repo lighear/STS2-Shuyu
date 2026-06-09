@@ -10,5 +10,8 @@
   "SHUYU_POWER_ICE_THORNS_POWER.title": "寒冰荆棘",
   "SHUYU_POWER_FRAGILE_POWER.description": "若没有[gold]易伤[/gold]，使受到的攻击伤害提升25%；叠加至5层时转化为3层[gold]易伤[/gold]。",
   "SHUYU_POWER_FRAGILE_POWER.smartDescription": "若没有[gold]易伤[/gold]，使受到的攻击伤害提升25%；叠加至5层时转化为3层[gold]易伤[/gold]。",
-  "SHUYU_POWER_FRAGILE_POWER.title": "易碎"
+  "SHUYU_POWER_FRAGILE_POWER.title": "易碎",
+  "SHUYU_POWER_HAN_FENG_ZHI_MU_POWER.description": "本回合内每名敌人首次攻击自身时，对其施加寒冷。",
+  "SHUYU_POWER_HAN_FENG_ZHI_MU_POWER.smartDescription": "本回合内每名敌人首次攻击自身时，对其施加寒冷。",
+  "SHUYU_POWER_HAN_FENG_ZHI_MU_POWER.title": "寒风之幕"
 }

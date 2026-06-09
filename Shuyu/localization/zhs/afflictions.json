@@ -1,4 +1,4 @@
 ﻿{
-  "SHUYU_AFFLICTION_FROZEN.description": "",
-  "SHUYU_AFFLICTION_FROZEN.title": ""
+  "SHUYU_AFFLICTION_FROZEN.description": "封冻的牌失去其词条与效果，获得保留；被丢弃时对一名随机敌人造成（5+5*耗能）攻击伤害，称为掷冰伤害，然后解除封冻。",
+  "SHUYU_AFFLICTION_FROZEN.title": "封冻"
 }

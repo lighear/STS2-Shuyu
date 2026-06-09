@@ -3,23 +3,21 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.CardPools;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
 using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(TokenCardPool))]
-    public class BingZhen: ModCardTemplate
+    [RegisterCard(typeof(ShuyuCardPool))]
+    public class HanLiuShiFang : ModCardTemplate
     {
-        public BingZhen() : base(
-            baseCost: 0,
-            CardType.Attack,
-            CardRarity.Token,
+        public HanLiuShiFang() : base(
+            baseCost: 1,
+            CardType.Skill,
+            CardRarity.Common,
             TargetType.AnyEnemy)
         { }
 
@@ -29,28 +27,19 @@ namespace Shuyu.Cards
             HoverTipFactory.FromPower<ChillPower>()
         ];
 
-        public override IEnumerable<CardKeyword> CanonicalKeywords => [
-            CardKeyword.Exhaust
-        ];
-
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(1, ValueProp.Move)
+            new CardsVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this)
-                .Targeting(cardPlay.Target!)
-                .Execute(choiceContext);
-
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(1);
-            AddKeyword(CardKeyword.Retain);
+            DynamicVars.Cards.UpgradeValueBy(1);
         }
     }
 }

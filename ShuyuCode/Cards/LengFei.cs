@@ -1,40 +1,38 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.CardPools;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Powers;
+using Shuyu.Afflictions;
+using Shuyu.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(TokenCardPool))]
-    public class BingZhen: ModCardTemplate
+    [RegisterCard(typeof(ShuyuCardPool))]
+    public class LengFei : ModCardTemplate
     {
-        public BingZhen() : base(
-            baseCost: 0,
+        public LengFei() : base(
+            baseCost: 1,
             CardType.Attack,
-            CardRarity.Token,
+            CardRarity.Common,
             TargetType.AnyEnemy)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<ChillPower>()
-        ];
-
-        public override IEnumerable<CardKeyword> CanonicalKeywords => [
-            CardKeyword.Exhaust
+            ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(1, ValueProp.Move)
+            new DamageVar(10, ValueProp.Move),
+            new CardsVar(1),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -44,13 +42,23 @@ namespace Shuyu.Cards
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
-            await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
+            CardModel? cardModel = (await CardSelectCmd
+                .FromHand(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, DynamicVars.Cards.IntValue), null, this))
+                .FirstOrDefault();
+            if (cardModel != null)
+            {
+                await CardCmd.Exhaust(choiceContext, cardModel);
+                if (cardModel.IsFrozen())
+                {
+                    await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
+
+                }
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(1);
-            AddKeyword(CardKeyword.Retain);
+            DynamicVars.Damage.UpgradeValueBy(3);
         }
     }
 }

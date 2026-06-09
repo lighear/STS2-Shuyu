@@ -3,26 +3,23 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class BingShuangChongJi : ModCardTemplate
+    public class SanXiangDian : ModCardTemplate, IFrostforged
     {
-        public BingShuangChongJi() : base(
-            baseCost: 1,
-            CardType.Attack,
-            CardRarity.Basic,
-            TargetType.AnyEnemy)
+        public SanXiangDian() : base(
+            baseCost: 0,
+            CardType.Skill,
+            CardRarity.Common,
+            TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -32,26 +29,23 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(8, ValueProp.Move)
+            new CardsVar(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this)
-                .Targeting(cardPlay.Target!)
-                .Execute(choiceContext);
-
-            foreach (CardModel card in PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrozen()).ToList())
-            {
-                ((FrozenCardModel)card).SetIcyDamageTargets(cardPlay.Target!);
-                await CardCmd.Discard(choiceContext, card);
-            }
+            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+            await ShuyuMechanismCmd.ChooseFromHandAndUnfreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
         }
 
         protected override void OnUpgrade()
         {
-            EnergyCost.UpgradeBy(-1);
+            DynamicVars.Cards.UpgradeValueBy(1);
+        }
+
+        public void FrostforgedEffect()
+        {
+            
         }
     }
 }

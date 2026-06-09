@@ -14,14 +14,13 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    public class ZhuanHuaHuiShou : ModCardTemplate
     {
-        public NingGu() : base(
+        public ZhuanHuaHuiShou() : base(
             baseCost: 1,
-            CardType.Attack,
-            CardRarity.Basic,
-            TargetType.AnyEnemy)
+            CardType.Skill,
+            CardRarity.Common,
+            TargetType.Self)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -30,20 +29,35 @@ namespace Shuyu.Cards
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Exhaust
+        ];
+
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move),
-            new CardsVar(2)
+            new BlockVar(3, ValueProp.Move)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+
+            CardModel? cardModel = (await CardSelectCmd
+                .FromCombatPile(choiceContext, PileType.Discard.GetPile(Owner), Owner, new CardSelectorPrefs(base.SelectionScreenPrompt, 1)))
+                .FirstOrDefault();
+            if (cardModel != null)
+            {
+                await CardPileCmd.Add(cardModel, PileType.Hand);
+                if (cardModel.EnergyCost.Canonical > Owner.PlayerCombatState!.Energy)
+                {
+                    await ShuyuMechanismCmd.FreezeCard(cardModel);
+                }
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            DynamicVars.Block.UpgradeValueBy(2);
+            RemoveKeyword(CardKeyword.Exhaust);
         }
     }
 }

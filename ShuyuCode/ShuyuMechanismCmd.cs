@@ -11,20 +11,37 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Cards;
+using Shuyu.Interfaces;
 
 namespace Shuyu
 {
-    public static class ShuyuMechanismHelper
+    public static class ShuyuMechanismCmd
     {
         public static bool IsFrozen(this CardModel card) => card is FrozenCardModel;
 
-        public static void FreezeCard(CardModel card)
+        public static async Task FreezeCard(CardModel card)
         {
+            if (card.Affliction != null)
+            {
+                CardCmd.ClearAffliction(card);
+            }
+            await CardCmd.Afflict<Frozen>(card, 1);
+        }
+
+        public static bool FreezeCardInternal(CardModel card)
+        {
+            if (card is IFrostforged frostforged)
+            {
+                CardCmd.ClearAffliction(card);
+                frostforged.FrostforgedEffect();
+                return true;
+            }
+
             //FrozenCardModel frozenCard = (FrozenCardModel)ModelDb.Card<FrozenCardModel>().ToMutable();
             FrozenCardModel? frozenCard = card.CombatState?.CreateCard<FrozenCardModel>(card.Owner);
             if (frozenCard == null)
             {
-                return;
+                return false;
             }
             frozenCard.InitFrom(card);
 
@@ -32,18 +49,20 @@ namespace Shuyu
             frozenCard.AfflictInternal(frozenAffliction, 1);
 
             ReplaceCardModelInPile(card, frozenCard);
+            return true;
         }
 
-        public static void UnfreezeCard(FrozenCardModel frozenCard)
+        public static bool UnfreezeCard(FrozenCardModel frozenCard)
         {
             CardModel? original = frozenCard._visualCardModel;
             if (original == null)
             {
-                return;
+                return false;
             }
             original.ClearAfflictionInternal();
 
             ReplaceCardModelInPile(frozenCard, original);
+            return true;
         }
 
         public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
@@ -57,7 +76,44 @@ namespace Shuyu
                     source: source);
             foreach (CardModel card in cards)
             {
-                await CardCmd.Afflict<Frozen>(card, 1);
+                await FreezeCard(card);
+            }
+        }
+
+        public static async Task ChooseFromHandAndUnfreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
+        {
+            IEnumerable<CardModel> cards =
+                await CardSelectCmd.FromHand(
+                    context: choiceContext,
+                    player: player,
+                    prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, selectCount),
+                    filter: c => c.IsFrozen(),
+                    source: source);
+            foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
+            {
+                UnfreezeCard(card);
+            }
+        }
+
+        public static async Task ChooseFromHandAndChangeFrozenState(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
+        {
+            IEnumerable<CardModel> cards =
+                await CardSelectCmd.FromHand(
+                    context: choiceContext,
+                    player: player,
+                    prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, selectCount),
+                    filter: null,
+                    source: source);
+            foreach (CardModel card in cards)
+            {
+                if (card is FrozenCardModel frozenCard)
+                {
+                    UnfreezeCard(frozenCard);
+                }
+                else
+                {
+                    await FreezeCard(card);
+                }
             }
         }
 
@@ -73,7 +129,7 @@ namespace Shuyu
             }
             if (targets.Count > 0)
             {
-                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Unpowered, cardSource.Owner.Creature, cardSource);
+                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource);
             }
         }
 
