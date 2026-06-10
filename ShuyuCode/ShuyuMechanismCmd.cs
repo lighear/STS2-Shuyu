@@ -1,11 +1,13 @@
 ﻿using HarmonyLib;
 using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -30,6 +32,15 @@ namespace Shuyu
 
         public static bool FreezeCardInternal(CardModel card)
         {
+            var ips = card.CombatState?.IterateHookListeners().OfType<IOnFreezingCard>();
+            if (ips != null)
+            {
+                foreach (IOnFreezingCard ip in ips)
+                {
+                    ip.OnFreezingCard(card);
+                }
+            }
+
             if (card is IFrostforged frostforged)
             {
                 CardCmd.ClearAffliction(card);
@@ -65,13 +76,14 @@ namespace Shuyu
             return true;
         }
 
-        public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
+        public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool option = false)
         {
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, selectCount),
+                    prefs: option ? new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE_OPTION"), 0, selectCount)
+                                    : new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE"), selectCount),
                     filter: c => !c.IsFrozen(),
                     source: source);
             foreach (CardModel card in cards)
@@ -80,13 +92,14 @@ namespace Shuyu
             }
         }
 
-        public static async Task ChooseFromHandAndUnfreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
+        public static async Task ChooseFromHandAndUnfreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool option = false)
         {
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, selectCount),
+                    prefs: option ? new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE_OPTION"), 0, selectCount)
+                                    : new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE"), selectCount),
                     filter: c => c.IsFrozen(),
                     source: source);
             foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
@@ -119,6 +132,8 @@ namespace Shuyu
 
         public static async Task IcyDamage(PlayerChoiceContext choiceContext, decimal damage, List<Creature> targets, CardModel cardSource)
         {
+            targets.RemoveAll(t => t.IsDead);
+
             if (targets.Count == 0)
             {
                 IReadOnlyList<Creature>? hittableEnemies = cardSource.CombatState?.HittableEnemies;
@@ -127,6 +142,7 @@ namespace Shuyu
                     targets.Add(cardSource.Owner.RunState.Rng.CombatTargets.NextItem(hittableEnemies)!);
                 }
             }
+
             if (targets.Count > 0)
             {
                 await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource);
@@ -150,14 +166,17 @@ namespace Shuyu
             }
 
             // 从当前牌堆移除原牌，加入 frozen
-            int index = pile.Cards.IndexOf(oldCard);
-            Entry.Logger.Warn(oldCard.Title + " Index: " + index);
-            if (index < 0)
-            {
-                return;
-            }
+            //int index = pile.Cards.IndexOf(oldCard);
             oldCard.RemoveFromCurrentPile();
-            pile.AddInternal(newCard, index);
+            pile.AddInternal(newCard);
+            /*if (keepPosition && index >= 0)
+            {
+                pile.AddInternal(newCard, index);
+            }
+            else
+            {
+                pile.AddInternal(newCard);
+            }*/
         }
     }
 }

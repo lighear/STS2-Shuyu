@@ -16,13 +16,7 @@ namespace Shuyu.Afflictions
         public override void AfterApplied()
         {
             base.AfterApplied();
-            if (ShuyuMechanismCmd.FreezeCardInternal(base.Card))
-            {
-                foreach (IAfterFreezingCard ip in CombatState.IterateHookListeners().OfType<IAfterFreezingCard>())
-                {
-                    ip.AfterFreezingCard(base.Card);
-                }
-            }
+            ShuyuMechanismCmd.FreezeCardInternal(base.Card);
         }
 
         public override void BeforeRemoved()

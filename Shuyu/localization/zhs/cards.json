@@ -25,6 +25,7 @@
     "SHUYU_CARD_HUAN_RAO_DA_JI.description":  "造成{Damage:diff()}点伤害。\n手中每有2张[gold]保留牌[/gold]，额外造成1次伤害。",
     "SHUYU_CARD_ZHUAN_HUA_HUI_SHOU.title":  "转化回收",
     "SHUYU_CARD_ZHUAN_HUA_HUI_SHOU.description":  "获得{Block:diff()}[gold]格挡[/gold]。\n选择[gold]弃牌堆[/gold]的一张牌移回手中，然后若其耗能多于你当前拥有的{energyPrefix:energyIcons(1)}，将其[gold]封冻[/gold]。",
+    "SHUYU_CARD_ZHUAN_HUA_HUI_SHOU.selectionScreenPrompt": "选择一张牌加入你的手牌",
     "SHUYU_CARD_SAN_XIANG_DIAN.title":  "三相点",
     "SHUYU_CARD_SAN_XIANG_DIAN.description":  "[gold]封冻[/gold]手中至多{Cards:diff()}张牌，然后解除手中至多{Cards:diff()}张牌的[gold]封冻[/gold]。\n此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。",
     "SHUYU_CARD_LENG_FEI.title":  "冷沸",

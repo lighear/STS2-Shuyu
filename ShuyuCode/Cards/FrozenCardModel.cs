@@ -20,7 +20,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         CardType.None,
         CardRarity.None,
         TargetType.None,
-        showInCardLibrary: true)
+        showInCardLibrary: false)
     { }
 
     public FrozenCardModel InitFrom(CardModel original)
@@ -69,7 +69,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         {
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Min(EnergyCost.Canonical, 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Max(EnergyCost.Canonical, 0), targets, this);
             }
             ShuyuMechanismCmd.UnfreezeCard(this);
         }

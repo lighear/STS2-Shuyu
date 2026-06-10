@@ -18,10 +18,10 @@ namespace Shuyu.Cards
     public class NingGu : ModCardTemplate
     {
         public NingGu() : base(
-            baseCost: 1,
-            CardType.Attack,
+            baseCost: 2,
+            CardType.Skill,
             CardRarity.Basic,
-            TargetType.AnyEnemy)
+            TargetType.Self)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");

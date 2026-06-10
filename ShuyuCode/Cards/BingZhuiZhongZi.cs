@@ -15,7 +15,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class BingZhuiZhongZi : ModCardTemplate, IAfterFreezingCard
+    public class BingZhuiZhongZi : ModCardTemplate, IOnFreezingCard
     {
         public BingZhuiZhongZi() : base(
             baseCost: 5,
@@ -43,7 +43,7 @@ namespace Shuyu.Cards
             EnergyCost.UpgradeBy(1);
         }
 
-        public async Task AfterFreezingCard(CardModel card)
+        public async Task OnFreezingCard(CardModel card)
         {
             if (card == this)
             {
