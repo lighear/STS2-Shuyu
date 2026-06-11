@@ -2,9 +2,6 @@
 {
     public interface IFrostforged
     {
-        public Task FrostforgedEffect()
-        {
-            return Task.CompletedTask;
-        }
+        public Task FrostforgedEffect();
     }
 }
