@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using System.Runtime.CompilerServices;
 
 namespace Shuyu.Powers;
 
@@ -57,13 +56,14 @@ public class ChillPower : ModPowerTemplate
                     selfApplied = false;
                     return;
                 }
+                Flash();
                 await CreatureCmd.Damage(choiceContext, Owner, 12, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
             else
             {
+                Flash();
                 await CreatureCmd.Damage(choiceContext, Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
-            Flash();
         }
     }
 

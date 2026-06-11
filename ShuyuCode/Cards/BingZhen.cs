@@ -1,10 +1,13 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Powers;
@@ -14,7 +17,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(TokenCardPool))]
-    public class BingZhen: ModCardTemplate
+    public class BingZhen : ModCardTemplate
     {
         public BingZhen() : base(
             baseCost: 0,
@@ -51,6 +54,36 @@ namespace Shuyu.Cards
         {
             DynamicVars.Damage.UpgradeValueBy(1);
             AddKeyword(CardKeyword.Retain);
+        }
+
+        private static IEnumerable<BingZhen> Create(Player owner, int amount, ICombatState combatState, bool upgrade)
+        {
+            List<BingZhen> list = new List<BingZhen>();
+            for (int i = 0; i < amount; i++)
+            {
+                var card = combatState.CreateCard<BingZhen>(owner);
+                if (upgrade)
+                {
+                    CardCmd.Upgrade(card);
+                }
+                list.Add(card);
+            }
+            return list;
+        }
+
+        public static async Task CreateInHand(Player owner, int amount, ICombatState combatState, bool upgrade)
+        {
+            if (CombatManager.Instance.IsOverOrEnding)
+            {
+                return;
+            }
+
+            for (int i = 0; i < amount; i++)
+            {
+                var card = BingZhen.Create(owner, 1, combatState, upgrade);
+                await CardPileCmd.AddGeneratedCardsToCombat(card, PileType.Hand, owner);
+                await Cmd.Wait(0.1f);
+            }
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Models.Relics;
+using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
+
+namespace Shuyu.Powers;
+
+[RegisterPower]
+public class FragilePower : ModPowerTemplate
+{
+    public override PowerType Type => PowerType.Debuff;
+    public override PowerStackType StackType => PowerStackType.Counter;
+
+    public override PowerAssetProfile AssetProfile => new(
+        IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
+        BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
+    );
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromPower<VulnerablePower>()
+    ];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DynamicVar("DamageIncrease", 1.25m)
+    ];
+
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    {
+        if (target != Owner || !props.IsPoweredAttack() || target.GetPower<VulnerablePower>() != null)
+        {
+            return 1m;
+        }
+        return DynamicVars["DamageIncrease"].BaseValue;
+    }
+
+    public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
+    {
+        if (power == this && Amount >= 5)
+        {
+            Flash();
+            await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, Applier, null);
+            await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
+        }
+    }
+}
