@@ -67,7 +67,7 @@
     "SHUYU_CARD_YONG_CHANG.title":  "咏唱",
     "SHUYU_CARD_YONG_CHANG.description":  "抽{Cards:diff()}张牌。\n[gold]封冻[/gold]1张[gold]手牌[/gold]。",
     "SHUYU_CARD_XUN_HUAN_SHU_SHI.title":  "循环术式",
-    "SHUYU_CARD_XUN_HUAN_SHU_SHI.description":  "丢弃所有[gold]手牌[/gold]。\n抽取等于所丢弃[gold]保留牌[/gold]+1数量的牌。",
+    "SHUYU_CARD_XUN_HUAN_SHU_SHI.description":  "丢弃所有[gold]手牌[/gold]。\n抽取等于所丢弃[gold]保留牌[/gold]+{Cards:diff()}数量的牌。",
     "SHUYU_CARD_YONG_HENG_SHU_SHI.title":  "永恒术式",
     "SHUYU_CARD_YONG_HENG_SHU_SHI.description":  "抽{Cards:diff()}张牌。\n[gold]封冻[/gold]抽到的牌。",
     "SHUYU_CARD_NING_JU.title":  "凝聚",

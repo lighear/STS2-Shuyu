@@ -33,7 +33,7 @@ public class BingQiMengJiPower : ModPowerTemplate
     public override bool TryModifyEnergyCostInCombatLate(CardModel card, decimal originalCost, out decimal modifiedCost)
     {
         if (card.Owner.Creature == Owner
-            && card.CanonicalKeywords.Contains(ShuyuKeywords.Frostforged)
+            && card.Keywords.Contains(ShuyuKeywords.Frostforged)
             && (card.Pile?.Type == PileType.Hand || card.Pile?.Type == PileType.Play))
         {
             modifiedCost = default(decimal);
