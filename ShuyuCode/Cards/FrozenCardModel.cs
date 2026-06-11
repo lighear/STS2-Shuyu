@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using Shuyu.Characters;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -20,7 +21,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         CardType.None,
         CardRarity.None,
         TargetType.None,
-        showInCardLibrary: true)
+        showInCardLibrary: false)
     { }
 
     public FrozenCardModel InitFrom(CardModel original)
@@ -67,11 +68,16 @@ public sealed class FrozenCardModel : ModCardTemplate
     {
         if (card == this)
         {
+            foreach (IOnFrozenCardDiscarded ip in CombatState!.IterateHookListeners().OfType<IOnFrozenCardDiscarded>())
+            {
+                await ip.OnFrozenCardDiscarded(choiceContext, this);
+            }
+
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Min(EnergyCost.Canonical, 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Max(EnergyCost.Canonical, 0), targets, this);
             }
-            ShuyuMechanismCmd.UnfreezeCard(this);
+            await ShuyuMechanismCmd.UnfreezeCard(this);
         }
     }
 }

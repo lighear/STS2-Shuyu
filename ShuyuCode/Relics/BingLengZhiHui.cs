@@ -60,9 +60,6 @@ public sealed class BingLengZhiHui : ModRelicTemplate
         {
             return;
         }
-        foreach (CardModel item in await CardSelectCmd.FromHand(choiceContext, player, new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, DynamicVars["FrozenAmount"].IntValue), null, this))
-        {
-            await ShuyuMechanismCmd.FreezeCard(item);
-        }
+        await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars["FrozenAmount"].IntValue, this);
     }
 }

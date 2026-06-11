@@ -1,10 +1,8 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
@@ -14,14 +12,13 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    public class YongHengShuShi : ModCardTemplate
     {
-        public NingGu() : base(
-            baseCost: 2,
+        public YongHengShuShi() : base(
+            baseCost: 0,
             CardType.Skill,
-            CardRarity.Basic,
-            TargetType.Self)
+            CardRarity.Uncommon,
+            TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -31,19 +28,21 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move),
-            new CardsVar(2)
+            new CardsVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+            var cards = await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
+            foreach (var card in cards)
+            {
+                await ShuyuMechanismCmd.FreezeCard(card);
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            DynamicVars.Cards.UpgradeValueBy(1);
         }
     }
 }

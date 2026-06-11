@@ -3,11 +3,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
-using Shuyu.Interfaces;
 using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -15,12 +13,12 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class BingZhuiZhongZi : ModCardTemplate, IAfterFreezingCard
+    public class JingDaiLiangJi : ModCardTemplate
     {
-        public BingZhuiZhongZi() : base(
-            baseCost: 5,
+        public JingDaiLiangJi() : base(
+            baseCost: 1,
             CardType.Skill,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.None)
         { }
 
@@ -30,25 +28,21 @@ namespace Shuyu.Cards
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
-        public override IEnumerable<CardKeyword> CanonicalKeywords => [
-            CardKeyword.Ethereal
+        protected override IEnumerable<DynamicVar> CanonicalVars => [
+            new CardsVar(1),
+            new EnergyVar(2)
         ];
 
-        protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(1)
-        ];
+        protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+        {
+            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this, option: true);
+            await PowerCmd.Apply<JingDaiLiangJiPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this);
+        }
 
         protected override void OnUpgrade()
         {
-            EnergyCost.UpgradeBy(1);
-        }
-
-        public async Task AfterFreezingCard(CardModel card)
-        {
-            if (card == this)
-            {
-                await CardPileCmd.Draw(new ThrowingPlayerChoiceContext(), DynamicVars.Cards.IntValue, Owner);
-            }
+            DynamicVars.Cards.UpgradeValueBy(1);
+            DynamicVars.Energy.UpgradeValueBy(1);
         }
     }
 }

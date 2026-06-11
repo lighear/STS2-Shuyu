@@ -6,19 +6,18 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
-using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SanXiangDian : ModCardTemplate, IFrostforged
+    public class YongChang : ModCardTemplate
     {
-        public SanXiangDian() : base(
-            baseCost: 0,
+        public YongChang() : base(
+            baseCost: 1,
             CardType.Skill,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.None)
         { }
 
@@ -29,23 +28,18 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(2)
+            new CardsVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
-            await ShuyuMechanismCmd.ChooseFromHandAndUnfreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
+            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, 1, this);
         }
 
         protected override void OnUpgrade()
         {
             DynamicVars.Cards.UpgradeValueBy(1);
-        }
-
-        public void FrostforgedEffect()
-        {
-            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -24,28 +25,51 @@ public class ChillPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    private bool selfApplied;
+
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        if (player == base.Owner.Player)
+        if (!participants.Contains(Owner))
         {
-            await CreatureCmd.Damage(choiceContext, base.Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+            return;
+        }
+
+        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+        if (Owner.IsAlive)
+        {
             await PowerCmd.Remove(this);
+        }
+        else
+        {
+            await Cmd.CustomScaledWait(0.1f, 0.25f);
         }
     }
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == base.Owner && power is not ITemporaryPower)
+        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner && power is not ITemporaryPower)
         {
-            Flash();
             if (power is ChillPower)
             {
-                await CreatureCmd.Damage(choiceContext, base.Owner, 12, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                if (selfApplied)
+                {
+                    selfApplied = false;
+                    return;
+                }
+                Flash();
+                await CreatureCmd.Damage(choiceContext, Owner, 12, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
             else
             {
-                await CreatureCmd.Damage(choiceContext, base.Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                Flash();
+                await CreatureCmd.Damage(choiceContext, Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
         }
+    }
+
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        selfApplied = true;
+        return base.AfterApplied(applier, cardSource);
     }
 }

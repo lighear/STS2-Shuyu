@@ -7,13 +7,14 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class HanFengZhiMuPower : ModPowerTemplate
+public class BingJingZhiWuPlusPower : ModPowerTemplate
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -24,25 +25,14 @@ public class HanFengZhiMuPower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<ChillPower>()
+        HoverTipFactory.FromCard<BingZhen>(true)
     ];
 
-    private HashSet<Creature> _creatureList = new HashSet<Creature>();
-
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult _, ValueProp props, Creature? dealer, CardModel? __)
+    public override async Task BeforeHandDraw(Player player, PlayerChoiceContext choiceContext, ICombatState combatState)
     {
-        if (target == Owner && dealer != null && props.IsPoweredAttack() && !_creatureList.Contains(dealer))
+        if (player == Owner.Player)
         {
-            Flash();
-            await PowerCmd.Apply<ChillPower>(choiceContext, dealer, Amount, Owner, null);
-            _creatureList.Add(dealer);
-        }
-    }
-
-    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
-    {
-        if (Owner.Side != side)
-        {
+            await BingZhen.CreateInHand(player, Amount, CombatState, true);
             await PowerCmd.Remove(this);
         }
     }

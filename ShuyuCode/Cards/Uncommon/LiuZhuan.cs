@@ -1,26 +1,24 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    public class LiuZhuan : ModCardTemplate
     {
-        public NingGu() : base(
-            baseCost: 2,
-            CardType.Skill,
-            CardRarity.Basic,
+        public LiuZhuan() : base(
+            baseCost: 1,
+            CardType.Power,
+            CardRarity.Uncommon,
             TargetType.Self)
         { }
 
@@ -31,19 +29,17 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move),
-            new CardsVar(2)
+            new CardsVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
+            await PowerCmd.Apply<LiuZhuanPower>(choiceContext, Owner.Creature, DynamicVars.Cards.BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            AddKeyword(CardKeyword.Innate);
         }
     }
 }

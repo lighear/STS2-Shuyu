@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -8,20 +7,21 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
+using Shuyu.Interfaces;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    [RegisterCharacterStarterCard(typeof(ShuyuCharacter), 1)]
-    public class NingGu : ModCardTemplate
+    public class BingZhuiZhongZi : ModCardTemplate, IOnFreezingCard
     {
-        public NingGu() : base(
-            baseCost: 2,
+        public BingZhuiZhongZi() : base(
+            baseCost: 5,
             CardType.Skill,
-            CardRarity.Basic,
-            TargetType.Self)
+            CardRarity.Common,
+            TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -30,20 +30,25 @@ namespace Shuyu.Cards
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
-        protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(14, ValueProp.Move),
-            new CardsVar(2)
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Ethereal
         ];
 
-        protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-        {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this);
-        }
+        protected override IEnumerable<DynamicVar> CanonicalVars => [
+            new CardsVar(1)
+        ];
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
+            EnergyCost.UpgradeBy(1);
+        }
+
+        public async Task OnFreezingCard(CardModel card)
+        {
+            if (card == this)
+            {
+                await CardPileCmd.Draw(new ThrowingPlayerChoiceContext(), DynamicVars.Cards.IntValue, Owner);
+            }
         }
     }
 }

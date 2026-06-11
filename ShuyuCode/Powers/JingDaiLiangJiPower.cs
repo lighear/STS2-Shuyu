@@ -1,19 +1,24 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Afflictions;
+using Shuyu.Cards;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class HanFengZhiMuPower : ModPowerTemplate
+public class JingDaiLiangJiPower : ModPowerTemplate
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -24,25 +29,19 @@ public class HanFengZhiMuPower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<ChillPower>()
+        ..HoverTipFactory.FromAffliction<Frozen>()
     ];
 
-    private HashSet<Creature> _creatureList = new HashSet<Creature>();
-
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult _, ValueProp props, Creature? dealer, CardModel? __)
+    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (target == Owner && dealer != null && props.IsPoweredAttack() && !_creatureList.Contains(dealer))
+        if (player == Owner.Player)
         {
             Flash();
-            await PowerCmd.Apply<ChillPower>(choiceContext, dealer, Amount, Owner, null);
-            _creatureList.Add(dealer);
-        }
-    }
-
-    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
-    {
-        if (Owner.Side != side)
-        {
+            foreach (FrozenCardModel card in PileType.Hand.GetPile(Owner.Player).Cards.OfType<FrozenCardModel>())
+            {
+                await ShuyuMechanismCmd.UnfreezeCard(card);
+            }
+            await PlayerCmd.GainEnergy(Amount, Owner.Player);
             await PowerCmd.Remove(this);
         }
     }

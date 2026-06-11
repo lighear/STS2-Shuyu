@@ -1,8 +1,12 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.CardPools;
+using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -37,6 +41,18 @@ namespace Shuyu.Cards
         public override void AfterCreated()
         {
             base.AfterCreated();
+        }
+
+        public static async Task CreateInDrawPile(Player owner, int amount, ICombatState combatState)
+        {
+            List<EYun> list = new List<EYun>();
+            for (int i = 0; i < amount; i++)
+            {
+                var card = combatState.CreateCard<EYun>(owner);
+                list.Add(card);
+            }
+            var result = await CardPileCmd.AddGeneratedCardsToCombat(list, PileType.Draw, owner, CardPilePosition.Random);
+            CardCmd.PreviewCardPileAdd(result);
         }
     }
 }

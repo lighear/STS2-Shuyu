@@ -35,8 +35,6 @@ namespace Shuyu.Cards
             new DynamicVar("ExtraDamage", 4)
         ];
 
-        private decimal ExtraDamageFromFrozen;
-
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
@@ -51,18 +49,16 @@ namespace Shuyu.Cards
             DynamicVars["ExtraDamage"].UpgradeValueBy(2);
         }
 
-        public void FrostforgedEffect()
+        private decimal ExtraDamageFromFrozen;
+
+        public async Task FrostforgedEffect()
         {
             foreach (WuMingBingZhang item in base.Owner.PlayerCombatState!.AllCards.OfType<WuMingBingZhang>())
             {
-                item.BuffFromFrozen(DynamicVars["ExtraDamage"].BaseValue);
+                decimal extraDamage = DynamicVars["ExtraDamage"].BaseValue;
+                item.DynamicVars.Damage.BaseValue += extraDamage;
+                item.ExtraDamageFromFrozen += extraDamage;
             }
-        }
-
-        private void BuffFromFrozen(decimal extraDamage)
-        {
-            DynamicVars.Damage.BaseValue += extraDamage;
-            ExtraDamageFromFrozen += extraDamage;
         }
 
         protected override void AfterDowngraded()

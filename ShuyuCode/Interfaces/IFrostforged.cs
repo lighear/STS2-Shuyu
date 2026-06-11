@@ -2,6 +2,6 @@
 {
     public interface IFrostforged
     {
-        public void FrostforgedEffect();
+        public Task FrostforgedEffect();
     }
 }
