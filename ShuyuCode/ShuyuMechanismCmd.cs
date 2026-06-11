@@ -23,57 +23,46 @@ namespace Shuyu
 
         public static async Task FreezeCard(CardModel card)
         {
-            if (card.Affliction != null)
+            if (card == null)
             {
-                CardCmd.ClearAffliction(card);
+                return;
             }
-            await CardCmd.Afflict<Frozen>(card, 1);
-        }
-
-        public static bool FreezeCardInternal(CardModel card)
-        {
             var ips = card.CombatState?.IterateHookListeners().OfType<IOnFreezingCard>();
             if (ips != null)
             {
                 foreach (IOnFreezingCard ip in ips)
                 {
-                    ip.OnFreezingCard(card);
+                    await ip.OnFreezingCard(card);
                 }
             }
 
             if (card is IFrostforged frostforged)
             {
-                CardCmd.ClearAffliction(card);
-                frostforged.FrostforgedEffect();
-                return true;
+                await frostforged.FrostforgedEffect();
+                return;
             }
 
-            //FrozenCardModel frozenCard = (FrozenCardModel)ModelDb.Card<FrozenCardModel>().ToMutable();
             FrozenCardModel? frozenCard = card.CombatState?.CreateCard<FrozenCardModel>(card.Owner);
             if (frozenCard == null)
             {
-                return false;
+                return;
             }
             frozenCard.InitFrom(card);
 
-            Frozen frozenAffliction = (Frozen)ModelDb.Affliction<Frozen>().ToMutable();
-            frozenCard.AfflictInternal(frozenAffliction, 1);
-
             ReplaceCardModelInPile(card, frozenCard);
-            return true;
+            await CardCmd.Afflict<Frozen>(frozenCard, 1);
         }
 
-        public static bool UnfreezeCard(FrozenCardModel frozenCard)
+        public static async Task UnfreezeCard(FrozenCardModel frozenCard)
         {
             CardModel? original = frozenCard._visualCardModel;
             if (original == null)
             {
-                return false;
+                return;
             }
-            original.ClearAfflictionInternal();
 
+            CardCmd.ClearAffliction(frozenCard);
             ReplaceCardModelInPile(frozenCard, original);
-            return true;
         }
 
         public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool option = false)
@@ -104,7 +93,7 @@ namespace Shuyu
                     source: source);
             foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
             {
-                UnfreezeCard(card);
+                await UnfreezeCard(card);
             }
         }
 
@@ -121,7 +110,7 @@ namespace Shuyu
             {
                 if (card is FrozenCardModel frozenCard)
                 {
-                    UnfreezeCard(frozenCard);
+                    await UnfreezeCard(frozenCard);
                 }
                 else
                 {

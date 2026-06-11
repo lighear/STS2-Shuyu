@@ -51,12 +51,13 @@ namespace Shuyu.Cards
             DynamicVars["ExtraDamage"].UpgradeValueBy(2);
         }
 
-        public void FrostforgedEffect()
+        public Task FrostforgedEffect()
         {
             foreach (WuMingBingZhang item in base.Owner.PlayerCombatState!.AllCards.OfType<WuMingBingZhang>())
             {
                 item.BuffFromFrozen(DynamicVars["ExtraDamage"].BaseValue);
             }
+            return Task.CompletedTask;
         }
 
         private void BuffFromFrozen(decimal extraDamage)

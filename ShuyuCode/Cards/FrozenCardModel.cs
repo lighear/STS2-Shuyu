@@ -71,7 +71,7 @@ public sealed class FrozenCardModel : ModCardTemplate
             {
                 await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Max(EnergyCost.Canonical, 0), targets, this);
             }
-            ShuyuMechanismCmd.UnfreezeCard(this);
+            await ShuyuMechanismCmd.UnfreezeCard(this);
         }
     }
 }

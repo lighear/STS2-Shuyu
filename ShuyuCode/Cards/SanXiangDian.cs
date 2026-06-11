@@ -34,7 +34,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this, option: true);
+            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, null, option: true);
             await ShuyuMechanismCmd.ChooseFromHandAndUnfreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this, option: true);
         }
 

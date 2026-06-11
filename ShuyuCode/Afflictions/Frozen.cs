@@ -12,20 +12,5 @@ namespace Shuyu.Afflictions
     public class Frozen : ModAfflictionTemplate
     {
         public override bool CanAfflictUnplayableCards => true;
-
-        public override void AfterApplied()
-        {
-            base.AfterApplied();
-            ShuyuMechanismCmd.FreezeCardInternal(base.Card);
-        }
-
-        public override void BeforeRemoved()
-        {
-            base.BeforeRemoved();
-            if (base.Card is FrozenCardModel card)
-            {
-                ShuyuMechanismCmd.UnfreezeCard(card);
-            }
-        }
     }
 }
