@@ -12,11 +12,7 @@
   "dependencies": [
     {
       "id": "STS2-RitsuLib",
-<<<<<<< HEAD
       "version": "0.4.12"
-=======
-      "version": "0.4.11"
->>>>>>> cc94e1876f351189982e9429bbd1a9b068eef0ab
     }
   ]
 }
