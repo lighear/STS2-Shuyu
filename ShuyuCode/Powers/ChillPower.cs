@@ -5,7 +5,9 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -27,6 +29,19 @@ public class ChillPower : ModPowerTemplate
 
     private bool selfApplied;
 
+    private decimal ChillDamage
+    {
+        get
+        {
+            decimal damage = 6;
+            foreach (IModifyChillDamage ip in CombatState.IterateHookListeners().OfType<IModifyChillDamage>())
+            {
+                damage = ip.ModifyChillDamage(damage);
+            }
+            return damage;
+        }
+    }
+
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
         if (!participants.Contains(Owner))
@@ -34,7 +49,7 @@ public class ChillPower : ModPowerTemplate
             return;
         }
 
-        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
         if (Owner.IsAlive)
         {
             await PowerCmd.Remove(this);
@@ -57,12 +72,12 @@ public class ChillPower : ModPowerTemplate
                     return;
                 }
                 Flash();
-                await CreatureCmd.Damage(choiceContext, Owner, 12, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage * 2, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
             else
             {
                 Flash();
-                await CreatureCmd.Damage(choiceContext, Owner, 6, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
             }
         }
     }

@@ -1,21 +1,20 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Afflictions;
 using Shuyu.Characters;
-using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class JingDaiLiangJi : ModCardTemplate
+    public class BiYaoSheQi : ModCardTemplate
     {
-        public JingDaiLiangJi() : base(
+        public BiYaoSheQi() : base(
             baseCost: 1,
             CardType.Skill,
             CardRarity.Uncommon,
@@ -24,25 +23,19 @@ namespace Shuyu.Cards
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
-        protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            ..HoverTipFactory.FromAffliction<Frozen>()
-        ];
-
-        protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(1),
-            new EnergyVar(2)
-        ];
-
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this, optional: true);
-            await PowerCmd.Apply<JingDaiLiangJiPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this);
+            var cards = (await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), null, this));
+            foreach(var card in cards)
+            {
+                await PlayerCmd.GainEnergy(card.EnergyCost.Canonical, Owner);
+                await CardCmd.Discard(choiceContext, cards);
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Cards.UpgradeValueBy(1);
-            DynamicVars.Energy.UpgradeValueBy(1);
+            EnergyCost.UpgradeBy(-1);
         }
     }
 }

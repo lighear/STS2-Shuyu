@@ -1,6 +1,7 @@
 {
   "TO_FREEZE": "选择[blue]{Amount}[/blue]张牌来[gold]封冻[/gold]。",
   "TO_UNFREEZE": "选择[blue]{Amount}[/blue]张牌来[gold]解冻[/gold]。",
-  "TO_FREEZE_OPTION": "选择至多[blue]{MaxCount}[/blue]张牌来[gold]封冻[/gold]。",
-  "TO_UNFREEZE_OPTION": "选择至多[blue]{MaxCount}[/blue]张牌来[gold]解冻[/gold]。"
+  "TO_FREEZE_OPTIONAL": "选择至多[blue]{MaxCount}[/blue]张牌来[gold]封冻[/gold]。",
+  "TO_UNFREEZE_OPTIONAL": "选择至多[blue]{MaxCount}[/blue]张牌来[gold]解冻[/gold]。",
+  "CHANGE_FROZEN_STATE": "选择[blue]{Amount}[/blue]张牌来[gold]封冻[/gold]/[gold]解冻[/gold]。"
 }
