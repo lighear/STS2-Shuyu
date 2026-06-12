@@ -35,9 +35,9 @@ public class IceShieldPower : ModPowerTemplate
         }
     }
 
-    public override async Task BeforeSideTurnEndEarly(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (participants.Contains(Owner))
+        if (player == Owner.Player)
         {
             Flash();
             await CreatureCmd.GainBlock(Owner, Amount, ValueProp.Unpowered, null);

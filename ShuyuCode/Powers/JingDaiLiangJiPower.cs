@@ -37,7 +37,7 @@ public class JingDaiLiangJiPower : ModPowerTemplate
         if (player == Owner.Player)
         {
             Flash();
-            foreach (FrozenCardModel card in PileType.Hand.GetPile(Owner.Player).Cards.OfType<FrozenCardModel>())
+            foreach (FrozenCardModel card in PileType.Hand.GetPile(Owner.Player).Cards.OfType<FrozenCardModel>().ToList())
             {
                 await ShuyuMechanismCmd.UnfreezeCard(card);
             }
