@@ -5,21 +5,20 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class IceShieldPower : ModPowerTemplate
+public class LinZhiTongPower : ModPowerTemplate
 {
-    public override PowerType Type => PowerType.Buff;
+    public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
@@ -27,28 +26,33 @@ public class IceShieldPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
+    private bool selfApplied;
+
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        if (power == this)
+        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner && power is not TemporaryStrengthPower && power is not StrengthPower)
         {
-            await CreatureCmd.GainBlock(Owner, amount, ValueProp.Unpowered, null);
-        }
-    }
-
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
-    {
-        if (player == Owner.Player)
-        {
+            if (selfApplied)
+            {
+                selfApplied = false;
+                return;
+            }
             Flash();
-            await CreatureCmd.GainBlock(Owner, Amount, ValueProp.Unpowered, null);
+            await PowerCmd.Apply<LinZhiTongStrengthDownPower>(choiceContext, Owner, Amount, applier, null);
         }
     }
 
-    public override async Task BeforeDamageReceived(PlayerChoiceContext choiceContext, Creature target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        if (target == Owner && props.IsPoweredAttack() && amount > 0)
+        selfApplied = true;
+        return base.AfterApplied(applier, cardSource);
+    }
+
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    {
+        if (side == CombatSide.Player)
         {
-            await PowerCmd.Decrement(this);
+            await PowerCmd.Remove(this);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -18,12 +17,12 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SuiLieWuSheng : ModCardTemplate
+    public class WanNengShuShi : ModCardTemplate
     {
-        public SuiLieWuSheng() : base(
+        public WanNengShuShi() : base(
             baseCost: 1,
             CardType.Attack,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.AnyEnemy)
         { }
 
@@ -31,11 +30,11 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             ..HoverTipFactory.FromAffliction<Frozen>(),
-            HoverTipFactory.FromPower<FragilePower>()
+            HoverTipFactory.FromPower<ChillPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(9, ValueProp.Move)
+            new DamageVar(4, ValueProp.Move)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -49,30 +48,26 @@ namespace Shuyu.Cards
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: Owner,
-                    prefs: new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE"), 1),
-                    filter: c => c.IsFrozen(),
+                    prefs: new CardSelectorPrefs(new LocString("card_selection", "CHANGE_FROZEN_STATE"), 1),
+                    filter: null,
                     source: this);
-            foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
+            foreach (CardModel card in cards)
             {
-                int amount = card.EnergyCost.GetAmountToSpend() * 2;
-                if (base.IsUpgraded)
+                if (card is FrozenCardModel frozenCard)
                 {
-                    foreach (Creature enemy in CombatState!.HittableEnemies)
-                    {
-                        await PowerCmd.Apply<FragilePower>(choiceContext, enemy, amount, Owner.Creature, this);
-                    }
+                    await ShuyuMechanismCmd.UnfreezeCard(frozenCard);
                 }
                 else
                 {
-                    await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, amount, Owner.Creature, this);
+                    await ShuyuMechanismCmd.FreezeCard(card);
+                    await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
                 }
-                await ShuyuMechanismCmd.UnfreezeCard(card);
             }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(1);
+            DynamicVars.Damage.UpgradeValueBy(3);
         }
     }
 }

@@ -4,48 +4,46 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Afflictions;
 using Shuyu.Characters;
-using Shuyu.Interfaces;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SanXiangDian : ModCardTemplate, IFrostforged
+    public class BoXue : ModCardTemplate
     {
-        public SanXiangDian() : base(
+        public BoXue() : base(
             baseCost: 0,
             CardType.Skill,
-            CardRarity.Common,
-            TargetType.None)
+            CardRarity.Uncommon,
+            TargetType.AllEnemies)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            ..HoverTipFactory.FromAffliction<Frozen>()
+            HoverTipFactory.FromPower<ChillPower>()
+        ];
+
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Exhaust
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(2)
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, null, optional: true);
-            await ShuyuMechanismCmd.ChooseFromHandAndUnfreeze(choiceContext, Owner, DynamicVars.Cards.IntValue, this, optional: true);
+            await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
+            await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Cards.UpgradeValueBy(1);
-        }
-
-        public Task FrostforgedEffect()
-        {
-            return Task.CompletedTask;
+            AddKeyword(CardKeyword.Retain);
         }
     }
 }

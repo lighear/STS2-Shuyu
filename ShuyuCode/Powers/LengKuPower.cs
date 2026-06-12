@@ -1,16 +1,13 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
-using Shuyu.Cards;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -18,7 +15,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class JingDaiLiangJiPower : ModPowerTemplate
+public class LengKuPower : ModPowerTemplate, IModifyChillDamage
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -29,20 +26,32 @@ public class JingDaiLiangJiPower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        ..HoverTipFactory.FromAffliction<Frozen>()
+        HoverTipFactory.FromPower<ChillPower>()
     ];
 
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    public decimal ModifyChillDamage(decimal damage)
     {
-        if (player == Owner.Player)
+        return damage + Amount;
+    }
+
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        UpdateAllChillPowerDescriptions();
+        DisplayAmountChanged += UpdateAllChillPowerDescriptions;
+        return base.AfterApplied(applier, cardSource);
+    }
+
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        DisplayAmountChanged -= UpdateAllChillPowerDescriptions;
+        return base.AfterRemoved(oldOwner);
+    }
+
+    private void UpdateAllChillPowerDescriptions()
+    {
+        foreach (Creature creature in CombatState.Creatures)
         {
-            Flash();
-            foreach (FrozenCardModel card in PileType.Hand.GetPile(Owner.Player).Cards.OfType<FrozenCardModel>().ToList())
-            {
-                await ShuyuMechanismCmd.UnfreezeCard(card);
-            }
-            await PlayerCmd.GainEnergy(Amount, Owner.Player);
-            await PowerCmd.Remove(this);
+            creature.GetPower<ChillPower>()?.UpdateDescription();
         }
     }
 }

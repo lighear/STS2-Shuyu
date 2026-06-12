@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
@@ -12,36 +13,49 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SuiBingHuan : ModCardTemplate
+    public class NingShuangJuXiang : ModCardTemplate
     {
-        public SuiBingHuan() : base(
-            baseCost: 1,
+        public NingShuangJuXiang() : base(
+            baseCost: 3,
             CardType.Skill,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.Self)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceThornsPower>()
+            HoverTipFactory.FromPower<ChillPower>(),
+            HoverTipFactory.FromKeyword(CardKeyword.Retain)
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(7, ValueProp.Move),
-            new DynamicVar("IceThornsPower", 6)
+            new BlockVar(9, ValueProp.Move)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<NingShuangJuXiangPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
+        }
+
+        public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
+        {
+            if (card == this)
+            {
+                modifiedCost = originalCost - PileType.Hand.GetPile(Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain));
+                return true;
+            }
+            else
+            {
+                modifiedCost = originalCost;
+                return false;
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(2);
-            DynamicVars["IceThornsPower"].UpgradeValueBy(2);
+            DynamicVars.Block.UpgradeValueBy(3);
         }
     }
 }

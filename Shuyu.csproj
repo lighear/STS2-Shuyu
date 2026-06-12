@@ -61,7 +61,6 @@
         <None Include="project.godot" />
         <None Include="export_presets.cfg" />
         <None Include=".gitignore" />
-        <None Include="local.props.template" />
     </ItemGroup>
 
     <ItemGroup>

@@ -65,13 +65,13 @@ namespace Shuyu
             ReplaceCardModelInPile(frozenCard, original);
         }
 
-        public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool option = false)
+        public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool optional = false)
         {
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: option ? new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE_OPTION"), 0, selectCount)
+                    prefs: optional ? new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE_OPTIONAL"), 0, selectCount)
                                     : new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE"), selectCount),
                     filter: c => !c.IsFrozen(),
                     source: source);
@@ -81,13 +81,13 @@ namespace Shuyu
             }
         }
 
-        public static async Task ChooseFromHandAndUnfreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool option = false)
+        public static async Task ChooseFromHandAndUnfreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool optional = false)
         {
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: option ? new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE_OPTION"), 0, selectCount)
+                    prefs: optional ? new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE_OPTIONAL"), 0, selectCount)
                                     : new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE"), selectCount),
                     filter: c => c.IsFrozen(),
                     source: source);
@@ -103,7 +103,7 @@ namespace Shuyu
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: new CardSelectorPrefs(CardSelectorPrefs.TransformSelectionPrompt, selectCount),
+                    prefs: new CardSelectorPrefs(new LocString("card_selection", "CHANGE_FROZEN_STATE"), selectCount),
                     filter: null,
                     source: source);
             foreach (CardModel card in cards)
