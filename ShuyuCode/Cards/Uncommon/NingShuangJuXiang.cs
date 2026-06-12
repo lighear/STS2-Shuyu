@@ -39,15 +39,17 @@ namespace Shuyu.Cards
             await PowerCmd.Apply<NingShuangJuXiangPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
         }
 
-        private int _lastRetainCount;
-
-        public override async Task AfterCardChangedPiles(CardModel card, PileType oldPileType, AbstractModel? clonedBy)
+        public override bool TryModifyEnergyCostInCombat(CardModel card, decimal originalCost, out decimal modifiedCost)
         {
-            int newRetainCount = PileType.Hand.GetPile(Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain));
-            if(newRetainCount != _lastRetainCount)
+            if (card == this)
             {
-                _lastRetainCount = newRetainCount;
-                EnergyCost.SetCustomBaseCost(3 - newRetainCount);
+                modifiedCost = originalCost - PileType.Hand.GetPile(Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain));
+                return true;
+            }
+            else
+            {
+                modifiedCost = originalCost;
+                return false;
             }
         }
 

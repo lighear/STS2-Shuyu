@@ -47,7 +47,7 @@ namespace Shuyu.Cards
             if (cardModel != null)
             {
                 await CardPileCmd.Add(cardModel, PileType.Hand);
-                if (cardModel.EnergyCost.Canonical > Owner.PlayerCombatState!.Energy)
+                if (cardModel.EnergyCost.GetWithModifiers(CostModifiers.All) > Owner.PlayerCombatState!.Energy)
                 {
                     await ShuyuMechanismCmd.FreezeCard(cardModel);
                 }

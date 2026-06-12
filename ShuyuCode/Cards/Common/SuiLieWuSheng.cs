@@ -54,7 +54,7 @@ namespace Shuyu.Cards
                     source: this);
             foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
             {
-                int amount = card.EnergyCost.Canonical * 2;
+                int amount = card.EnergyCost.GetAmountToSpend() * 2;
                 if (base.IsUpgraded)
                 {
                     foreach (Creature enemy in CombatState!.HittableEnemies)

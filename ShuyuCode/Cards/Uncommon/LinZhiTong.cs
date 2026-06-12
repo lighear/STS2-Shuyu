@@ -1,58 +1,53 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using System.Linq.Expressions;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class HuanRaoDaJi : ModCardTemplate
+    public class LinZhiTong : ModCardTemplate
     {
-        public HuanRaoDaJi() : base(
+        public LinZhiTong() : base(
             baseCost: 1,
             CardType.Attack,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.AnyEnemy)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromKeyword(CardKeyword.Retain)
+
         ];
 
-        protected override HashSet<CardTag> CanonicalTags => [
-            CardTag.Strike
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Exhaust
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(8, ValueProp.Move),
-            new CalculationBaseVar(1),
-            new CalculationExtraVar(1),
-            new CalculatedVar("CalculatedHits").WithMultiplier(
-                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain)) / 2)
+            new DamageVar(6, ValueProp.Move),
+            new DynamicVar("EnemyStrengthLoss", 4)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
+            await PowerCmd.Apply<LinZhiTongPower>(choiceContext, cardPlay.Target!, DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(2);
+            DynamicVars["EnemyStrengthLoss"].UpgradeValueBy(2);
         }
     }
 }

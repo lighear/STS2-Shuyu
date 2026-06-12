@@ -33,4 +33,25 @@ public class LengKuPower : ModPowerTemplate, IModifyChillDamage
     {
         return damage + Amount;
     }
+
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        UpdateAllChillPowerDescriptions();
+        DisplayAmountChanged += UpdateAllChillPowerDescriptions;
+        return base.AfterApplied(applier, cardSource);
+    }
+
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        DisplayAmountChanged -= UpdateAllChillPowerDescriptions;
+        return base.AfterRemoved(oldOwner);
+    }
+
+    private void UpdateAllChillPowerDescriptions()
+    {
+        foreach (Creature creature in CombatState.Creatures)
+        {
+            creature.GetPower<ChillPower>()?.UpdateDescription();
+        }
+    }
 }

@@ -1,11 +1,12 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -27,8 +28,11 @@ public class ChillPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
-    private bool selfApplied;
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DamageVar(6, ValueProp.Unblockable | ValueProp.Unpowered)
+    ];
 
+    private bool selfApplied;
     private decimal ChillDamage
     {
         get
@@ -38,6 +42,7 @@ public class ChillPower : ModPowerTemplate
             {
                 damage = ip.ModifyChillDamage(damage);
             }
+            DynamicVars.Damage.BaseValue = damage;
             return damage;
         }
     }
@@ -85,6 +90,12 @@ public class ChillPower : ModPowerTemplate
     public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
         selfApplied = true;
+        UpdateDescription();
         return base.AfterApplied(applier, cardSource);
+    }
+
+    public void UpdateDescription()
+    {
+        DynamicVars.Damage.BaseValue = ChillDamage;
     }
 }

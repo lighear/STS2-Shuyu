@@ -103,7 +103,7 @@
     "SHUYU_CARD_MO_FA_LIAN_XIE.title":  "魔法连携",
     "SHUYU_CARD_MO_FA_LIAN_XIE.description":  "施加[gold]寒冷[/gold]时，抽{Cards:diff()}张牌。",
     "SHUYU_CARD_LUN_ZHUAN_YI_ZHEN.title":  "轮转易针",
-    "SHUYU_CARD_LUN_ZHUAN_YI_ZHEN.description":  "每回合开始时生成1张[gold]冰针[/gold]。",
+    "SHUYU_CARD_LUN_ZHUAN_YI_ZHEN.description":  "每回合开始时生成{Cards:diff()}张[gold]冰针[/gold]。",
     "SHUYU_CARD_HAN_XING_ZHUI_LUO.title":  "寒星坠落",
     "SHUYU_CARD_HAN_XING_ZHUI_LUO.description":  "对所有敌人造成{Damage:diff()}点伤害。\n丢弃2张[gold]手牌[/gold]。\n生成2张[gold]冰针[/gold]。",
     "SHUYU_CARD_JUAN_LIU.title":  "涓流",

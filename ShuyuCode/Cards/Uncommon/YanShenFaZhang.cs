@@ -27,7 +27,8 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new CalculationBaseVar(8),
             new ExtraDamageVar(1),
-            new CalculatedDamageVar(ValueProp.Move).WithMultiplier((_, _) => PileType.Hand.GetPile(Owner).Cards.Count)
+            new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
+                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c != card))
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
