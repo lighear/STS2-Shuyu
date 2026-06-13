@@ -12,38 +12,39 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SuiBingHuan : ModCardTemplate
+    public class BingWu : ModCardTemplate
     {
-        public SuiBingHuan() : base(
-            baseCost: 1,
+        public BingWu() : base(
+            baseCost: 2,
             CardType.Skill,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.Self)
         { }
-
-        public override bool GainsBlock => true;
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceThornsPower>()
+            HoverTipFactory.FromPower<IceShieldPower>()
+        ];
+
+        public override IEnumerable<CardKeyword> CanonicalKeywords => [
+            CardKeyword.Exhaust
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(7, ValueProp.Move),
-            new DynamicVar("IceThornsPower", 6)
+            new DynamicVar("IceShieldPower", 4),
+            new RepeatVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<BingWuPower>(choiceContext, Owner.Creature, DynamicVars.Repeat.BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(2);
-            DynamicVars["IceThornsPower"].UpgradeValueBy(2);
+            DynamicVars.Repeat.UpgradeValueBy(1);
         }
     }
 }

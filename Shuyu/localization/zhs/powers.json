@@ -53,7 +53,7 @@
   "SHUYU_POWER_LUN_ZHUAN_YI_ZHEN_POWER.smartDescription": "每回合开始时生成[blue]{Amount}[/blue]张[gold]冰针[/gold]。",
   "SHUYU_POWER_LUN_ZHUAN_YI_ZHEN_POWER.title": "每回合冰针",
   "SHUYU_POWER_SUI_JIA_QIANG_HUA_POWER.description": "敌人的[gold]易碎[/gold]达到5层时额外转化3层[gold]虚弱[/gold]并令其受到10点伤害。",
-  "SHUYU_POWER_SUI_JIA_QIANG_HUA_POWER.smartDescription": "敌人的[gold]易碎[/gold]达到5层时额外转化{WeakPower}层[gold]虚弱[/gold]并令其受到[blue]{Amount}[/blue]点伤害。",
+  "SHUYU_POWER_SUI_JIA_QIANG_HUA_POWER.smartDescription": "敌人的[gold]易碎[/gold]达到5层时额外转化3层[gold]虚弱[/gold]并令其受到[blue]{Amount}[/blue]点伤害。",
   "SHUYU_POWER_SUI_JIA_QIANG_HUA_POWER.title": "碎甲强化",
   "SHUYU_POWER_BING_WU_POWER.description": "本回合受到的前[blue]1[/blue]次攻击伤害变为0。",
   "SHUYU_POWER_BING_WU_POWER.smartDescription": "本回合受到的前[blue]{Amount}[/blue]次攻击伤害变为0。",

@@ -34,11 +34,20 @@ public class FragilePower : ModPowerTemplate
         new DynamicVar("DamageIncrease", 1.25m)
     ];
 
+    private int ExtraDamageWhenTransformation
+    {
+        get
+        {
+            IEnumerable<Creature> source = Owner.CombatState!.GetOpponentsOf(Owner).Where(c => c.IsAlive);
+            return source.Sum(c => c.GetPowerAmount<SuiJiaQiangHuaPower>());
+        }
+    }
+
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (target != Owner || !props.IsPoweredAttack() || target.GetPower<VulnerablePower>() != null)
         {
-            return 1m;
+            return 1;
         }
         return DynamicVars["DamageIncrease"].BaseValue;
     }
@@ -48,8 +57,20 @@ public class FragilePower : ModPowerTemplate
         if (power == this && Amount >= 5)
         {
             Flash();
-            await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, Applier, null);
+            await TransformationEffect(choiceContext);
             await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
+        }
+    }
+
+    private async Task TransformationEffect(PlayerChoiceContext choiceContext)
+    {
+        await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, Applier, null);
+
+        int damage = ExtraDamageWhenTransformation;
+        if (damage > 0)
+        {
+            await PowerCmd.Apply<WeakPower>(choiceContext, Owner, 3, Applier, null);
+            await CreatureCmd.Damage(choiceContext, Owner, damage, ValueProp.Unpowered, Applier, null);
         }
     }
 }

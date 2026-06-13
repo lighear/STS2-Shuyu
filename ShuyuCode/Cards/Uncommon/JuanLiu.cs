@@ -1,38 +1,43 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Afflictions;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class LengFei : ModCardTemplate
+    public class JuanLiu : ModCardTemplate
     {
-        public LengFei() : base(
-            baseCost: 1,
+        public JuanLiu() : base(
+            baseCost: 0,
             CardType.Attack,
-            CardRarity.Common,
+            CardRarity.Uncommon,
             TargetType.AnyEnemy)
         { }
+
+        protected override bool ShouldGlowGoldInternal => ShouldDraw();
+
+        private bool ShouldDraw()
+        {
+            return PileType.Hand.GetPile(Owner).Cards.Count(c => c != this) >= 7;
+        }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            ..HoverTipFactory.FromAffliction<Frozen>()
+            HoverTipFactory.FromPower<FragilePower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(10, ValueProp.Move),
-            new CardsVar(1),
-            new EnergyVar(1)
+            new DamageVar(3, ValueProp.Move),
+            new DynamicVar("FragilePower", 1),
+            new CardsVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -41,28 +46,18 @@ namespace Shuyu.Cards
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
+            await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
 
-            CardSelectorPrefs prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, DynamicVars.Cards.IntValue)
+            if (ShouldDraw())
             {
-                ShouldGlowGold = card => card.IsFrozen()
-            };
-            CardModel? cardModel = (await CardSelectCmd
-                .FromHand(choiceContext, Owner, prefs, null, this))
-                .FirstOrDefault();
-            if (cardModel != null)
-            {
-                await CardCmd.Exhaust(choiceContext, cardModel);
-                if (cardModel.IsFrozen())
-                {
-                    await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
-
-                }
+                await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
             }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(3);
+            DynamicVars.Damage.UpgradeValueBy(1);
+            DynamicVars["FragilePower"].UpgradeValueBy(1);
         }
     }
 }
