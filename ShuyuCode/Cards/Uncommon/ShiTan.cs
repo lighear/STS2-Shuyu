@@ -1,9 +1,9 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Potions;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
@@ -14,11 +14,11 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class QingShen : ModCardTemplate
+    public class ShiTan : ModCardTemplate
     {
-        public QingShen() : base(
-            baseCost: 0,
-            CardType.Skill,
+        public ShiTan() : base(
+            baseCost: 1,
+            CardType.Power,
             CardRarity.Uncommon,
             TargetType.Self)
         { }
@@ -26,26 +26,24 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<StrengthPower>(),
-            HoverTipFactory.FromPower<DexterityPower>()
+            HoverTipFactory.FromPower<StrengthPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<StrengthPower>(3),
-            new PowerVar<DexterityPower>(3)
+            new BlockVar(12, ValueProp.Unpowered),
+            new PowerVar<StrengthPower>(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<QingShenStrengthUpPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue, Owner.Creature, this);
-            await PowerCmd.Apply<QingShenDexterityUpPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue, Owner.Creature, this);
-            await CardCmd.Discard(choiceContext, await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), null, this));
+            ShiTanPower? power = await PowerCmd.Apply<ShiTanPower>(choiceContext, Owner.Creature, DynamicVars.Block.BaseValue, Owner.Creature, this);
+            power?.AddStrenthPowerAmount(DynamicVars.Strength.BaseValue);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Strength.UpgradeValueBy(2);
-            DynamicVars.Dexterity.UpgradeValueBy(2);
+            DynamicVars.Block.UpgradeValueBy(2);
+            DynamicVars.Strength.UpgradeValueBy(1);
         }
     }
 }

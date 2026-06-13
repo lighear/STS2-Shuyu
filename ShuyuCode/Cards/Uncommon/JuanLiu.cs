@@ -36,7 +36,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(3, ValueProp.Move),
-            new DynamicVar("FragilePower", 1),
+            new PowerVar<FragilePower>(1),
             new CardsVar(1)
         ];
 

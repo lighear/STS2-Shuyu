@@ -32,7 +32,28 @@ public class ChillPower : ModPowerTemplate
         new DamageVar(6, ValueProp.Unblockable | ValueProp.Unpowered)
     ];
 
-    private bool selfApplied;
+    private class Data
+    {
+        public bool selfApplied;
+    }
+
+    private bool SelfApplied
+    {
+        get
+        {
+            return GetInternalData<Data>().selfApplied;
+        }
+        set
+        {
+            GetInternalData<Data>().selfApplied = value;
+        }
+    }
+
+    protected override object? InitInternalData()
+    {
+        return new Data() { selfApplied = false };
+    }
+
     private decimal ChillDamage
     {
         get
@@ -71,9 +92,9 @@ public class ChillPower : ModPowerTemplate
         {
             if (power is ChillPower)
             {
-                if (selfApplied)
+                if (SelfApplied)
                 {
-                    selfApplied = false;
+                    SelfApplied = false;
                     return;
                 }
                 Flash();
@@ -89,7 +110,7 @@ public class ChillPower : ModPowerTemplate
 
     public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        selfApplied = true;
+        SelfApplied = true;
         UpdateDescription();
         return base.AfterApplied(applier, cardSource);
     }

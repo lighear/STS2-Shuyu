@@ -1,15 +1,11 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -26,15 +22,39 @@ public class LinZhiTongPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
-    private bool selfApplied;
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromPower<StrengthPower>()
+    ];
+
+    private class Data
+    {
+        public bool selfApplied;
+    }
+
+    private bool SelfApplied
+    {
+        get
+        {
+            return GetInternalData<Data>().selfApplied;
+        }
+        set
+        {
+            GetInternalData<Data>().selfApplied = value;
+        }
+    }
+
+    protected override object? InitInternalData()
+    {
+        return new Data() { selfApplied = false };
+    }
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
         if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner && power is not TemporaryStrengthPower && power is not StrengthPower)
         {
-            if (selfApplied)
+            if (SelfApplied)
             {
-                selfApplied = false;
+                SelfApplied = false;
                 return;
             }
             Flash();
@@ -44,7 +64,7 @@ public class LinZhiTongPower : ModPowerTemplate
 
     public override Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        selfApplied = true;
+        SelfApplied = true;
         return base.AfterApplied(applier, cardSource);
     }
 

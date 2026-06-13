@@ -35,8 +35,8 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(11, ValueProp.Move),
             new BlockVar(11, ValueProp.Move),
-            new DynamicVar("WeakPower", 1),
-            new DynamicVar("FragilePower", 1),
+            new PowerVar<WeakPower>(1),
+            new PowerVar<FragilePower>(1),
             new CardsVar(1)
         ];
 
@@ -47,7 +47,7 @@ namespace Shuyu.Cards
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
-            await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, DynamicVars.Weak.BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
             await BingZhen.CreateInHand(Owner, DynamicVars.Cards.IntValue, CombatState!, base.IsUpgraded);
         }

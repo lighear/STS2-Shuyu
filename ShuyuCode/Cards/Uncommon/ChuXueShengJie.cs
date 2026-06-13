@@ -1,5 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -12,17 +13,16 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class JiHanLiChang : ModCardTemplate
+    public class ChuXueShengJie : ModCardTemplate
     {
-        public JiHanLiChang() : base(
-            baseCost: 0,
-            CardType.Skill,
+        public ChuXueShengJie() : base(
+            baseCost: 3,
+            CardType.Power,
             CardRarity.Uncommon,
-            TargetType.Self)
+            TargetType.AllAllies)
         { }
 
-        protected override bool HasEnergyCostX => true;
-        public override bool GainsBlock => true;
+        public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
@@ -31,21 +31,24 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(3, ValueProp.Move),
-            new PowerVar<IceShieldPower>(3)
+            new PowerVar<IceShieldPower>(8),
+            new HealVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            int count = ResolveEnergyXValue();
-            await CreatureCmd.GainBlock(Owner.Creature, new BlockVar(DynamicVars.Block.BaseValue * count, ValueProp.Move), cardPlay);
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue * count, Owner.Creature, this);
+            IEnumerable<Creature> enumerable = CombatState!.GetTeammatesOf(Owner.Creature).Where(c => c.IsAlive && c.IsPlayer);
+            foreach (Creature creature in enumerable)
+            {
+                await PowerCmd.Apply<IceShieldPower>(choiceContext, creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
+                await PowerCmd.Apply<ChuXueShengJiePower>(choiceContext, creature, DynamicVars.Heal.BaseValue, Owner.Creature, this);
+            }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(1);
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
+            DynamicVars["IceShieldPower"].UpgradeValueBy(2);
+            DynamicVars.Heal.UpgradeValueBy(2);
         }
     }
 }

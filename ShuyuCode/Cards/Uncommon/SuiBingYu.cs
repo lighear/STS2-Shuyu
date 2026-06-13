@@ -1,8 +1,10 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
@@ -12,16 +14,14 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SuiBingHuan : ModCardTemplate
+    public class SuiBingYu : ModCardTemplate
     {
-        public SuiBingHuan() : base(
+        public SuiBingYu() : base(
             baseCost: 1,
-            CardType.Skill,
-            CardRarity.Common,
-            TargetType.Self)
+            CardType.Attack,
+            CardRarity.Uncommon,
+            TargetType.None)
         { }
-
-        public override bool GainsBlock => true;
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
@@ -30,20 +30,23 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(7, ValueProp.Move),
-            new PowerVar<IceThornsPower>(6)
+            new PowerVar<IceThornsPower>(2),
+            new RepeatVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
             await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
+            await DamageCmd.Attack(Owner.Creature.GetPowerAmount<IceThornsPower>())
+                .WithHitCount(DynamicVars.Repeat.IntValue)
+                .FromCard(this)
+                .TargetingRandomOpponents(CombatState!)
+                .Execute(choiceContext);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(2);
-            DynamicVars["IceThornsPower"].UpgradeValueBy(2);
+            DynamicVars.Repeat.UpgradeValueBy(1);
         }
     }
 }

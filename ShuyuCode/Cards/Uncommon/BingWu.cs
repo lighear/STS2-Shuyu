@@ -32,7 +32,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DynamicVar("IceShieldPower", 4),
+            new PowerVar<IceShieldPower>(4),
             new RepeatVar(1)
         ];
 

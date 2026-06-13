@@ -1,9 +1,11 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
@@ -13,19 +15,19 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class NingBingHuDun : ModCardTemplate
+    public class JieJingCuiHua : ModCardTemplate
     {
-        public NingBingHuDun() : base(
+        public JieJingCuiHua() : base(
             baseCost: 1,
             CardType.Skill,
-            CardRarity.Common,
-            TargetType.Self)
+            CardRarity.Uncommon,
+            TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceShieldPower>()
+            HoverTipFactory.FromPower<IceThornsPower>()
         ];
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
@@ -33,24 +35,26 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(4),
-            new DynamicVar("ExtraIceShieldPower", 3)
+            new RepeatVar(2),
+            new PowerVar<IceThornsPower>(4),
+            new DamageVar(1, ValueProp.Move | ValueProp.Unpowered)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            decimal amount = DynamicVars["IceShieldPower"].BaseValue;
-            if (!Owner.Creature.HasPower<IceShieldPower>())
+            int amount = Owner.Creature.GetPowerAmount<IceThornsPower>() * (DynamicVars.Repeat.IntValue - 1);
+            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, amount, Owner.Creature, this);
+            int damage = amount / DynamicVars["IceThornsPower"].IntValue * DynamicVars.Damage.IntValue;
+            if (damage > 0)
             {
-                amount += DynamicVars["ExtraIceShieldPower"].BaseValue;
+                await CreatureCmd.Damage(choiceContext, Owner.Creature, damage, ValueProp.Move | ValueProp.Unpowered, this);
             }
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, amount, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
-            DynamicVars["ExtraIceShieldPower"].UpgradeValueBy(1);
+            DynamicVars.Repeat.UpgradeValueBy(1);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(4);
         }
     }
 }

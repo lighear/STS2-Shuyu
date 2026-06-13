@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Badges;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
@@ -34,11 +35,33 @@ public class IceThornsPower : ModPowerTemplate
             if (dealer != null)
             {
                 Flash();
-                await CreatureCmd.Damage(choiceContext, dealer, Amount, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner, null);
+                await ReflectionEffect(choiceContext, dealer);
             }
             if (amount > 0)
             {
                 await PowerCmd.Decrement(this);
+            }
+        }
+    }
+
+    private async Task ReflectionEffect(PlayerChoiceContext choiceContext, Creature target)
+    {
+        int damage = Amount;
+        int extraDamagePercent = Owner.GetPowerAmount<PoPianPower>();
+        if (target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>())
+        {
+            damage = (int)(damage * (1 + extraDamagePercent / 100m));
+        }
+        IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner, null);
+
+        if (extraDamagePercent > 0)
+        {
+            foreach (DamageResult result in results)
+            {
+                if (result.TotalDamage > 0)
+                {
+                    await PowerCmd.Apply<FragilePower>(choiceContext, result.Receiver, 1, Owner, null);
+                }
             }
         }
     }

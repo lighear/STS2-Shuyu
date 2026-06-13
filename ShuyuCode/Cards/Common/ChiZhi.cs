@@ -34,13 +34,13 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new BlockVar(4, ValueProp.Move),
-            new DynamicVar("WeakPower", 1)
+            new PowerVar<WeakPower>(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await PowerCmd.Apply<WeakPower>(choiceContext, CombatState!.HittableEnemies.Where(e => e.HasPower<ChillPower>()), DynamicVars["WeakPower"].BaseValue, Owner.Creature, null);
+            await PowerCmd.Apply<WeakPower>(choiceContext, CombatState!.HittableEnemies.Where(e => e.HasPower<ChillPower>()), DynamicVars.Weak.BaseValue, Owner.Creature, null);
         }
 
         protected override void OnUpgrade()

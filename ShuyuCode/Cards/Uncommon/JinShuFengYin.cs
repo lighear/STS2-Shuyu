@@ -43,16 +43,16 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DynamicVar("EnemyStrengthLoss", 24),
-            new DynamicVar("WeakPower", 5),
-            new DynamicVar("VulnerablePower", 5)
+            new PowerVar<WeakPower>(5),
+            new PowerVar<VulnerablePower>(5)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
             await PowerCmd.Apply<JinShuFengYinStrengthDownPower>(choiceContext, cardPlay.Target!, DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);
-            await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, DynamicVars["WeakPower"].BaseValue, Owner.Creature, this);
-            await PowerCmd.Apply<VulnerablePower>(choiceContext, cardPlay.Target!, DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, DynamicVars.Weak.BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<VulnerablePower>(choiceContext, cardPlay.Target!, DynamicVars.Vulnerable.BaseValue, Owner.Creature, this);
             await EYun.CreateInDrawPile(Owner, 1, CombatState!);
         }
 
