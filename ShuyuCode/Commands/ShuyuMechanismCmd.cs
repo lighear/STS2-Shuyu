@@ -15,6 +15,7 @@ using Shuyu.Afflictions;
 using Shuyu.Cards;
 using Shuyu.Interfaces;
 using Shuyu.Powers;
+using Shuyu.Characters;
 
 namespace Shuyu.Commands
 {
@@ -37,10 +38,10 @@ namespace Shuyu.Commands
                 }
             }
 
-            if (card is IFrostforged frostforged)
+            if (card is IFrostforged frostforged && card.Keywords.Contains(ShuyuKeywords.Frostforged))
             {
                 int count = 1;
-                HuiXiangYongChangPower? power= card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
+                HuiXiangYongChangPower? power = card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
                 if (power != null)
                 {
                     power.Flash();
