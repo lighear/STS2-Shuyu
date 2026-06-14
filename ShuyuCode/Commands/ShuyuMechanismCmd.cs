@@ -14,6 +14,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Cards;
 using Shuyu.Interfaces;
+using Shuyu.Powers;
 
 namespace Shuyu.Commands
 {
@@ -38,7 +39,17 @@ namespace Shuyu.Commands
 
             if (card is IFrostforged frostforged)
             {
-                await frostforged.FrostforgedEffect();
+                int count = 1;
+                HuiXiangYongChangPower? power= card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
+                if (power != null)
+                {
+                    power.Flash();
+                    count += power.Amount;
+                }
+                for (int i = 0; i < count; i++)
+                {
+                    await frostforged.FrostforgedEffect();
+                }
                 return;
             }
 

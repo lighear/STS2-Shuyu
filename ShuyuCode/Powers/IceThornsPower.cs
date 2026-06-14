@@ -41,9 +41,10 @@ public class IceThornsPower : ModPowerTemplate
     {
         int damage = Amount;
         PoPianPower? power = Owner.GetPower<PoPianPower>();
-        if (power != null && target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>())
+        if (power != null && (target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>()))
         {
-            damage = (int)(damage * (1 + power!.Amount / 100m));
+            power.Flash();
+            damage = (int)(damage * (1 + power.Amount / 100m));
         }
         IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner, null);
 
