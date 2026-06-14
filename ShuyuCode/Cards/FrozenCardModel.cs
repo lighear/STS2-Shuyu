@@ -1,8 +1,11 @@
 ﻿using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Commands;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -64,13 +67,20 @@ public sealed class FrozenCardModel : ModCardTemplate
         CardKeyword.Unplayable
     ];
 
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new CalculationBaseVar(5),
+        new ExtraDamageVar(5),
+        new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
+            (card, _) => Math.Max(card.EnergyCost.GetAmountToSpend(), 0))
+    ];
+
     public override async Task AfterCardDiscarded(PlayerChoiceContext choiceContext, CardModel card)
     {
         if (card == this)
         {
             foreach (IOnFrozenCardDiscarded ip in CombatState!.IterateHookListeners().OfType<IOnFrozenCardDiscarded>())
             {
-                await ip.OnFrozenCardDiscarded(choiceContext, this);
+                await ip.OnFrozenCardDiscarded(choiceContext, this, Owner);
             }
 
             for (int i = 0; i < this.count; i++)

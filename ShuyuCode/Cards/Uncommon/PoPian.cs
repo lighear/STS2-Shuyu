@@ -32,17 +32,18 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new PowerVar<FragilePower>(1),
-            new DynamicVar("Boost", 1.25m)
+            new PowerVar<PoPianPower>(25)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<PoPianPower>(choiceContext, Owner.Creature, DynamicVars["Boost"].BaseValue * 100 - 100, Owner.Creature, this);
+            PoPianPower? power = await PowerCmd.Apply<PoPianPower>(choiceContext, Owner.Creature, DynamicVars["PoPianPower"].BaseValue, Owner.Creature, this);
+            power?.AddFragilePowerAmount(DynamicVars["FragilePower"].BaseValue);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["Boost"].UpgradeValueBy(0.25m);
+            DynamicVars["PoPianPower"].UpgradeValueBy(25);
         }
     }
 }

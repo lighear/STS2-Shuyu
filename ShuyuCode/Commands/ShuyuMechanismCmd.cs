@@ -15,7 +15,7 @@ using Shuyu.Afflictions;
 using Shuyu.Cards;
 using Shuyu.Interfaces;
 
-namespace Shuyu
+namespace Shuyu.Commands
 {
     public static class ShuyuMechanismCmd
     {

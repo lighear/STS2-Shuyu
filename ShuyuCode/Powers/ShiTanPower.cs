@@ -9,13 +9,14 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class ShiTanPower : ModPowerTemplate
+public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProvider
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -81,5 +82,14 @@ public class ShiTanPower : ModPowerTemplate
     public void AddStrenthPowerAmount(decimal amount)
     {
         DynamicVars.Strength.BaseValue += amount;
+        InvokeDisplayAmountChanged();
+    }
+
+    public IReadOnlyList<ExtraIconAmountLabelSpec> GetPowerExtraIconAmountLabelSpecs()
+    {
+        return
+        [
+            ExtraIconAmountLabelSpec.Plain(ExtraIconAmountLabelCorner.TopRight, DynamicVars.Strength.BaseValue.ToString())
+        ];
     }
 }

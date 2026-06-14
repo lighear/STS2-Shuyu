@@ -35,14 +35,14 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new RepeatVar(2),
+            new DynamicVar("Multiple", 2),
             new PowerVar<IceThornsPower>(4),
             new DamageVar(1, ValueProp.Move | ValueProp.Unpowered)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            int amount = Owner.Creature.GetPowerAmount<IceThornsPower>() * (DynamicVars.Repeat.IntValue - 1);
+            int amount = Owner.Creature.GetPowerAmount<IceThornsPower>() * (DynamicVars["Multiple"].IntValue - 1);
             await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, amount, Owner.Creature, this);
             int damage = amount / DynamicVars["IceThornsPower"].IntValue * DynamicVars.Damage.IntValue;
             if (damage > 0)
@@ -53,7 +53,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Repeat.UpgradeValueBy(1);
+            DynamicVars["Multiple"].UpgradeValueBy(1);
             DynamicVars["IceThornsPower"].UpgradeValueBy(4);
         }
     }

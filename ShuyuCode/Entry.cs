@@ -1,8 +1,13 @@
-using System.Reflection;
+using Godot;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using Shuyu.Cards;
+using Shuyu.Patches;
 using STS2RitsuLib;
 using STS2RitsuLib.Interop;
+using STS2RitsuLib.Patching.Core;
+using STS2RitsuLib.Scaffolding.Cards.HandOutline;
+using System.Reflection;
 using Logger = MegaCrit.Sts2.Core.Logging.Logger;
 
 namespace Shuyu;
@@ -32,6 +37,20 @@ public partial class Entry
         // 自动注册扫描会读取当前程序集里的 RegisterCard/RegisterRelic 等 attribute。
         // 新增内容类后，只要 attribute 写对，通常不需要在入口里手动逐个注册。
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
+
+        ModCardHandOutlineRegistry.Register<FrozenCardModel>(ModCardHandOutlineRules.Fixed(
+            when: _ => true,
+            color: Colors.Blue,
+            visibleWhenUnplayable: true
+        ));
+
+        ModPatcher patcher = RitsuLibFramework.CreatePatcher(ModId, "core-patches");
+        patcher.RegisterPatch<CardDescriptionPatch>();
+        patcher.RegisterPatches<HookHandFullPatchSet>();
+        if (!patcher.PatchAll())
+        {
+            throw new InvalidOperationException("Critical patches failed.");
+        }
 
         Logger.Info("Shuyu initialized.");
     }
