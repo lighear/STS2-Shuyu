@@ -5,6 +5,7 @@ using Shuyu.Cards;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
+using System.Runtime.CompilerServices;
 
 namespace Shuyu.Afflictions
 {
@@ -12,5 +13,6 @@ namespace Shuyu.Afflictions
     public class Frozen : ModAfflictionTemplate
     {
         public override bool CanAfflictUnplayableCards => true;
+        public override AfflictionAssetProfile AssetProfile => new(OverlayScenePath: $"{Entry.ResPath}/scenes/afflictions/{GetType().Name}.tscn");
     }
 }

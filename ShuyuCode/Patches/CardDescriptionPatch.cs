@@ -17,7 +17,7 @@ namespace Shuyu.Patches
     public class CardDescriptionPatch : IPatchMethod
     {
         public static string PatchId => "shuyu_card_description_patch";
-        public static string Description => "修改封冻牌的卡牌描述";
+        public static string Description => "修改封冻牌的卡面描述";
         public static bool IsCritical => false;
 
         public static ModPatchTarget[] GetTargets() => [
@@ -30,7 +30,7 @@ namespace Shuyu.Patches
         {
             if (__instance is FrozenCardModel frozenCard)
             {
-                __result = $"[color=gray]{frozenCard._visualCardModel?.GetDescriptionForPile(PileType.Deck)}[/color]\n{__result}";
+                __result = $"{__result}\n[color=gray]{frozenCard._visualCardModel?.GetDescriptionForPile(PileType.Deck)}[/color]";
             }
         }
     }

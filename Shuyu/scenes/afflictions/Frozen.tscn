@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb1eqqro7o6l1"]
+
+[ext_resource type="Texture2D" uid="uid://cmp6uhabldshr" path="res://Shuyu/assets/ui_card_mask.png" id="1_w8yx7"]
+[ext_resource type="Texture2D" uid="uid://bfx01mhnfaxm5" path="res://Shuyu/assets/afflictions/frozen.png" id="2_dcd4j"]
+
+[node name="Frozen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="vfx_affliction_frozen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -211.0
+offset_right = 150.0
+offset_bottom = 211.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="card_mask" type="TextureRect" parent="vfx_affliction_frozen"]
+clip_children = 1
+custom_minimum_size = Vector2(300, 422)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_w8yx7")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="border" type="TextureRect" parent="vfx_affliction_frozen/card_mask"]
+custom_minimum_size = Vector2(300, 422)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_dcd4j")
+expand_mode = 1
