@@ -1,56 +1,58 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Afflictions;
 using Shuyu.Characters;
-using Shuyu.Commands;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class ShuiJingQiu : ModCardTemplate
+    public class HongNi : ModCardTemplate
     {
-        public ShuiJingQiu() : base(
-            baseCost: 0,
-            CardType.Skill,
+        public HongNi() : base(
+            baseCost: 2,
+            CardType.Attack,
             CardRarity.Rare,
-            TargetType.None)
+            TargetType.AllEnemies)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
-
-        protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            ..HoverTipFactory.FromAffliction<Frozen>()
-        ];
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
             CardKeyword.Exhaust
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(2)
+            new DamageVar(11, ValueProp.Move)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            IEnumerable<CardModel> cards = await CardSelectCmd.FromCombatPile(choiceContext, PileType.Draw.GetPile(Owner), Owner, new CardSelectorPrefs(SelectionScreenPrompt, 0, DynamicVars.Cards.IntValue));
-            await CardPileCmd.Add(cards, PileType.Hand);
-            foreach (CardModel card in cards)
+            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                .FromCard(this)
+                .TargetingAllOpponents(CombatState!)
+                .Execute(choiceContext);
+
+            foreach (Creature enemy in CombatState!.HittableEnemies)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                List<PowerModel> debuffs = enemy.Powers.Where(p => p.TypeForCurrentAmount == PowerType.Debuff).ToList();
+                foreach (PowerModel debuff in debuffs)
+                {
+                    await PowerCmd.Apply(choiceContext, debuff, enemy, debuff.Amount, Owner.Creature, this);
+                }
             }
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Cards.UpgradeValueBy(1);
+            DynamicVars.Damage.UpgradeValueBy(5);
         }
     }
 }

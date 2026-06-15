@@ -25,7 +25,7 @@ namespace Shuyu.Commands
 
         public static async Task FreezeCard(CardModel card)
         {
-            if (card == null)
+            if (card == null || card.IsFrozen())
             {
                 return;
             }
@@ -38,11 +38,11 @@ namespace Shuyu.Commands
                 }
             }
 
-            if (card is IFrostforged frostforged && card.Keywords.Contains(ShuyuKeywords.Frostforged))
+            if (card is IFrostforged frostforged)
             {
                 int count = 1;
                 HuiXiangYongChangPower? power = card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
-                if (power != null)
+                if (power != null && card.Keywords.Contains(ShuyuKeywords.Frostforged))
                 {
                     power.Flash();
                     count += power.Amount;
@@ -75,6 +75,15 @@ namespace Shuyu.Commands
 
             CardCmd.ClearAffliction(frozenCard);
             ReplaceCardModelInPile(frozenCard, original);
+
+            var ips = original.CombatState?.IterateHookListeners().OfType<IAfterUnfreezingCard>();
+            if (ips != null)
+            {
+                foreach (IAfterUnfreezingCard ip in ips)
+                {
+                    await ip.AfterUnfreezingCard(original);
+                }
+            }
         }
 
         public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool optional = false)
