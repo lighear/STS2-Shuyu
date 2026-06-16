@@ -7,7 +7,7 @@ namespace Shuyu.Characters;
 public sealed class ShuyuCardPool : TypeListCardPoolModel
 {
     private static readonly Material? PoolFrameTintMaterial =
-        MaterialUtils.CreateRgbShaderMaterial(0.42f, 0.65f, 0.72f);
+        MaterialUtils.CreateHsvShaderMaterial(0.9f, 0.36f, 2f);
 
     // Title 和 EnergyColorName 是池子的稳定标识，不是玩家看到的角色名。
     // 自定义角色卡、遗物、药水池保持同一个 EnergyColorName，方便实验室和文本统一读取能量图标。

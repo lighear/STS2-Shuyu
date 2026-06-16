@@ -10,7 +10,7 @@ namespace Shuyu.Characters;
 [RegisterCharacter]
 public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRelicPool, ShuyuPotionPool>
 {
-    public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
+    public static readonly Color ThemeColor = new(0.9f, 0.36f, 2f);
 
     private const string SceneRoot = $"{Entry.ResPath}/scenes/characters";
     private const string ImageRoot = $"{Entry.ResPath}/images/characters";
