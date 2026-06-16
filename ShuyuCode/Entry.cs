@@ -1,8 +1,11 @@
 using Godot;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Relics;
 using Shuyu.Cards;
 using Shuyu.Patches;
+using Shuyu.Relics;
 using STS2RitsuLib;
 using STS2RitsuLib.Interop;
 using STS2RitsuLib.Patching.Core;
@@ -46,6 +49,9 @@ public partial class Entry
         {
             throw new InvalidOperationException("Critical patches failed.");
         }
+
+        RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BingShuangChongJi, JiBingFengBao>();
+        RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<BingLengZhiHui, JiHanZhiHui>();
 
         Logger.Info("Shuyu initialized.");
     }
