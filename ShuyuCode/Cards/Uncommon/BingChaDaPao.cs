@@ -16,7 +16,7 @@ namespace Shuyu.Cards
     public class BingChaDaPao : ModCardTemplate, IFrostforged
     {
         public BingChaDaPao() : base(
-            baseCost: 1,
+            baseCost: 3,
             CardType.Attack,
             CardRarity.Uncommon,
             TargetType.AllEnemies)
@@ -34,10 +34,10 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(4, ValueProp.Move),
-            new PowerVar<FragilePower>(1),
+            new DamageVar(10, ValueProp.Move),
+            new PowerVar<FragilePower>(2),
             new RepeatVar(2),
-            new DynamicVar("ExtraDamage", 2)
+            new DynamicVar("ExtraDamage", 3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -61,7 +61,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(2);
+            DynamicVars.Damage.UpgradeValueBy(3);
         }
 
         private decimal ExtraDamageFromFrozen;
