@@ -36,7 +36,7 @@ public class BingQiMengJiPower : ModPowerTemplate
             && card.Keywords.Contains(ShuyuKeywords.Frostforged)
             && (card.Pile?.Type == PileType.Hand || card.Pile?.Type == PileType.Play))
         {
-            modifiedCost = default(decimal);
+            modifiedCost = 0;
             return true;
         }
         else

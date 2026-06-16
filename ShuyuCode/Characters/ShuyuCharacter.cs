@@ -28,7 +28,7 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     public override Color MapDrawingColor => ThemeColor;
 
     // 人物性别（男女中立）。
-    public override CharacterGender Gender => CharacterGender.Neutral;
+    public override CharacterGender Gender => CharacterGender.Feminine;
 
     // 初始血量和金币。
     public override int StartingHp => 75;

@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Relics;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -41,6 +42,11 @@ namespace Shuyu.Cards
         public override void AfterCreated()
         {
             base.AfterCreated();
+            if (Owner.Relics.Any(r => r is XueTianWaWa))
+            {
+                EnergyCost.AddThisCombat(-1);
+                AddKeyword(CardKeyword.Exhaust);
+            }
         }
 
         public static async Task CreateInDrawPile(Player owner, int amount, ICombatState combatState)
