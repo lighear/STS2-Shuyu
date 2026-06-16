@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -13,44 +12,41 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class NingBingHuDun : ModCardTemplate
+    public class BengLie : ModCardTemplate
     {
-        public NingBingHuDun() : base(
+        public BengLie() : base(
             baseCost: 1,
-            CardType.Skill,
-            CardRarity.Common,
+            CardType.Power,
+            CardRarity.Rare,
             TargetType.Self)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceShieldPower>()
-        ];
-
-        public override IEnumerable<CardKeyword> CanonicalKeywords => [
-            CardKeyword.Exhaust
+            HoverTipFactory.FromPower<FragilePower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(4),
-            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 3)
+            new DamageVar(16, ValueProp.Unpowered),
+            new ExtraDamageVar(8),
+            new PowerVar<FragilePower>(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            decimal amount = DynamicVars["IceShieldPower"].BaseValue;
-            if (!Owner.Creature.HasPower<IceShieldPower>())
-            {
-                amount += DynamicVars["ExtraIceShieldPower"].BaseValue;
-            }
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, amount, Owner.Creature, this);
+            BengLiePower? power = await PowerCmd.Apply<BengLiePower>(choiceContext, Owner.Creature, DynamicVars.Damage.BaseValue, Owner.Creature, this);
+            power?.AddExtraDamage(DynamicVars.ExtraDamage.BaseValue);
+            power?.AddFragilePowerAmount(DynamicVars["FragilePower"].BaseValue);
+
+            await PowerCmd.Apply<FragilePower>(choiceContext, CombatState!.HittableEnemies, 2, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
-            DynamicVars["ExtraIceShieldPower"].UpgradeValueBy(1);
+            DynamicVars.Damage.UpgradeValueBy(8);
+            DynamicVars.ExtraDamage.UpgradeValueBy(4);
+            DynamicVars["FragilePower"].UpgradeValueBy(1);
         }
     }
 }

@@ -27,6 +27,7 @@ public class HanFengZhiMuPower : ModPowerTemplate
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.FromPower<ChillPower>()
     ];
+
     private class Data
     {
         public HashSet<Creature> creatureList;

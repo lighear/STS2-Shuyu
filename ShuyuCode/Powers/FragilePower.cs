@@ -9,7 +9,9 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
+using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -34,15 +36,6 @@ public class FragilePower : ModPowerTemplate
         new DynamicVar("DamageIncrease", 1.25m)
     ];
 
-    private int ExtraDamageWhenTransformation
-    {
-        get
-        {
-            IEnumerable<Creature> source = Owner.CombatState!.GetOpponentsOf(Owner).Where(c => c.IsAlive);
-            return source.Sum(c => c.GetPowerAmount<SuiJiaQiangHuaPower>());
-        }
-    }
-
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (target != Owner || !props.IsPoweredAttack() || target.GetPower<VulnerablePower>() != null)
@@ -57,20 +50,14 @@ public class FragilePower : ModPowerTemplate
         if (power == this && Amount >= 5)
         {
             Flash();
-            await TransformationEffect(choiceContext);
+            await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier, null);
+
+            foreach (IOnFragileConverted ip in CombatState.IterateHookListeners().OfType<IOnFragileConverted>())
+            {
+                await ip.OnFragileConverted(choiceContext, Owner, applier);
+            }
+
             await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
-        }
-    }
-
-    private async Task TransformationEffect(PlayerChoiceContext choiceContext)
-    {
-        await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, Applier, null);
-
-        int damage = ExtraDamageWhenTransformation;
-        if (damage > 0)
-        {
-            await PowerCmd.Apply<WeakPower>(choiceContext, Owner, 3, Applier, null);
-            await CreatureCmd.Damage(choiceContext, Owner, damage, ValueProp.Unpowered, Applier, null);
         }
     }
 }

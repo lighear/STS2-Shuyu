@@ -3,16 +3,14 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Interfaces;
+using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
+public class BingYuePower : ModPowerTemplate
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -23,13 +21,14 @@ public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<FragilePower>(),
-        HoverTipFactory.FromPower<WeakPower>()
+        HoverTipFactory.FromPower<IceShieldPower>()
     ];
 
-    public async Task OnFragileConverted(PlayerChoiceContext choiceContext, Creature powerOwner, Creature? powerApplier)
+    public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        await PowerCmd.Apply<WeakPower>(choiceContext, powerOwner, 3, powerApplier, null);
-        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier, null);
+        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && applier == Owner && power is not ITemporaryPower)
+        {
+            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner, Amount, Owner, null);
+        }
     }
 }

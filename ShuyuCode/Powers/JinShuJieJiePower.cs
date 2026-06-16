@@ -3,18 +3,17 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
+public class JinShuJieJiePower : ModPowerTemplate
 {
-    public override PowerType Type => PowerType.Buff;
+    public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
     public override PowerAssetProfile AssetProfile => new(
@@ -23,13 +22,22 @@ public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<FragilePower>(),
-        HoverTipFactory.FromPower<WeakPower>()
+        HoverTipFactory.FromPower<IceShieldPower>()
     ];
 
-    public async Task OnFragileConverted(PlayerChoiceContext choiceContext, Creature powerOwner, Creature? powerApplier)
+    public override async Task BeforeDamageReceived(PlayerChoiceContext choiceContext, Creature target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        await PowerCmd.Apply<WeakPower>(choiceContext, powerOwner, 3, powerApplier, null);
-        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier, null);
+        if (target == Owner && props.IsPoweredAttack() && amount > 0)
+        {
+            IceShieldPower? power = Owner.GetPower<IceShieldPower>();
+            if (power == null)
+            {
+                return;
+            }
+            for (int i = 0; i < Amount; i++)
+            {
+                await PowerCmd.Decrement(power);
+            }
+        }
     }
 }

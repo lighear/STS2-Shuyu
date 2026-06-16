@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -13,19 +12,21 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class NingBingHuDun : ModCardTemplate
+    public class BingJiLi : ModCardTemplate
     {
-        public NingBingHuDun() : base(
-            baseCost: 1,
+        public BingJiLi() : base(
+            baseCost: 3,
             CardType.Skill,
-            CardRarity.Common,
+            CardRarity.Rare,
             TargetType.Self)
         { }
+
+        public override bool GainsBlock => true;
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceShieldPower>()
+            HoverTipFactory.FromPower<IceThornsPower>()
         ];
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
@@ -33,24 +34,20 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(4),
-            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 3)
+            new BlockVar(25, ValueProp.Move),
+            new PowerVar<IceThornsPower>(10)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            decimal amount = DynamicVars["IceShieldPower"].BaseValue;
-            if (!Owner.Creature.HasPower<IceShieldPower>())
-            {
-                amount += DynamicVars["ExtraIceShieldPower"].BaseValue;
-            }
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, amount, Owner.Creature, this);
+            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
-            DynamicVars["ExtraIceShieldPower"].UpgradeValueBy(1);
+            DynamicVars.Block.UpgradeValueBy(5);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(5);
         }
     }
 }

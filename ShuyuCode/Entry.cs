@@ -41,6 +41,7 @@ public partial class Entry
         ModPatcher patcher = RitsuLibFramework.CreatePatcher(ModId, "core-patches");
         patcher.RegisterPatch<CardDescriptionPatch>();
         patcher.RegisterPatch<HookHandFullPatch>();
+        patcher.RegisterPatch<ModifyDamageFinalPatch>();
         if (!patcher.PatchAll())
         {
             throw new InvalidOperationException("Critical patches failed.");
