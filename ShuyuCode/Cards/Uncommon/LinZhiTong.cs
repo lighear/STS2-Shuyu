@@ -34,7 +34,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(6, ValueProp.Move),
-            new DynamicVar("EnemyStrengthLoss", 4)
+            new DynamicVar("EnemyStrengthLoss", 3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -48,7 +48,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars["EnemyStrengthLoss"].UpgradeValueBy(2);
+            DynamicVars["EnemyStrengthLoss"].UpgradeValueBy(4);
         }
     }
 }

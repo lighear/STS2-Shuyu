@@ -70,9 +70,12 @@ public class LinZhiTongPower : ModPowerTemplate
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
+        //始终生效。
+        /*
         if (side == CombatSide.Player)
         {
             await PowerCmd.Remove(this);
         }
+        */
     }
 }

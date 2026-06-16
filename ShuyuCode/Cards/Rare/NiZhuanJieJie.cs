@@ -44,8 +44,20 @@ namespace Shuyu.Cards
             IceShieldPower? iceShieldPower = await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
             int iceThornsPowerAmount = iceThornsPower?.Amount ?? 0;
             int iceShieldPowerAmount = iceShieldPower?.Amount ?? 0;
-            iceThornsPower?.SetAmount(iceShieldPowerAmount);
-            iceShieldPower?.SetAmount(iceThornsPowerAmount);
+
+            if (iceThornsPowerAmount < iceShieldPowerAmount)
+            {
+                await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature,iceShieldPowerAmount - iceThornsPowerAmount, Owner.Creature, this);
+                iceShieldPower?.SetAmount(iceThornsPowerAmount);
+            }
+            
+            else if (iceThornsPowerAmount > iceShieldPowerAmount)
+            {
+                await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature,iceThornsPowerAmount - iceShieldPowerAmount, Owner.Creature, this);
+                iceThornsPower?.SetAmount(iceShieldPowerAmount);
+            }
+            
+            
         }
 
         protected override void OnUpgrade()
