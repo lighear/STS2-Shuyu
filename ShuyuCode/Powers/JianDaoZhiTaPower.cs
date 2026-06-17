@@ -34,7 +34,7 @@ public class JianDaoZhiTaPower : ModPowerTemplate
             hasAlreadyBeenGivenIceThorns = true;
             foreach (Creature creature in enumerable)
             {
-                await PowerCmd.Apply<IceShieldPower>(choiceContext, creature, amount, Owner, null);
+                await PowerCmd.Apply<IceThornsPower>(choiceContext, creature, amount, Owner, null);
             }
             hasAlreadyBeenGivenIceThorns = false;
         }

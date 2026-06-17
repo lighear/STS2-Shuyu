@@ -1,11 +1,8 @@
-﻿using HarmonyLib;
-using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Combat;
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
-using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
@@ -22,6 +19,8 @@ namespace Shuyu.Commands
     public static class ShuyuMechanismCmd
     {
         public static bool IsFrozen(this CardModel card) => card is FrozenCardModel;
+
+        public static bool IsFrostforged(this CardModel card) => card.Keywords.Contains(ShuyuKeywords.Frostforged);
 
         public static async Task FreezeCard(CardModel card)
         {
@@ -42,7 +41,7 @@ namespace Shuyu.Commands
             {
                 int count = 1;
                 HuiXiangYongChangPower? power = card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
-                if (power != null && card.Keywords.Contains(ShuyuKeywords.Frostforged))
+                if (power != null && card.IsFrostforged())
                 {
                     power.Flash();
                     count += power.Amount;
@@ -88,12 +87,14 @@ namespace Shuyu.Commands
 
         public static async Task ChooseFromHandAndFreeze(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source, bool optional = false)
         {
+            CardSelectorPrefs prefs = optional ? new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE_OPTIONAL"), 0, selectCount)
+                                    : new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE"), selectCount);
+            prefs.ShouldGlowGold = card => card.IsFrostforged();
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: optional ? new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE_OPTIONAL"), 0, selectCount)
-                                    : new CardSelectorPrefs(new LocString("card_selection", "TO_FREEZE"), selectCount),
+                    prefs: prefs,
                     filter: c => !c.IsFrozen(),
                     source: source);
             foreach (CardModel card in cards)
@@ -120,11 +121,15 @@ namespace Shuyu.Commands
 
         public static async Task ChooseFromHandAndChangeFrozenState(PlayerChoiceContext choiceContext, Player player, int selectCount, AbstractModel source)
         {
+            CardSelectorPrefs prefs = new CardSelectorPrefs(new LocString("card_selection", "CHANGE_FROZEN_STATE"), selectCount)
+            {
+                ShouldGlowGold = card => card.IsFrostforged()
+            };
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
                     context: choiceContext,
                     player: player,
-                    prefs: new CardSelectorPrefs(new LocString("card_selection", "CHANGE_FROZEN_STATE"), selectCount),
+                    prefs: prefs,
                     filter: null,
                     source: source);
             foreach (CardModel card in cards)

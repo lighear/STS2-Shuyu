@@ -45,6 +45,12 @@ public class BingWuPower : ModPowerTemplate
 
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
+        if (CombatState.CurrentSide == Owner.Side)
+        {
+            Triggered = false;
+            return 1;
+        }
+
         if (target == Owner && props.IsPoweredAttack() && amount > 0)
         {
             Triggered = true;
@@ -59,7 +65,6 @@ public class BingWuPower : ModPowerTemplate
 
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-
         if (Triggered)
         {
             Triggered = false;

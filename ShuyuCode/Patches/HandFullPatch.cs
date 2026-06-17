@@ -7,12 +7,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Models;
 using Shuyu.Interfaces;
-using STS2RitsuLib.Patching.Core;
 using STS2RitsuLib.Patching.Models;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using static Godot.OpenXRInterface;
 
 namespace Shuyu.Patches
 {

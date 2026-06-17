@@ -59,6 +59,7 @@ public sealed class FrozenCardModel : ModCardTemplate
     public override CardType Type => _visualCardModel?.Type ?? base.Type;
     public override CardRarity Rarity => _visualCardModel?.Rarity ?? base.Rarity;
     protected override int CanonicalEnergyCost => _visualCardModel?.EnergyCost.Canonical ?? base.CanonicalEnergyCost;
+    protected override bool HasEnergyCostX => _visualCardModel?.EnergyCost.CostsX ?? base.HasEnergyCostX;
     public override CardPoolModel Pool => _visualCardModel?.Pool ?? base.Pool;
     public override CardPoolModel VisualCardPool => _visualCardModel?.VisualCardPool ?? base.VisualCardPool;
 

@@ -1,14 +1,8 @@
 ﻿using HarmonyLib;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Players;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Relics;
 using Shuyu.Cards;
-using Shuyu.Interfaces;
-using STS2RitsuLib.Patching.Core;
 using STS2RitsuLib.Patching.Models;
 using static MegaCrit.Sts2.Core.Models.CardModel;
 

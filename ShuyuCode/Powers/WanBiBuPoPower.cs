@@ -41,6 +41,11 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
     {
         if (target == Owner)
         {
+            if (combatState.CurrentSide == Owner.Side && props.IsPoweredAttack() && dealer != null && dealer.IsEnemy)
+            {
+                return modifiedAmount;
+            }
+
             Data data = GetInternalData<Data>();
             if (props.IsPoweredAttack())
             {

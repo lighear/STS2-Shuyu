@@ -1,15 +1,10 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Nodes.Cards;
-using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Commands;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -33,7 +28,7 @@ public class BingQiMengJiPower : ModPowerTemplate
     public override bool TryModifyEnergyCostInCombatLate(CardModel card, decimal originalCost, out decimal modifiedCost)
     {
         if (card.Owner.Creature == Owner
-            && card.Keywords.Contains(ShuyuKeywords.Frostforged)
+            && card.IsFrostforged()
             && (card.Pile?.Type == PileType.Hand || card.Pile?.Type == PileType.Play))
         {
             modifiedCost = 0;
@@ -50,7 +45,7 @@ public class BingQiMengJiPower : ModPowerTemplate
     {
         CardModel card = cardPlay.Card;
         if (card.Owner.Creature == Owner
-            && card.CanonicalKeywords.Contains(ShuyuKeywords.Frostforged)
+            && card.IsFrostforged()
             && (card.Pile?.Type == PileType.Hand || card.Pile?.Type == PileType.Play))
         {
             await PowerCmd.Decrement(this);

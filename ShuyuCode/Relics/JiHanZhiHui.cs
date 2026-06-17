@@ -34,7 +34,7 @@ public sealed class JiHanZhiHui : ModRelicTemplate
         return count;
     }
 
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    public override async Task AfterPlayerTurnStartLate(PlayerChoiceContext choiceContext, Player player)
     {
         if (player == Owner && Owner.PlayerCombatState!.TurnNumber <= 1)
         {

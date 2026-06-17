@@ -44,11 +44,13 @@ public sealed class BingLengZhiHui : ModRelicTemplate
         return count;
     }
 
-    public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
+    public override async Task AfterPlayerTurnStartLate(PlayerChoiceContext choiceContext, Player player)
     {
         if (player == Owner && Owner.PlayerCombatState!.TurnNumber <= 1)
         {
             await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars["FrozenAmount"].IntValue, this);
         }
     }
+
+    
 }

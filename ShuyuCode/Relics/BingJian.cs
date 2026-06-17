@@ -20,7 +20,7 @@ public sealed class BingJian : ModRelicTemplate
 
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
-        if (card.Owner == Owner && card.Keywords.Contains(ShuyuKeywords.Frostforged))
+        if (card.Owner == Owner && card.IsFrostforged())
         {
             Flash();
             await ShuyuMechanismCmd.FreezeCard(card);

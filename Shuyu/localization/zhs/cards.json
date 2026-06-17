@@ -148,7 +148,7 @@
     "SHUYU_CARD_XUE_ZHI_XIN.title":  "雪之心",
     "SHUYU_CARD_XUE_ZHI_XIN.description":  "每回合额外抽{Cards:diff()}张牌，然后选择{Cards:diff()}张[gold]手牌[/gold]。如果其为[gold]封冻牌[/gold]，解除其[gold]封冻[/gold]。否则将其[gold]封冻[/gold]。",
     "SHUYU_CARD_RONG_XUE_TE_TIAO.title":  "融雪特调",
-    "SHUYU_CARD_RONG_XUE_TE_TIAO.description":  "在本回合获得{StrengthPower:diff()}点力量和{DexterityPower:diff()}点敏捷，解除1张{IfUpgraded:show:| 随机}[gold]手牌[/gold]的[gold]封冻[/gold]。\n每当[gold]封冻牌[/gold]时，将此牌从[gold]弃牌堆[/gold]返回[gold]手牌[/gold]。\n此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。",
+    "SHUYU_CARD_RONG_XUE_TE_TIAO.description":  "在本回合获得{StrengthPower:diff()}点力量和{DexterityPower:diff()}点敏捷，解除1张{IfUpgraded:show:|随机}[gold]手牌[/gold]的[gold]封冻[/gold]。\n每当[gold]封冻牌[/gold]时，将此牌从[gold]弃牌堆[/gold]返回[gold]手牌[/gold]。\n此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。",
     "SHUYU_CARD_JIN_SHU_NI_SHANG.title":  "禁术 · 逆熵",
     "SHUYU_CARD_JIN_SHU_NI_SHANG.description":  "将生命恢复至战斗开始时的状态。\n将2张[gold]厄运[/gold]加入[gold]抽牌堆[/gold]。",
     "SHUYU_CARD_HONG_NI.title":  "虹霓",

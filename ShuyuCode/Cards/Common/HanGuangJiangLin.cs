@@ -43,10 +43,7 @@ namespace Shuyu.Cards
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
-            CardSelectorPrefs prefs = new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, DynamicVars.Cards.IntValue)
-            {
-                ShouldGlowGold = card => card.IsFrozen()
-            };
+            CardSelectorPrefs prefs = new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, DynamicVars.Cards.IntValue);
             IEnumerable<CardModel> cards = await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, prefs, null, this);
             foreach (CardModel card in cards)
             {

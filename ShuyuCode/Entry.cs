@@ -1,15 +1,11 @@
-using Godot;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
-using MegaCrit.Sts2.Core.Models.Cards;
-using MegaCrit.Sts2.Core.Models.Relics;
 using Shuyu.Cards;
 using Shuyu.Patches;
 using Shuyu.Relics;
 using STS2RitsuLib;
 using STS2RitsuLib.Interop;
 using STS2RitsuLib.Patching.Core;
-using STS2RitsuLib.Scaffolding.Cards.HandOutline;
 using System.Reflection;
 using Logger = MegaCrit.Sts2.Core.Logging.Logger;
 
@@ -41,15 +37,18 @@ public partial class Entry
         // 新增内容类后，只要 attribute 写对，通常不需要在入口里手动逐个注册。
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
+        // Patch注册。
         ModPatcher patcher = RitsuLibFramework.CreatePatcher(ModId, "core-patches");
         patcher.RegisterPatch<CardDescriptionPatch>();
         patcher.RegisterPatch<HookHandFullPatch>();
         patcher.RegisterPatch<ModifyDamageFinalPatch>();
+        patcher.RegisterPatch<FrozenGlowWhenDiscardPatch>();
         if (!patcher.PatchAll())
         {
             throw new InvalidOperationException("Critical patches failed.");
         }
 
+        // 初始卡牌、初始遗物升级注册。
         RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BingShuangChongJi, JiBingFengBao>();
         RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<BingLengZhiHui, JiHanZhiHui>();
 

@@ -1,13 +1,19 @@
-﻿using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
+﻿using MegaCrit.Sts2.Core.Models.Powers;
 using Shuyu.Cards;
+using STS2RitsuLib.Combat.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class JinShuFengYinStrengthDownPower : TemporaryStrengthPower
+public class JinShuFengYinStrengthDownPower : ModTemporaryAppliedPowerTemplate<JinShuFengYin, StrengthPower>
 {
-    public override AbstractModel OriginModel => ModelDb.Card<JinShuFengYin>();
     protected override bool IsPositive => false;
+    protected override bool UntilEndOfOtherSideTurn => false;
+
+    public override PowerAssetProfile AssetProfile => new(
+        IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
+        BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
+    );
 }

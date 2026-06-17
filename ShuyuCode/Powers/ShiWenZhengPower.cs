@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
+using STS2RitsuLib.Combat.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -61,7 +62,8 @@ public class ShiWenZhengPower : ModPowerTemplate
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner && power is not TemporaryStrengthPower && power is not StrengthPower)
+        if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner 
+            && power is not StrengthPower && !(power is ITemporaryPower tempPower && tempPower.InternallyAppliedPower is StrengthPower))
         {
             if (SelfApplied)
             {
