@@ -1,7 +1,63 @@
-[gd_scene load_steps=3 format=3 uid="uid://bb1eqqro7o6l1"]
+[gd_scene load_steps=15 format=3 uid="uid://bb1eqqro7o6l1"]
 
 [ext_resource type="Texture2D" uid="uid://cmp6uhabldshr" path="res://Shuyu/assets/ui_card_mask.png" id="1_w8yx7"]
 [ext_resource type="Texture2D" uid="uid://bfx01mhnfaxm5" path="res://Shuyu/assets/afflictions/frozen.png" id="2_dcd4j"]
+[ext_resource type="Shader" uid="uid://5wtarmcdc0p5" path="res://Shuyu/assets/shaders/Frozen.tres" id="2_sttq3"]
+[ext_resource type="Texture2D" uid="uid://dc7uj1txrtbqg" path="res://Shuyu/assets/ui_card_border_glow.png" id="4_tj6s1"]
+[ext_resource type="Texture2D" uid="uid://bfc2djimv6fae" path="res://Shuyu/assets/materials/common_glow.png" id="5_sttq3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qos8m"]
+shader = ExtResource("2_sttq3")
+shader_parameter/MainTex = ExtResource("2_dcd4j")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d3ka2"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_dd1us"]
+_data = [Vector2(0, 0), 0.0, 4.4739275, 0, 0, Vector2(0.49829346, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -4.1151567, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_gspwe"]
+curve = SubResource("Curve_dd1us")
+
+[sub_resource type="Gradient" id="Gradient_x18fb"]
+colors = PackedColorArray(0, 0.5882353, 1, 1, 0.5882353, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fwlyt"]
+gradient = SubResource("Gradient_x18fb")
+
+[sub_resource type="Curve" id="Curve_0ekje"]
+_data = [Vector2(0, 0), 0.0, 5.9933763, 0, 0, Vector2(0.29863483, 1), 0.0, 0.0, 0, 0, Vector2(0.7013652, 1), -0.0089949025, -0.0089949025, 0, 0, Vector2(1, 0), -7.428404, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_f0t8l"]
+curve = SubResource("Curve_0ekje")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_24sf5"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_disable_z = true
+particle_flag_damping_as_friction = true
+emission_shape_offset = Vector3(0, -20, 0)
+emission_shape_scale = Vector3(1.1, 1, 1)
+emission_shape = 3
+emission_box_extents = Vector3(150, 211, 1)
+direction = Vector3(0, -1, 0)
+spread = 60.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -5.000002
+radial_accel_max = 4.9999976
+tangential_accel_min = -5.000002
+tangential_accel_max = 4.9999976
+damping_min = 0.5
+damping_max = 0.5
+scale_min = 0.08
+scale_max = 0.19999999
+scale_curve = SubResource("CurveTexture_f0t8l")
+color_initial_ramp = SubResource("GradientTexture1D_fwlyt")
+alpha_curve = SubResource("CurveTexture_gspwe")
 
 [node name="Frozen" type="Control"]
 layout_mode = 3
@@ -38,6 +94,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="border" type="TextureRect" parent="vfx_affliction_frozen/card_mask"]
+material = SubResource("ShaderMaterial_qos8m")
 custom_minimum_size = Vector2(300, 422)
 layout_mode = 1
 anchors_preset = 15
@@ -48,3 +105,26 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_dcd4j")
 expand_mode = 1
+
+[node name="card_glow" type="TextureRect" parent="vfx_affliction_frozen/card_mask"]
+self_modulate = Color(0, 1, 1, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_tj6s1")
+expand_mode = 1
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="vfx_affliction_frozen"]
+material = SubResource("CanvasItemMaterial_d3ka2")
+position = Vector2(150, 211)
+amount = 15
+texture = ExtResource("5_sttq3")
+lifetime = 5.0
+randomness = 0.5
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_24sf5")
