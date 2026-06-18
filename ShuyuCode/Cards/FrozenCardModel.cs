@@ -69,7 +69,7 @@ public sealed class FrozenCardModel : ModCardTemplate
     ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new CalculationBaseVar(5),
+        new CalculationBaseVar(3),
         new ExtraDamageVar(5),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
             (card, _) => Math.Max(card.EnergyCost.GetAmountToSpend(), 0))
@@ -86,7 +86,7 @@ public sealed class FrozenCardModel : ModCardTemplate
 
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Max(EnergyCost.GetAmountToSpend(), 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(choiceContext, 3 + 5 * Math.Max(EnergyCost.GetAmountToSpend(), 0), targets, this);
             }
             await ShuyuMechanismCmd.UnfreezeCard(this);
         }

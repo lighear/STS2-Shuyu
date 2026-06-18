@@ -16,7 +16,7 @@ namespace Shuyu.Cards
     public class CheGu : ModCardTemplate
     {
         public CheGu() : base(
-            baseCost: 1,
+            baseCost: 0,
             CardType.Skill,
             CardRarity.Uncommon,
             TargetType.AnyEnemy)
@@ -27,6 +27,10 @@ namespace Shuyu.Cards
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<ArtifactPower>(),
             HoverTipFactory.FromPower<ChillPower>()
+        ];
+        
+        protected override IEnumerable<DynamicVar> CanonicalVars => [
+            new CardsVar(1)
         ];
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
@@ -41,11 +45,15 @@ namespace Shuyu.Cards
                 await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target, 1, Owner.Creature, this);
             }
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target, 1, Owner.Creature, this);
+            if (base.IsUpgraded)
+            {
+                await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
+            }
         }
 
         protected override void OnUpgrade()
         {
-            EnergyCost.UpgradeBy(-1);
+            //EnergyCost.UpgradeBy(-1);
         }
     }
 }
