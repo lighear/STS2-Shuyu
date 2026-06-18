@@ -45,6 +45,7 @@ namespace Shuyu.Cards
                 List<PowerModel> debuffs = enemy.Powers.Where(p => p.TypeForCurrentAmount == PowerType.Debuff).ToList();
                 foreach (PowerModel debuff in debuffs)
                 {
+                    (debuff as ITemporaryPower)?.IgnoreNextInstance();
                     await PowerCmd.Apply(choiceContext, debuff, enemy, debuff.Amount, Owner.Creature, this);
                 }
             }

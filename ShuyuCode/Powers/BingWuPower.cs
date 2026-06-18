@@ -65,7 +65,7 @@ public class BingWuPower : ModPowerTemplate
 
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (Triggered)
+        if (Triggered && target == Owner)
         {
             Triggered = false;
             Flash();
