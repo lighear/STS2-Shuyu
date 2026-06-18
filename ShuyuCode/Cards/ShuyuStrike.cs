@@ -12,7 +12,7 @@ namespace Shuyu.Cards;
 // RegisterCard 会把这张牌交给 RitsuLib 自动注册。
 // RegisterCharacterStarterCard 会把它追加进 ShuyuCharacter 的初始卡组。
 [RegisterCard(typeof(ShuyuCardPool))]
-[RegisterCharacterStarterCard(typeof(ShuyuCharacter), 4)]
+[RegisterCharacterStarterCard(typeof(ShuyuCharacter), 5)]
 public sealed class ShuyuStrike : ModCardTemplate
 {
     // 基础耗能。
