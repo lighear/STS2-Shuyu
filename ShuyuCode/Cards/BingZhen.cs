@@ -49,7 +49,8 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
-                .WithHitVfxNode((Creature target) => NBingZhenVfx.Create(Owner.Creature, target, Colors.Green))
+                .WithHitVfxNode((Creature target) => NBingZhenVfx.Create(Owner.Creature, target))
+                .BeforeDamage(async () => await Cmd.Wait(0.5f))
                 .Execute(choiceContext);
 
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
