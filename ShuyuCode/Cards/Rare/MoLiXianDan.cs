@@ -32,17 +32,23 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DynamicVar("Multiple", 3)
+            new CalculationBaseVar(0),
+            new ExtraDamageVar(3),
+            new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
+                (card, _) => CombatManager.Instance.History.Entries
+                    .OfType<PowerReceivedEntry>()
+                    .Where(entry => entry.Power is FragilePower && entry.Applier == card.Owner.Creature)
+                    .Sum(entry => entry.Amount))
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            decimal damage = CombatManager.Instance.History.Entries
+            /*decimal damage = CombatManager.Instance.History.Entries
                 .OfType<PowerReceivedEntry>()
                 .Where(entry => entry.Power is FragilePower && entry.Applier == Owner.Creature)
                 .Sum(entry => entry.Amount)
-                * DynamicVars["Multiple"].BaseValue;
-            AttackCommand attackCommand = await DamageCmd.Attack(damage)
+                * DynamicVars["Multiple"].BaseValue;*/
+            AttackCommand attackCommand = await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);

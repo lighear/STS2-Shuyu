@@ -2,6 +2,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -16,6 +17,11 @@ namespace Shuyu.Relics;
 public sealed class BingSan : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Uncommon;
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+    [
+        HoverTipFactory.FromPower<FragilePower>()
+    ];
 
     public override RelicAssetProfile AssetProfile => new(
         IconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",

@@ -60,7 +60,7 @@ namespace Shuyu.Commands
             }
             frozenCard.InitFrom(card);
 
-            ReplaceCardModelInPile(card, frozenCard);
+            await ReplaceCardModelInPile(card, frozenCard);
             await CardCmd.Afflict<Frozen>(frozenCard, 1);
         }
 
@@ -73,7 +73,7 @@ namespace Shuyu.Commands
             }
 
             CardCmd.ClearAffliction(frozenCard);
-            ReplaceCardModelInPile(frozenCard, original);
+            await ReplaceCardModelInPile(frozenCard, original);
 
             var ips = original.CombatState?.IterateHookListeners().OfType<IAfterUnfreezingCard>();
             if (ips != null)
@@ -150,11 +150,11 @@ namespace Shuyu.Commands
             targets.RemoveAll(t => t.IsDead);
 
             if (targets.Count == 0)
-            {
-                IReadOnlyList<Creature>? hittableEnemies = cardSource.CombatState?.HittableEnemies;
-                if (hittableEnemies != null && hittableEnemies.Count > 0)
+            { 
+                Creature? target = await SelectRandomEnemy(cardSource);
+                if (target != null)
                 {
-                    targets.Add(cardSource.Owner.RunState.Rng.CombatTargets.NextItem(hittableEnemies)!);
+                    targets.Add(target);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace Shuyu.Commands
             }
         }
 
-        private static void ReplaceCardModelInPile(CardModel oldCard, CardModel newCard)
+        private static async Task ReplaceCardModelInPile(CardModel oldCard, CardModel newCard)
         {
             CardPile? pile = oldCard.Pile;
             if (pile == null)
@@ -192,6 +192,16 @@ namespace Shuyu.Commands
             {
                 pile.AddInternal(newCard);
             }*/
+        }
+
+        private static async Task<Creature?> SelectRandomEnemy(CardModel cardSource)
+        {
+            IReadOnlyList<Creature>? hittableEnemies = cardSource.CombatState?.HittableEnemies;
+            if (hittableEnemies != null && hittableEnemies.Count > 0)
+            {
+                return cardSource.Owner.RunState.Rng.CombatTargets.NextItem(hittableEnemies);
+            }
+            return null;
         }
     }
 }

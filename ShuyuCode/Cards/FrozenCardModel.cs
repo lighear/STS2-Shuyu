@@ -16,8 +16,8 @@ namespace Shuyu.Cards;
 public sealed class FrozenCardModel : ModCardTemplate
 {
     public CardModel? _visualCardModel;
-    private List<Creature> targets = new List<Creature>();
-    private int count;
+    public List<Creature> targets = new List<Creature>();
+    public int count;
 
     public FrozenCardModel() : base(
         baseCost: 0,
@@ -37,19 +37,19 @@ public sealed class FrozenCardModel : ModCardTemplate
         return this;
     }
 
-    public void SetIcyDamageTargets(Creature target)
+    public async Task SetIcyDamageTargets(Creature target)
     {
         this.targets.Clear();
         this.targets.Add(target);
     }
 
-    public void SetIcyDamageTargets(IEnumerable<Creature> targets)
+    public async Task SetIcyDamageTargets(IEnumerable<Creature> targets)
     {
         this.targets.Clear();
         this.targets.AddRange(targets);
     }
 
-    public void SetIcyDamageCount(int count)
+    public async Task SetIcyDamageCount(int count)
     {
         this.count = count;
     }

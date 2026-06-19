@@ -42,8 +42,8 @@ namespace Shuyu.Cards
 
             foreach (CardModel card in PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrozen()).ToList())
             {
-                ((FrozenCardModel)card).SetIcyDamageTargets(cardPlay.Target!);
-                ((FrozenCardModel)card).SetIcyDamageCount(2);
+                await ((FrozenCardModel)card).SetIcyDamageTargets(CombatState!.HittableEnemies);
+                await ((FrozenCardModel)card).SetIcyDamageCount(2);
                 await CardCmd.Discard(choiceContext, card);
             }
         }

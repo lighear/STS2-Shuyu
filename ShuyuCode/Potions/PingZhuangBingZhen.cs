@@ -28,7 +28,7 @@ public class PingZhuangBingZhen : ModPotionTemplate
     protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(2)];
 
     // 添加提示关键词
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<BingZhen>()];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<BingZhen>(true)];
 
     // 药水图片。不一定非得是png，只要最终能被Godot当成Texture读取即可。
     public override PotionAssetProfile AssetProfile => new(

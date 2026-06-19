@@ -52,12 +52,12 @@ public class FragilePower : ModPowerTemplate
             Flash();
             await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier, null);
 
+            await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
+
             foreach (IOnFragileConverted ip in CombatState.IterateHookListeners().OfType<IOnFragileConverted>())
             {
                 await ip.OnFragileConverted(choiceContext, Owner, applier);
             }
-
-            await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
         }
     }
 }

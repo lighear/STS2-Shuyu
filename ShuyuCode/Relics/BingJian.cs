@@ -1,6 +1,8 @@
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
+using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Commands;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -12,6 +14,12 @@ namespace Shuyu.Relics;
 public sealed class BingJian : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Rare;
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+    [
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Frostforged),
+        ..HoverTipFactory.FromAffliction<Frozen>()
+    ];
 
     public override RelicAssetProfile AssetProfile => new(
         IconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",

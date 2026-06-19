@@ -1,7 +1,9 @@
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Commands;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -17,6 +19,11 @@ public sealed class BingLengZhiHui : ModRelicTemplate
 {
     // 稀有度。
     public override RelicRarity Rarity => RelicRarity.Starter;
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+    [
+        ..HoverTipFactory.FromAffliction<Frozen>()
+    ];
 
     // 遗物的数值。这里会替换本地化中的 {Cards}。
     protected override IEnumerable<DynamicVar> CanonicalVars =>
