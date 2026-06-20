@@ -147,17 +147,7 @@ namespace Shuyu.Commands
 
         public static async Task IcyDamage(PlayerChoiceContext choiceContext, decimal damage, List<Creature> targets, CardModel cardSource)
         {
-            targets.RemoveAll(t => t.IsDead);
-
-            if (targets.Count == 0)
-            { 
-                Creature? target = await SelectRandomEnemy(cardSource);
-                if (target != null)
-                {
-                    targets.Add(target);
-                }
-            }
-
+            await ConfirmIcyDamageTargets(targets, cardSource);
             if (targets.Count > 0)
             {
                 await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource);
@@ -194,14 +184,17 @@ namespace Shuyu.Commands
             }*/
         }
 
-        private static async Task<Creature?> SelectRandomEnemy(CardModel cardSource)
+        private static async Task ConfirmIcyDamageTargets(List<Creature> targets, CardModel cardSource)
         {
-            IReadOnlyList<Creature>? hittableEnemies = cardSource.CombatState?.HittableEnemies;
-            if (hittableEnemies != null && hittableEnemies.Count > 0)
+            targets.RemoveAll(t => t.IsDead);
+            if (targets.Count == 0)
             {
-                return cardSource.Owner.RunState.Rng.CombatTargets.NextItem(hittableEnemies);
+                IReadOnlyList<Creature>? hittableEnemies = cardSource.CombatState?.HittableEnemies;
+                if (hittableEnemies != null && hittableEnemies.Count > 0)
+                {
+                    targets.Add(cardSource.Owner.RunState.Rng.CombatTargets.NextItem(hittableEnemies)!);
+                }
             }
-            return null;
         }
     }
 }

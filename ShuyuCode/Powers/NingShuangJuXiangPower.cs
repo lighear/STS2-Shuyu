@@ -33,9 +33,31 @@ public class NingShuangJuXiangPower : ModPowerTemplate
         new DynamicVar("DamageDecrease", 0.5m)
     ];
 
+    private class Data
+    {
+        public HashSet<Creature> creatureList;
+        public Data()
+        {
+            creatureList = new HashSet<Creature>();
+        }
+    }
+
+    private HashSet<Creature> CreatureList
+    {
+        get
+        {
+            return GetInternalData<Data>().creatureList;
+        }
+    }
+
+    protected override object? InitInternalData()
+    {
+        return new Data();
+    }
+
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == Owner && props.IsPoweredAttack() && dealer != null && dealer.HasPower<ChillPower>())
+        if (target == Owner && props.IsPoweredAttack() && dealer != null && (dealer.HasPower<ChillPower>() || CreatureList.Contains(dealer))
         {
             return DynamicVars["DamageDecrease"].BaseValue;
         }
@@ -47,8 +69,17 @@ public class NingShuangJuXiangPower : ModPowerTemplate
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
+        if (side == CombatSide.Player)
+        {
+            foreach (Creature enemy in CombatState.HittableEnemies.Where(c => c.HasPower<ChillPower>()))
+            {
+                CreatureList.Add(enemy);
+            }
+        }
+
         if (side == CombatSide.Enemy)
         {
+            CreatureList.Clear();
             await PowerCmd.Decrement(this);
         }
     }

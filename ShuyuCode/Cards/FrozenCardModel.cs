@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Commands;
 using Shuyu.Interfaces;
+using STS2RitsuLib;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -31,6 +32,7 @@ public sealed class FrozenCardModel : ModCardTemplate
     {
         AssertMutable();
         _visualCardModel = original;
+        _energyCost = null;
         targets.Clear();
         count = 1;
         Owner ??= original.Owner;
