@@ -27,7 +27,7 @@ public class JinShuJieJiePower : ModPowerTemplate
 
     public override async Task BeforeDamageReceived(PlayerChoiceContext choiceContext, Creature target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == Owner && props.IsPoweredAttack() && amount > 0)
+        if (target == Owner && props.IsPoweredAttack() && amount >= 1)
         {
             IceShieldPower? power = Owner.GetPower<IceShieldPower>();
             if (power == null)

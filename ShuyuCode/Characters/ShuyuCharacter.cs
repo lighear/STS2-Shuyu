@@ -20,6 +20,8 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     private const string RestSiteScenePath = $"{SceneRoot}/Shuyu_rest_site.tscn";
     private const string CharacterSelectBgScenePath = $"{SceneRoot}/Shuyu_character_select_bg.tscn";
 
+    public override string? CustomIconPath => $"{SceneRoot}/shuyu_icon_char.tscn";
+
     // 角色名称颜色。
     public override Color NameColor => ThemeColor;
     // 能量图标轮廓颜色。

@@ -1,14 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://rv2o4gdko4qf"]
 
-[ext_resource type="Texture2D" path="res://Shuyu/images/characters/Shuyu_character_select.png" id="1_character"]
+[ext_resource type="Texture2D" uid="uid://b5h8xcc73cluf" path="res://Shuyu/images/characters/Shuyu_character.png" id="1_58lmd"]
 
 [node name="ShuyuCharacter" type="Node2D"]
 
 [node name="Visuals" type="Sprite2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(0, -92)
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("1_character")
+position = Vector2(4.999996, -185)
+scale = Vector2(0.18295218, 0.18295214)
+texture = ExtResource("1_58lmd")
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true

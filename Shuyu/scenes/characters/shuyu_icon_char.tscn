@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0ulf70sniuol"]
+
+[ext_resource type="Texture2D" uid="uid://bisudpa4bhtbk" path="res://Shuyu/images/characters/Shuyu_character_icon.png" id="1_p4umk"]
+
+[node name="ShuyuIconChar" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(27.5, 27.5)
+scale = Vector2(0.60227275, 0.60227275)
+texture = ExtResource("1_p4umk")
