@@ -35,7 +35,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(6, ValueProp.Move),
-            new RepeatVar(2),
+            new RepeatVar(10),
             new DynamicVar("ExtraDamage", 3)
         ];
 
@@ -47,7 +47,7 @@ namespace Shuyu.Cards
                 .WithHitCount(hitCount)
                 .WithAttackerFx(() => NDuanXueVfx.Create(cardPlay.Target!, hitCount))
                 .OnlyPlayAnimOnce()
-                .AfterAttackerAnim(async () => await Cmd.Wait(0.15f * hitCount + 0.2f))
+                .AfterAttackerAnim(async () => await Cmd.Wait(0.15f * hitCount + 0.6f))
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);

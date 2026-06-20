@@ -1,17 +1,20 @@
-[gd_scene load_steps=32 format=3 uid="uid://drvwekn1umj8s"]
+[gd_scene load_steps=46 format=3 uid="uid://drvwekn1umj8s"]
 
 [ext_resource type="Script" uid="uid://c6oilc6llo82b" path="res://ShuyuCode/Vfx/NDuanXueVfx.cs" id="1_6w3ls"]
 [ext_resource type="Shader" uid="uid://bvyy1nfvmy54l" path="res://Shuyu/assets/shaders/vfx_DuanXue.tres" id="1_uxwgt"]
 [ext_resource type="Texture2D" uid="uid://rlqg12gjr8fa" path="res://Shuyu/assets/images/common_ring_polar_a.png" id="2_gw7he"]
 [ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/vfx/common/vfx_common_specks.tscn" id="3_0xr85"]
 [ext_resource type="Texture2D" uid="uid://dbvsskvsg6v3a" path="res://Shuyu/assets/images/long_rice_no__glow_particle.png" id="4_6w3ls"]
+[ext_resource type="PackedScene" uid="uid://0vk581j1pecs" path="res://Shuyu/scenes/vfx/common/vfx_common_ring_polar_a.tscn" id="6_qekan"]
+[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://Shuyu/scenes/vfx/common/vfx_common_glow.tscn" id="7_qhkrm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xr85"]
 shader = ExtResource("1_uxwgt")
+shader_parameter/whiteWeight = 0.0
 shader_parameter/showLength = 2.0
 
 [sub_resource type="Curve" id="Curve_uxsix"]
-_data = [Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
@@ -25,16 +28,22 @@ colors = PackedColorArray(0.39215687, 0.39215687, 1, 1, 0, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_qekan"]
 gradient = SubResource("Gradient_fmn2k")
 
+[sub_resource type="Gradient" id="Gradient_qekan"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qhkrm"]
+gradient = SubResource("Gradient_qekan")
+
 [sub_resource type="Curve" id="Curve_6w3ls"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 0.15), 0.0, 0.0, 0, 0, Vector2(0.8, 0.15), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.5654478, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15, 0.15), 0.0, 0.0, 0, 0, Vector2(0.75, 0.15), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
 
 [sub_resource type="Curve" id="Curve_fmn2k"]
 _limits = [0.0, 10.0, 0.0, 1.0]
-_data = [Vector2(0, 5), 0.0, 0.0, 0, 0, Vector2(0.8, 5), 0.0, -25.000002, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 5), 0.0, 0.0, 0, 0, Vector2(1, 5), 0.0, -25.000002, 0, 0]
+point_count = 2
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
 
@@ -61,6 +70,7 @@ gravity = Vector3(0, 0, 0)
 scale_min = 0.79999995
 scale_max = 1.1999999
 scale_curve = SubResource("CurveXYZTexture_qhkrm")
+color_ramp = SubResource("GradientTexture1D_qhkrm")
 color_initial_ramp = SubResource("GradientTexture1D_qekan")
 alpha_curve = SubResource("CurveTexture_dt42d")
 
@@ -157,17 +167,65 @@ turbulence_initial_displacement_min = 1.49012e-06
 turbulence_initial_displacement_max = 1.49012e-06
 turbulence_influence_over_life = SubResource("CurveTexture_3o5yl")
 
-[node name="VfxDuanXue" type="Node2D" node_paths=PackedStringArray("_beamParticle", "_endParticle")]
+[sub_resource type="Curve" id="Curve_hv0ol"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 3), 0.0, -8.75114, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_vbwcb"]
+curve = SubResource("Curve_hv0ol")
+
+[sub_resource type="Curve" id="Curve_nxq8e"]
+_data = [Vector2(0, 0.245202), 0.0, 9.35466, 0, 0, Vector2(0.149871, 0.850288), 0.184002, 0.184002, 0, 0, Vector2(1, 1), 0.16094, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3cdq7"]
+curve = SubResource("Curve_nxq8e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bd83h"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_3cdq7")
+color = Color(0.5847179, 0.7977378, 1, 1)
+emission_curve = SubResource("CurveTexture_vbwcb")
+
+[sub_resource type="Curve" id="Curve_6vetw"]
+_data = [Vector2(0, 0.353316), 0.0, -0.753348, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ycjyk"]
+curve = SubResource("Curve_6vetw")
+
+[sub_resource type="Curve" id="Curve_3o5yl"]
+_data = [Vector2(0, 0), 0.0, 11.5422, 0, 0, Vector2(0.203175, 0.842474), 0.0, 0.210613, 0, 0, Vector2(1, 1), 0.197691, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rngw6"]
+curve = SubResource("Curve_3o5yl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s88q3"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_rngw6")
+color = Color(0.58383155, 0.9058309, 1, 1)
+alpha_curve = SubResource("CurveTexture_ycjyk")
+
+[node name="VfxDuanXue" type="Node2D" node_paths=PackedStringArray("_beamParticle", "_endParticle", "_endImpacts")]
 script = ExtResource("1_6w3ls")
 _beamParticle = NodePath("beam")
 _endParticle = NodePath("end_particles")
+_endImpacts = [NodePath("end_ring"), NodePath("end_glow")]
 
 [node name="beam" type="GPUParticles2D" parent="."]
 material = SubResource("ShaderMaterial_0xr85")
 emitting = false
 amount = 1
 texture = ExtResource("2_gw7he")
-lifetime = 0.4
+lifetime = 0.7
 one_shot = true
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_uxsix")
@@ -179,3 +237,10 @@ material = SubResource("CanvasItemMaterial_fmn2k")
 amount = 20
 texture = ExtResource("4_6w3ls")
 process_material = SubResource("ParticleProcessMaterial_rngw6")
+
+[node name="end_ring" parent="." instance=ExtResource("6_qekan")]
+lifetime = 0.7
+process_material = SubResource("ParticleProcessMaterial_bd83h")
+
+[node name="end_glow" parent="." instance=ExtResource("7_qhkrm")]
+process_material = SubResource("ParticleProcessMaterial_s88q3")

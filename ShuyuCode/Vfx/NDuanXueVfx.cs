@@ -22,6 +22,9 @@ namespace Shuyu.Vfx
         [Export(PropertyHint.None, "")]
         private GpuParticles2D? _endParticle;
 
+        [Export(PropertyHint.None, "")]
+		private Array<GpuParticles2D> _endImpacts = new Array<GpuParticles2D>();
+
         private Array<GpuParticles2D> _beamParticles = new Array<GpuParticles2D>();
 
         private CancellationTokenSource? _cts;
@@ -101,10 +104,22 @@ namespace Shuyu.Vfx
             for (int i = 0; i < _beamParticles.Count; i++)
             {
                 _beamParticles[i].SpeedScale = 1;
+                ShaderMaterial? mat = _beamParticles[i].Material as ShaderMaterial;
+                if (mat != null)
+                {
+                    Tween tween = CreateTween();
+                    tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("whiteWeight", val)), 0f, 1f, 0.5f)
+                        .SetEase(Tween.EaseType.In)
+						.SetTrans(Tween.TransitionType.Quad);
+                }
             }
+            await Cmd.Wait(0.5f, _cts.Token);
 
-            await Cmd.Wait(0.2f, _cts.Token);
-			_endParticle?.Restart();
+            for (int i = 0; i < _endImpacts.Count; i++)
+            {
+                _endImpacts[i].Restart();
+            }
+            _endParticle?.Restart();
 
             NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Short);
             await Cmd.Wait(2f, _cts.Token);

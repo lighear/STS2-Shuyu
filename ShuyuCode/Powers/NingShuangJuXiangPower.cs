@@ -57,7 +57,7 @@ public class NingShuangJuXiangPower : ModPowerTemplate
 
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == Owner && props.IsPoweredAttack() && dealer != null && (dealer.HasPower<ChillPower>() || CreatureList.Contains(dealer))
+        if (target == Owner && props.IsPoweredAttack() && dealer != null && (dealer.HasPower<ChillPower>() || CreatureList.Contains(dealer)))
         {
             return DynamicVars["DamageDecrease"].BaseValue;
         }
