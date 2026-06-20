@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dyfx7j3yrcr"]
 
-[ext_resource type="Shader" uid="uid://cgrldq0mfuuck" path="res://Shuyu/assets/shaders/common/vfx_poof_shader.gdshader" id="1_7dqwa"]
+[ext_resource type="Shader" uid="uid://bq72u2yy4qnwe" path="res://Shuyu/assets/shaders/common/vfx_poof_shader.gdshader" id="1_7dqwa"]
 
 [sub_resource type="Curve" id="Curve_7dqwa"]
 _data = [Vector2(0, 0), 0.0, 1.48052, 0, 0, Vector2(1, 1), 0.343691, 0.0, 0, 0]
