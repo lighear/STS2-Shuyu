@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://de2dcmyiolqnd"]
 
-[ext_resource type="Texture2D" path="res://Shuyu/images/characters/Shuyu_character_select.png" id="1_character"]
-[ext_resource type="Texture2D" path="res://Shuyu/images/characters/Shuyu_character_icon.png" id="2_icon"]
+[ext_resource type="Texture2D" uid="uid://cvrujt1ubhm7c" path="res://Shuyu/images/characters/Shuyu_Select_Scene.png" id="1_ab1em"]
 
 [node name="ShuyuCharacterSelectBg" type="Control"]
 layout_mode = 3
@@ -32,39 +31,11 @@ offset_bottom = 478.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.08, 0.18, 0.24, 1)
-
-[node name="Character" type="TextureRect" parent="Background"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -620.0
-offset_top = -360.0
-offset_right = -92.0
-offset_bottom = 420.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("1_character")
+[node name="TextureRect2" type="TextureRect" parent="Background"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = -88.0
+offset_right = 1900.6273
+offset_bottom = 1209.0
+texture = ExtResource("1_ab1em")
 expand_mode = 1
-stretch_mode = 5
-
-[node name="Icon" type="TextureRect" parent="Background"]
-layout_mode = 1
-anchors_preset = 0
-offset_left = 120.0
-offset_top = 120.0
-offset_right = 288.0
-offset_bottom = 288.0
-texture = ExtResource("2_icon")
-expand_mode = 1
-stretch_mode = 5

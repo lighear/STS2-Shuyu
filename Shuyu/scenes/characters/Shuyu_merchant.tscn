@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://ba28wpt355e1o"]
 
-[ext_resource type="Texture2D" path="res://Shuyu/images/characters/Shuyu_character_select.png" id="1_character"]
+[ext_resource type="Texture2D" uid="uid://b5h8xcc73cluf" path="res://Shuyu/images/characters/Shuyu_character.png" id="1_db1bu"]
 
 [node name="ShuyuCharacterMerchant" type="Node2D"]
 
 [node name="Visuals" type="Sprite2D" parent="."]
-position = Vector2(0, -96)
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("1_character")
+position = Vector2(4.999996, -197)
+scale = Vector2(0.24207377, 0.24207374)
+texture = ExtResource("1_db1bu")
