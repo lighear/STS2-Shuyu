@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Commands;
 using Shuyu.Interfaces;
+using STS2RitsuLib;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -16,8 +17,8 @@ namespace Shuyu.Cards;
 public sealed class FrozenCardModel : ModCardTemplate
 {
     public CardModel? _visualCardModel;
-    private List<Creature> targets = new List<Creature>();
-    private int count;
+    public List<Creature> targets = new List<Creature>();
+    public int count;
 
     public FrozenCardModel() : base(
         baseCost: 0,
@@ -31,25 +32,26 @@ public sealed class FrozenCardModel : ModCardTemplate
     {
         AssertMutable();
         _visualCardModel = original;
+        _energyCost = null;
         targets.Clear();
         count = 1;
         Owner ??= original.Owner;
         return this;
     }
 
-    public void SetIcyDamageTargets(Creature target)
+    public async Task SetIcyDamageTargets(Creature target)
     {
         this.targets.Clear();
         this.targets.Add(target);
     }
 
-    public void SetIcyDamageTargets(IEnumerable<Creature> targets)
+    public async Task SetIcyDamageTargets(IEnumerable<Creature> targets)
     {
         this.targets.Clear();
         this.targets.AddRange(targets);
     }
 
-    public void SetIcyDamageCount(int count)
+    public async Task SetIcyDamageCount(int count)
     {
         this.count = count;
     }
@@ -69,7 +71,7 @@ public sealed class FrozenCardModel : ModCardTemplate
     ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new CalculationBaseVar(5),
+        new CalculationBaseVar(3),
         new ExtraDamageVar(5),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
             (card, _) => Math.Max(card.EnergyCost.GetAmountToSpend(), 0))
@@ -86,7 +88,7 @@ public sealed class FrozenCardModel : ModCardTemplate
 
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismCmd.IcyDamage(choiceContext, 5 + 5 * Math.Max(EnergyCost.GetAmountToSpend(), 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(choiceContext, 3 + 5 * Math.Max(EnergyCost.GetAmountToSpend(), 0), targets, this);
             }
             await ShuyuMechanismCmd.UnfreezeCard(this);
         }

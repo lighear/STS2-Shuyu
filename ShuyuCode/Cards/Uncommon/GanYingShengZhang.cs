@@ -28,7 +28,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceThornsPower>(3)
+            new PowerVar<IceThornsPower>(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -38,7 +38,8 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            AddKeyword(CardKeyword.Innate);
+            //AddKeyword(CardKeyword.Innate);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(1);
         }
     }
 }

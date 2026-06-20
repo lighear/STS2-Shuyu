@@ -48,7 +48,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars["EnemyStrengthLoss"].UpgradeValueBy(4);
+            DynamicVars["EnemyStrengthLoss"].UpgradeValueBy(1);
         }
     }
 }

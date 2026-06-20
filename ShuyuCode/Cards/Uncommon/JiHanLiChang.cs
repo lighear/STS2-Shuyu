@@ -31,21 +31,23 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(3, ValueProp.Move),
-            new PowerVar<IceShieldPower>(3)
+            new CalculationBaseVar(0),
+            new CalculationExtraVar(4),
+            new CalculatedBlockVar(ValueProp.Move).WithMultiplier((card, _) => card.ResolveEnergyXValue()),
+            new PowerVar<IceShieldPower>(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             int count = ResolveEnergyXValue();
-            await CreatureCmd.GainBlock(Owner.Creature, new BlockVar(DynamicVars.Block.BaseValue * count, ValueProp.Move), cardPlay);
+            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.CalculatedBlock.Calculate(Owner.Creature), ValueProp.Move, cardPlay);
             await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue * count, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(1);
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
+            DynamicVars.CalculationExtra.UpgradeValueBy(2);
+            //DynamicVars["IceShieldPower"].UpgradeValueBy(2);
         }
     }
 }

@@ -2,6 +2,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Shuyu.Characters;
 using Shuyu.Powers;
@@ -14,6 +15,11 @@ namespace Shuyu.Relics;
 public sealed class BingZhiLin : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Common;
+
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
+    [
+        HoverTipFactory.FromPower<IceShieldPower>()
+    ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

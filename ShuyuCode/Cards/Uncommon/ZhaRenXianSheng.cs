@@ -35,10 +35,10 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(8),
-            new PowerVar<IceThornsPower>(8),
-            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 4),
-            new PowerVar<IceThornsPower>("ExtraIceThornsPower", 4)
+            new PowerVar<IceShieldPower>(6),
+            new PowerVar<IceThornsPower>(6),
+            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 3),
+            new PowerVar<IceThornsPower>("ExtraIceThornsPower", 3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -51,8 +51,8 @@ namespace Shuyu.Cards
         {
             DynamicVars["IceShieldPower"].UpgradeValueBy(2);
             DynamicVars["IceThornsPower"].UpgradeValueBy(2);
-            DynamicVars["ExtraIceShieldPower"].UpgradeValueBy(1);
-            DynamicVars["ExtraIceThornsPower"].UpgradeValueBy(1);
+            //DynamicVars["ExtraIceShieldPower"].UpgradeValueBy(0);
+            //DynamicVars["ExtraIceThornsPower"].UpgradeValueBy(0);
         }
 
         private decimal ExtraIceShiledFromFrozen;

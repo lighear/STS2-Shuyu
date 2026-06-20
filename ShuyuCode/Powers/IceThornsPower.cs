@@ -25,7 +25,7 @@ public class IceThornsPower : ModPowerTemplate
     {
         if (target == Owner && props.IsPoweredAttack())
         {
-            if (dealer != null)
+            if (dealer != null && dealer.IsEnemy)
             {
                 Flash();
                 await ReflectionEffect(choiceContext, dealer);
@@ -37,15 +37,10 @@ public class IceThornsPower : ModPowerTemplate
         }
     }
 
-    private async Task ReflectionEffect(PlayerChoiceContext choiceContext, Creature target)
+    public async Task ReflectionEffect(PlayerChoiceContext choiceContext, Creature target)
     {
-        int damage = Amount;
         PoPianPower? power = Owner.GetPower<PoPianPower>();
-        if (power != null && (target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>()))
-        {
-            power.Flash();
-            damage = (int)(damage * (1 + power.Amount / 100m));
-        }
+        int damage = await CalculateReflectionDamage(power, target);
         IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner, null);
 
         if (power != null)
@@ -59,5 +54,15 @@ public class IceThornsPower : ModPowerTemplate
                 }
             }
         }
+    }
+
+    public async Task<int> CalculateReflectionDamage(PoPianPower? power, Creature target)
+    {
+        if (power != null && (target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>()))
+        {
+            power.Flash();
+            return (int)(Amount * (1 + power.Amount / 100m));
+        }
+        return Amount;
     }
 }

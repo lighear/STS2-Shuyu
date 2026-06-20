@@ -49,7 +49,7 @@ namespace Shuyu.Cards
             {
                 if (card is FrozenCardModel frozenCard)
                 {
-                    frozenCard.SetIcyDamageTargets(cardPlay.Target!);
+                    await frozenCard.SetIcyDamageTargets(cardPlay.Target!);
                 }
             }
             await CardCmd.Discard(choiceContext, cards);
