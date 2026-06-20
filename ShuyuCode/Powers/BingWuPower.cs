@@ -51,7 +51,7 @@ public class BingWuPower : ModPowerTemplate
             return 1;
         }
 
-        if (target == Owner && props.IsPoweredAttack() && amount > 0)
+        if (target == Owner && props.IsPoweredAttack() && amount >= 1)
         {
             Triggered = true;
             return 0;

@@ -30,7 +30,7 @@ public class IceThornsPower : ModPowerTemplate
                 Flash();
                 await ReflectionEffect(choiceContext, dealer);
             }
-            if (amount > 0)
+            if (amount >= 1)
             {
                 await PowerCmd.Decrement(this);
             }
