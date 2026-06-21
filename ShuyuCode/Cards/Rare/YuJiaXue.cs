@@ -33,7 +33,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(4)
+            new PowerVar<IceShieldPower>(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -44,7 +44,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
+            DynamicVars["IceShieldPower"].UpgradeValueBy(2);
         }
 
         public async Task OnFreezingCard(CardModel card)
