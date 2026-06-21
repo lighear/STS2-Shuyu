@@ -24,7 +24,7 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(15, ValueProp.Unpowered)
+            new DamageVar(25, ValueProp.Unpowered)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
