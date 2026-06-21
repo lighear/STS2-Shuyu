@@ -91,7 +91,7 @@
     "SHUYU_CARD_NING_SHUANG_JU_XIANG.title":  "凝霜巨像",
     "SHUYU_CARD_NING_SHUANG_JU_XIANG.description":  "获得{Block:diff()}点[gold]格挡[/gold]。本回合内拥有[gold]寒冷[/gold]的敌人对你造成的攻击伤害减半。\n手中每有1张[gold]保留牌[/gold]，此牌耗能减少{energyPrefix:energyIcons(1)}。",
     "SHUYU_CARD_LENG_KU.title":  "冷酷",
-    "SHUYU_CARD_LENG_KU.description":  "[gold]寒冷[/gold]的敌人受到负面状态时失去的生命+{Damage:diff()}。",
+    "SHUYU_CARD_LENG_KU.description":  "[gold]寒冷[/gold]的敌人在回合开始时和受到负面状态时失去的生命+{Damage:diff()}。",
     "SHUYU_CARD_CHE_GU.title":  "彻骨",
     "SHUYU_CARD_CHE_GU.description":  "移除目标的[gold]人工制品[/gold]并施加[gold]寒冷[/gold]。\n如果移除了[gold]人工制品[/gold]，额外施加1次[gold]寒冷[/gold]。{IfUpgraded:show:\n抽{Cards:diff()}张牌。}",
     "SHUYU_CARD_BO_XUE.title":  "薄雪",

@@ -37,7 +37,7 @@
   "SHUYU_POWER_NING_SHUANG_JU_XIANG_POWER.smartDescription": "[blue]{Amount}[/blue]回合内拥有[gold]寒冷[/gold]的敌人对你造成的攻击伤害减半。",
   "SHUYU_POWER_NING_SHUANG_JU_XIANG_POWER.title": "凝霜巨像",
   "SHUYU_POWER_LENG_KU_POWER.description": "[gold]寒冷[/gold]的敌人受到负面状态时失去的生命+3。",
-  "SHUYU_POWER_LENG_KU_POWER.smartDescription": "[gold]寒冷[/gold]的敌人受到负面状态时失去的生命[blue]+{Amount}[/blue]。",
+  "SHUYU_POWER_LENG_KU_POWER.smartDescription": "[gold]寒冷[/gold]的敌人在回合开始时和受到负面状态时失去的生命[blue]+{Amount}[/blue]。",
   "SHUYU_POWER_LENG_KU_POWER.title": "冷酷",
   "SHUYU_POWER_LIN_ZHI_TONG_POWER.description": "每当受到除失去力量外的负面效果时，在当回合失去4点力量。",
   "SHUYU_POWER_LIN_ZHI_TONG_POWER.smartDescription": "每当受到除失去力量外的负面效果时，在当回合失去[blue]{Amount}[/blue]点[gold]力量[/gold]。",
