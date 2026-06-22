@@ -35,7 +35,8 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(4, ValueProp.Move)
+            new DamageVar(4, ValueProp.Move),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -57,6 +58,7 @@ namespace Shuyu.Cards
                 if (card is FrozenCardModel frozenCard)
                 {
                     await ShuyuMechanismCmd.UnfreezeCard(frozenCard);
+                    await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
                 }
                 else
                 {
