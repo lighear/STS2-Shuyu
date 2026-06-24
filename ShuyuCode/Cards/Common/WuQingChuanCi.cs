@@ -1,8 +1,10 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
@@ -31,25 +33,25 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(7, ValueProp.Move),
-            new PowerVar<FragilePower>(1)
+            new PowerVar<FragilePower>(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            if (cardPlay.Target!.Powers.Count(ShouldCountPower) > 0)
+            {
+                await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+                    .FromCard(this)
+                    .Targeting(cardPlay.Target!)
+                    .Execute(choiceContext);
+                await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
+            }
+            
             await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
-
-            if(cardPlay.Target!.HasPower<ChillPower>())
-            {
-                await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
-                .FromCard(this)
-                .Targeting(cardPlay.Target!)
-                .Execute(choiceContext);
-                await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
-            }
         }
 
         protected override void OnUpgrade()
@@ -57,5 +59,16 @@ namespace Shuyu.Cards
             DynamicVars.Damage.UpgradeValueBy(2);
             DynamicVars["FragilePower"].UpgradeValueBy(1);
         }
+        
+        private static bool ShouldCountPower(PowerModel power)
+        {
+            if (power.TypeForCurrentAmount == PowerType.Debuff)
+            {
+                return !(power is ITemporaryPower);
+            }
+            return false;
+        }
+        
+        
     }
 }

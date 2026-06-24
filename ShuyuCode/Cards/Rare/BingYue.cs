@@ -29,7 +29,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new PowerVar<IceShieldPower>(1),
-            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 6)
+            new PowerVar<IceShieldPower>("ExtraIceShieldPower", 4)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

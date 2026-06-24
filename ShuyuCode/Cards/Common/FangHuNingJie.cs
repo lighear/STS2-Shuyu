@@ -33,7 +33,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(7, ValueProp.Move),
+            new BlockVar(5, ValueProp.Move),
             new PowerVar<IceShieldPower>(1)
         ];
 
