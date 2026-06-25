@@ -28,6 +28,8 @@ namespace Shuyu.Commands
             {
                 return;
             }
+            CardCmd.ClearAffliction(card);
+
             var ips = card.CombatState?.IterateHookListeners().OfType<IOnFreezingCard>();
             if (ips != null)
             {
