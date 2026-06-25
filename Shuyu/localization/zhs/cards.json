@@ -70,7 +70,7 @@
     "SHUYU_CARD_XUN_HUAN_SHU_SHI.description":  "丢弃所有[gold]手牌[/gold]。\n抽取等于所丢弃[gold]保留牌[/gold]+{Cards:diff()}数量的牌。",
     "SHUYU_CARD_YONG_HENG_SHU_SHI.title":  "永恒术式",
     "SHUYU_CARD_YONG_HENG_SHU_SHI.description":  "抽{Cards:diff()}张牌。\n[gold]封冻[/gold]抽到的牌。",
-    "SHUYU_CARD_NING_JU.title":  "凝聚",
+    "SHUYU_CARD_NING_JU.title":  "相态凝聚",
     "SHUYU_CARD_NING_JU.description":  "手中每有1张[gold]保留牌[/gold]获得{energyPrefix:energyIcons(1)}。\n然后选择1张[gold]保留牌[/gold]丢弃。{InCombat:\n（获得{CalculatedEnergy:energyIcons()}）|}",
     "SHUYU_CARD_LIU_ZHUAN.title":  "流转",
     "SHUYU_CARD_LIU_ZHUAN.description":  "每当丢弃1张[gold]封冻牌[/gold]，抽1张牌。",
