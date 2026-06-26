@@ -34,7 +34,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(10, ValueProp.Move),
+            new DamageVar(8, ValueProp.Move),
             new PowerVar<FragilePower>(2),
             new RepeatVar(2),
             new DynamicVar("ExtraDamage", 3)
@@ -42,10 +42,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            int repeatCount = 1;
+            int repeatCount = DynamicVars.Repeat.IntValue;
             if (CombatState!.HittableEnemies.Count == 1)
             {
-                repeatCount += DynamicVars.Repeat.IntValue;
+                repeatCount += 1;
             }
 
             for (int i = 0; i < repeatCount; i++)

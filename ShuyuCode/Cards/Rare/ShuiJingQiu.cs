@@ -35,7 +35,8 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(2)
+            new CardsVar(2),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -46,6 +47,7 @@ namespace Shuyu.Cards
             {
                 await ShuyuMechanismCmd.FreezeCard(card);
             }
+            await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
         }
 
         protected override void OnUpgrade()
