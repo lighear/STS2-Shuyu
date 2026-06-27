@@ -21,56 +21,27 @@ public class BingWuPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
-    private class Data
-    {
-        public bool triggered;
-    }
-
-    private bool Triggered
-    {
-        get
-        {
-            return GetInternalData<Data>().triggered;
-        }
-        set
-        {
-            GetInternalData<Data>().triggered = value;
-        }
-    }
-
-    protected override object? InitInternalData()
-    {
-        return new Data() { triggered = false };
-    }
-
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (CombatState.CurrentSide == Owner.Side)
         {
-            Triggered = false;
             return 1;
         }
 
         if (target == Owner && props.IsPoweredAttack() && amount >= 1)
         {
-            Triggered = true;
             return 0;
         }
         else
         {
-            Triggered = false;
             return 1;
         }
     }
 
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
+    public override async Task AfterModifyingDamageAmount(CardModel? cardSource)
     {
-        if (Triggered && target == Owner)
-        {
-            Triggered = false;
-            Flash();
-            await PowerCmd.Decrement(this);
-        }
+        Flash();
+        await PowerCmd.Decrement(this);
     }
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)

@@ -1,4 +1,6 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -34,11 +36,31 @@ namespace Shuyu.Cards
             ShuyuCardTags.Taboo
         ];
 
-        private int hpBeforeCombatStart;
+        private int _hpBeforeCombatStart;
+        private int HpBeforeCombatStart
+        {
+            get
+            {
+                if (_hpBeforeCombatStart > 0)
+                {
+                    return _hpBeforeCombatStart;
+                }
+                return Owner.Creature.CurrentHp +
+                    CombatManager.Instance.History.Entries
+                        .OfType<DamageReceivedEntry>()
+                        .Where(entry => entry.Receiver == Owner.Creature)
+                        .Sum(entry => entry.Result.UnblockedDamage);
+            }
+            set
+            {
+                _hpBeforeCombatStart = value;
+            }
+        }
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             int hp = Owner.Creature.CurrentHp;
+            int hpBeforeCombatStart = HpBeforeCombatStart;
             if (hp < hpBeforeCombatStart)
             {
                 await CreatureCmd.Heal(Owner.Creature, hpBeforeCombatStart - hp);
@@ -53,7 +75,7 @@ namespace Shuyu.Cards
 
         public override async Task BeforeCombatStart()
         {
-            hpBeforeCombatStart = Owner.Creature.CurrentHp;
+            HpBeforeCombatStart = Owner.Creature.CurrentHp;
         }
     }
 }
