@@ -1,0 +1,40 @@
+[gd_scene load_steps=8 format=3 uid="uid://b48wtkhta5hyi"]
+
+[ext_resource type="Material" path="res://Shuyu/assets/materials/common/vfx_small_impact.tres" id="1_snf6i"]
+[ext_resource type="Texture2D" uid="uid://d0jwncjpj730w" path="res://Shuyu/assets/images/common_impact_flare_flipbook.png" id="2_q4a4p"]
+
+[sub_resource type="Curve" id="Curve_up02c"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 3), 0.0, -5.74391, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2cuog"]
+curve = SubResource("Curve_up02c")
+
+[sub_resource type="Curve" id="Curve_seh41"]
+_data = [Vector2(0, 1), 0.0, -2.41411, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hkn4e"]
+curve = SubResource("Curve_seh41")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6w044"]
+particle_flag_disable_z = true
+angle_min = -1000.0
+angle_max = 1000.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_hkn4e")
+emission_curve = SubResource("CurveTexture_2cuog")
+anim_offset_max = 1.0
+
+[node name="vfx_common_hit_flare" type="GPUParticles2D"]
+material = ExtResource("1_snf6i")
+emitting = false
+amount = 1
+texture = ExtResource("2_q4a4p")
+lifetime = 0.17
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_6w044")
