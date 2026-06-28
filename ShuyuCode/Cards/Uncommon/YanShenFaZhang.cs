@@ -27,13 +27,22 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new CalculationBaseVar(8),
             new ExtraDamageVar(1),
+            new CardsVar(9),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
                 (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c != card))
         ];
+        
+        protected override bool ShouldGlowGoldInternal => ShouldDouble();
+        
+        private bool ShouldDouble()
+        {
+            return PileType.Hand.GetPile(Owner).Cards.Count(c => c != this) >= DynamicVars.Cards.BaseValue;
+        }
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.CalculatedDamage)
+                .WithHitCount(ShouldDouble()?2:1)
                 .FromCard(this)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);

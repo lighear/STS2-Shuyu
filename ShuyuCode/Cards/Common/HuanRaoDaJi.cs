@@ -38,7 +38,8 @@ namespace Shuyu.Cards
             new CalculationBaseVar(1),
             new CalculationExtraVar(1),
             new CalculatedVar("CalculatedHits").WithMultiplier(
-                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain)) / 2)
+                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c != card && c.Keywords.Contains(CardKeyword.Retain)) / 2)
+            
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
