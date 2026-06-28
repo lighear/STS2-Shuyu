@@ -32,7 +32,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CalculationBaseVar(12),
+            new CalculationBaseVar(8),
             new ExtraDamageVar(3),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
                 (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => !c.IsFrozen() && c != card))
@@ -55,7 +55,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.CalculationBase.UpgradeValueBy(3);
+            DynamicVars.CalculationBase.UpgradeValueBy(2);
             DynamicVars.ExtraDamage.UpgradeValueBy(1);
         }
     }

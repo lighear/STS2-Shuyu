@@ -25,7 +25,7 @@ namespace Shuyu.Cards
 
         private bool ShouldDraw()
         {
-            return PileType.Hand.GetPile(Owner).Cards.Count(c => c != this) >= 7;
+            return PileType.Hand.GetPile(Owner).Cards.Count(c => c != this) >= 6;
         }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
