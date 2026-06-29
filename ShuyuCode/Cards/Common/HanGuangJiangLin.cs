@@ -40,6 +40,7 @@ namespace Shuyu.Cards
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this)
+                .WithHitFx("vfx/vfx_starry_impact")
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
