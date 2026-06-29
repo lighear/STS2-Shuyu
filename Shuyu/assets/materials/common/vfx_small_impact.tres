@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+[ext_resource type="Shader" uid="uid://cfhaeiu4ie01r" path="res://Shuyu/assets/shaders/common/vfx_flipbook_shader.gdshader" id="1_6egd5"]
+
+[resource]
+shader = ExtResource("1_6egd5")
