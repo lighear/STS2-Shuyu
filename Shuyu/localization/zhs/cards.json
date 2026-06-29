@@ -121,7 +121,7 @@
     "SHUYU_CARD_PO_PIAN.title":  "破片",
     "SHUYU_CARD_PO_PIAN.description":  "你的[gold]寒冰荆棘[/gold]的伤害额外施加{FragilePower:diff()}层[gold]易碎[/gold]。\n有[gold]易碎[/gold]或[gold]易伤[/gold]的敌人受到你的[gold]寒冰荆棘[/gold]的伤害增加{PoPianPower:diff()}%。",
     "SHUYU_CARD_SUI_BING_YU.title":  "碎冰雨",
-    "SHUYU_CARD_SUI_BING_YU.description":  "获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]。\n对随机敌人造成相当于你[gold]寒冰荆棘[/gold]层数的伤害，重复{Repeat:diff()}次。",
+    "SHUYU_CARD_SUI_BING_YU.description":  "对随机敌人造成相当于你[gold]寒冰荆棘[/gold]层数的伤害，重复{Repeat:diff()}次。{InCombat:\n（造成{CalculatedDamage}点伤害）|}",
     "SHUYU_CARD_GAN_YING_SHENG_ZHANG.title":  "感应生长",
     "SHUYU_CARD_GAN_YING_SHENG_ZHANG.description":  "每回合内受到前3次攻击伤害时，获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]。",
     "SHUYU_CARD_JIE_JING_CUI_HUA.title":  "结晶催化",
