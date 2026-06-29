@@ -54,6 +54,10 @@ public class FragilePower : ModPowerTemplate
 
             await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
 
+            if (CombatState == null)
+            {
+                return;
+            }
             foreach (IOnFragileConverted ip in CombatState.IterateHookListeners().OfType<IOnFragileConverted>())
             {
                 await ip.OnFragileConverted(choiceContext, Owner, applier);
