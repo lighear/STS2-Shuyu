@@ -24,12 +24,14 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(25, ValueProp.Unpowered)
+            new DamageVar(25, ValueProp.Unpowered),
+            new CardsVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await PowerCmd.Apply<YiLiuXingTaiPower>(choiceContext, Owner.Creature, DynamicVars.Damage.BaseValue, Owner.Creature, this);
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
         }
 
         protected override void OnUpgrade()
