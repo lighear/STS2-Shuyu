@@ -1,4 +1,5 @@
 {
   "SHUYU_ENCHANTMENT_CANT_FREEZE.title": "不冻",
-  "SHUYU_ENCHANTMENT_CANT_FREEZE.description": "此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。"
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.description": "此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。",
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.extraCardText": "此牌被[gold]封冻[/gold]后，解除[gold]封冻[/gold]。"
 }

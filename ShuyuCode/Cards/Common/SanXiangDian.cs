@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Models;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Interfaces;
@@ -14,7 +15,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class SanXiangDian : ModCardTemplate, IFrostforged
+    public class SanXiangDian : ModCardTemplate, IOnFreezingCard
     {
         public SanXiangDian() : base(
             baseCost: 0,
@@ -47,6 +48,11 @@ namespace Shuyu.Cards
         public Task FrostforgedEffect()
         {
             return Task.CompletedTask;
+        }
+
+        public async Task<bool> OnFreezingCard(CardModel card)
+        {
+            return !(card == this);
         }
     }
 }

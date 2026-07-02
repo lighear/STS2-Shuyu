@@ -6,13 +6,14 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using Shuyu.Afflictions;
+using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Enchantments;
 
 [RegisterEnchantment]
-public class CantFreeze : ModEnchantmentTemplate
+public class CantFreeze : ModEnchantmentTemplate, IOnFreezingCard
 {
     public override bool ShowAmount => false;
 
@@ -20,7 +21,7 @@ public class CantFreeze : ModEnchantmentTemplate
     // public override int DisplayAmount => DynamicVars.Cards.IntValue;
 
     // 是否会添加额外的卡牌描述文本
-    public override bool HasExtraCardText => false;
+    public override bool HasExtraCardText => true;
     
 
     // 像卡牌、遗物、药水等一样，可以使用DynamicVars和ExtraHoverTips
@@ -40,5 +41,10 @@ public class CantFreeze : ModEnchantmentTemplate
             return true;
         }
         return false;
+    }
+
+    public async Task<bool> OnFreezingCard(CardModel card)
+    {
+        return !(card == Card);
     }
 }
