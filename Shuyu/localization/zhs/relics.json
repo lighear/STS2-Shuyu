@@ -25,5 +25,8 @@
   "SHUYU_RELIC_BING_JIAN.flavor": "加快冰魔法的启动，夏天也用来放冷饮。",
   "SHUYU_RELIC_XUE_TIAN_WA_WA.title": "雪天娃娃",
   "SHUYU_RELIC_XUE_TIAN_WA_WA.description": "名字中有“禁术”的牌耗能减少{energyPrefix:energyIcons(1)}；“厄运”的耗能减少{energyPrefix:energyIcons(1)}，获得消耗。",
-  "SHUYU_RELIC_XUE_TIAN_WA_WA.flavor": "代替施术者承受诅咒的小人。"
+  "SHUYU_RELIC_XUE_TIAN_WA_WA.flavor": "代替施术者承受诅咒的小人。",
+  "SHUYU_RELIC_WEI_XING_XUE_REN.title": "微型雪人",
+  "SHUYU_RELIC_WEI_XING_XUE_REN.description": "拾起时从牌组选择至多[blue]{Cards}[/blue]张牌，[gold]附魔[/gold]：[purple]不冻[/purple]",
+  "SHUYU_RELIC_WEI_XING_XUE_REN.flavor": "帮忙解冻卡牌用的小人偶。"
 }
