@@ -21,7 +21,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class RongXueTeTiao : ModCardTemplate, IFrostforged, IOnFreezingCard
+    public class RongXueTeTiao : ModCardTemplate, IOnFreezingCard
     {
         public RongXueTeTiao() : base(
             baseCost: 0,
@@ -71,17 +71,13 @@ namespace Shuyu.Cards
             DynamicVars.Dexterity.UpgradeValueBy(1);
         }
 
-        public Task FrostforgedEffect()
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(CardModel card)
         {
             if (card.Owner == Owner && this.Pile?.Type == PileType.Discard)
             {
                 await CardPileCmd.Add(this, PileType.Hand);
             }
+            return !(card == this);
         }
     }
 }

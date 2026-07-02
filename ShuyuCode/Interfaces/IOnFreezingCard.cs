@@ -4,6 +4,7 @@ namespace Shuyu.Interfaces
 {
     public interface IOnFreezingCard
     {
-        public Task OnFreezingCard(CardModel card);
+        // 返回false表示解除card的封冻
+        public Task<bool> OnFreezingCard(CardModel card);
     }
 }
