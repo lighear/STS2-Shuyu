@@ -26,7 +26,7 @@ public sealed class WeiXingXueRen : ModRelicTemplate
     public override RelicAssetProfile AssetProfile => new(
         IconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",
         IconOutlinePath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png",
-        BigIconPath: $"{Entry.ResPath}/images/relit/{GetType().Name}.png");
+        BigIconPath: $"{Entry.ResPath}/images/relics/{GetType().Name}.png");
     
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
     [
