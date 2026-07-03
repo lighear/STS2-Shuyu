@@ -49,7 +49,7 @@ namespace Shuyu.Cards
             if (cardPlay.Target!.IsAlive)
             {
                 decimal damage = cardPlay.Target!.Powers.Count(p => p.TypeForCurrentAmount == PowerType.Debuff) * DynamicVars["Multiple"].BaseValue;
-                await CreatureCmd.Damage(choiceContext, cardPlay.Target, damage, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this);
+                await CreatureCmd.Damage(choiceContext, cardPlay.Target, damage, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this, cardPlay);
             }
         }
 

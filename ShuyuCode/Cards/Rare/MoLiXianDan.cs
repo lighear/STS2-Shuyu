@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
@@ -49,7 +49,7 @@ namespace Shuyu.Cards
                 .Sum(entry => entry.Amount)
                 * DynamicVars["Multiple"].BaseValue;*/
             AttackCommand attackCommand = await DamageCmd.Attack(DynamicVars.CalculatedDamage)
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
@@ -57,7 +57,7 @@ namespace Shuyu.Cards
             if (damageResult != null)
             {
                 await DamageCmd.Attack(damageResult.TotalDamage + damageResult.OverkillDamage)
-                    .FromCard(this)
+                    .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState!)
                     .Execute(choiceContext);
             }
