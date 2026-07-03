@@ -45,14 +45,11 @@ namespace Shuyu.Cards
             AttackCommand attackCommand = await DamageCmd
                 .Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount(hitCount)
-<<<<<<< HEAD
                 .WithAttackerFx(() => NDuanXueVfx.Create(cardPlay.Target!, hitCount))
                 .OnlyPlayAnimOnce()
                 .AfterAttackerAnim(async () => await Cmd.Wait(0.15f * hitCount + 0.6f))
-                .FromCard(this)
-=======
+                
                 .FromCard(this, cardPlay)
->>>>>>> master
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 

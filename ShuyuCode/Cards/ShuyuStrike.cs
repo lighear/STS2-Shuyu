@@ -38,12 +38,8 @@ public sealed class ShuyuStrike : ModCardTemplate
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
 
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-<<<<<<< HEAD
-            .FromCard(this)
             .WithHitFx("vfx/vfx_attack_slash")
-=======
             .FromCard(this, cardPlay)
->>>>>>> master
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
     }
