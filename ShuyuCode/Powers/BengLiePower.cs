@@ -44,10 +44,10 @@ public class BengLiePower : ModPowerTemplate, IOnFragileConverted
 
     public async Task OnFragileConverted(PlayerChoiceContext choiceContext, Creature powerOwner, Creature? powerApplier)
     {
-        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier, null);
+        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier ?? Owner);
 
         var otherEnemies = CombatState.HittableEnemies.Where(enemy => enemy != powerOwner);
-        await CreatureCmd.Damage(choiceContext, otherEnemies, DynamicVars.Damage, powerApplier, null);
+        await CreatureCmd.Damage(choiceContext, otherEnemies, DynamicVars.Damage, powerApplier ?? Owner);
         await PowerCmd.Apply<FragilePower>(choiceContext, otherEnemies, DynamicVars["FragilePower"].BaseValue, powerApplier, null);
     }
 }

@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -43,7 +43,7 @@ namespace Shuyu.Cards
             AttackCommand attackCommand = await DamageCmd
                 .Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount(hitCount)
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
@@ -52,7 +52,7 @@ namespace Shuyu.Cards
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .WithHitCount(remainHitCount)
-                    .FromCard(this)
+                    .FromCard(this, cardPlay)
                     .TargetingRandomOpponents(CombatState!)
                     .Execute(choiceContext);
             }

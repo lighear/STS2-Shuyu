@@ -159,7 +159,7 @@ namespace Shuyu.Commands
             await ConfirmIcyDamageTargets(targets, cardSource);
             if (targets.Count > 0)
             {
-                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource);
+                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource, null);
             }
         }
 

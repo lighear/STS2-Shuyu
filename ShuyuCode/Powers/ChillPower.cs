@@ -75,7 +75,7 @@ public class ChillPower : ModPowerTemplate
             return;
         }
 
-        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, Owner);
         if (Owner.IsAlive)
         {
             await PowerCmd.Remove(this);
@@ -98,12 +98,12 @@ public class ChillPower : ModPowerTemplate
                     return;
                 }
                 Flash();
-                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage * 2, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage * 2, ValueProp.Unblockable | ValueProp.Unpowered, Owner);
             }
             else
             {
                 Flash();
-                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                await CreatureCmd.Damage(choiceContext, Owner, ChillDamage, ValueProp.Unblockable | ValueProp.Unpowered, Owner);
             }
         }
     }

@@ -36,7 +36,7 @@ namespace Shuyu.Cards
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
                 .Execute(choiceContext);
 
@@ -45,7 +45,6 @@ namespace Shuyu.Cards
                 List<PowerModel> debuffs = enemy.Powers.Where(p => p.TypeForCurrentAmount == PowerType.Debuff).ToList();
                 foreach (PowerModel debuff in debuffs)
                 {
-                    (debuff as ITemporaryPower)?.IgnoreNextInstance();
                     await PowerCmd.Apply(choiceContext, debuff, enemy, debuff.Amount, Owner.Creature, this);
                 }
             }

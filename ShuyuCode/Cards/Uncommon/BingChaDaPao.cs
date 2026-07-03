@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -51,7 +51,7 @@ namespace Shuyu.Cards
             for (int i = 0; i < repeatCount; i++)
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this)
+                    .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState)
                     .Execute(choiceContext);
 
