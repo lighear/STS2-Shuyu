@@ -17,7 +17,7 @@ namespace Shuyu.Cards
     public class NingJu : ModCardTemplate
     {
         public NingJu() : base(
-            baseCost: 2,
+            baseCost: 1,
             CardType.Skill,
             CardRarity.Uncommon,
             TargetType.None)
