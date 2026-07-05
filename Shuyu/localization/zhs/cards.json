@@ -184,5 +184,11 @@
     "SHUYU_CARD_JIAN_DAO_ZHI_TA.title":  "尖刀之塔",
     "SHUYU_CARD_JIAN_DAO_ZHI_TA.description":  "当你获得[gold]寒冰荆棘[/gold]时，所有其他玩家获得相同的层数。\n获得{IceThornsPower:diff()}[gold]寒冰荆棘[/gold]。",
     "SHUYU_CARD_JIN_SHU_JIE_JIE.title":  "禁术 · 结界",
-    "SHUYU_CARD_JIN_SHU_JIE_JIE.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n将1张[gold]厄运[/gold]加入[gold]抽牌堆[/gold]，\n当你受到大于0的攻击伤害时，额外失去1层[gold]寒冰护盾[/gold]。"
+    "SHUYU_CARD_JIN_SHU_JIE_JIE.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n将1张[gold]厄运[/gold]加入[gold]抽牌堆[/gold]，\n当你受到大于0的攻击伤害时，额外失去1层[gold]寒冰护盾[/gold]。",
+	"SHUYU_CARD_TIAO_HE_SHU_SHI.title":  "调和术式",
+    "SHUYU_CARD_TIAO_HE_SHU_SHI.description":  "将一张[gold]三相点+[/gold]置入所有玩家的手牌。\n其带有[gold]保留[/gold]{IfUpgraded:show:和附魔：播种}。",
+	"SHUYU_CARD_BING_SHAN_YI_JIAO.title":  "冰山一角",
+    "SHUYU_CARD_BING_SHAN_YI_JIAO.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n将三分之一的[gold]寒冰护盾[/gold]转移给一名其他玩家。",
+	"SHUYU_CARD_JIU_CHAN_ZHI_SHU.title":  "纠缠之书",
+    "SHUYU_CARD_JIU_CHAN_ZHI_SHU.description":  "战斗开始时，将一张此牌的复制加入其他玩家的手中。\n造成{Damage:diff()}点伤害{Repeat:diff()}次，然后令所有其他玩家将纠缠之书移回其手中。\n[gold]冰器[/gold]：所有玩家的纠缠之书伤害增加1次。"
 }
