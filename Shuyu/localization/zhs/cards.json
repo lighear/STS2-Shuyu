@@ -129,7 +129,7 @@
     "SHUYU_CARD_CHU_XUE_SHENG_JIE.title":  "初雪圣界",
     "SHUYU_CARD_CHU_XUE_SHENG_JIE.description":  "所有玩家获得{IceShieldPower:diff()}[gold]寒冰护盾[/gold]。\n战斗结束时，拥有[gold]寒冰护盾[/gold]的玩家恢复{Heal:diff()}点生命。",
 	"SHUYU_CARD_BING_QI_ZHAO_HUAN.title":  "冰器召唤",
-    "SHUYU_CARD_BING_QI_ZHAO_HUAN.description":  "将抽牌堆或弃牌堆中的随机{Cards:diff()}张[gold]冰器牌[/gold]加入手牌。\n[gold]封冻[/gold]手中所有[gold]冰器牌[/gold]。",
+    "SHUYU_CARD_BING_QI_ZHAO_HUAN.description":  "将抽牌堆或弃牌堆中的随机{Cards:diff()}张[gold]冰器牌[/gold]加入手牌。\n[gold]封冻[/gold]手中所有[gold]冰器牌[/gold]。\n下回合获得{Energy:energyIcons()}。",
     "SHUYU_CARD_DUAN_XUE.title":  "「断雪」",
     "SHUYU_CARD_DUAN_XUE.description":  "造成{Damage:diff()}点伤害{Repeat:diff()}次，目标已死亡时剩余段数将作用于随机其他目标。\n[gold]冰器[/gold]：此牌在本场战斗中伤害增加{ExtraDamage:diff()}点。\n每当此牌被丢弃时，将此牌返回[gold]手牌[/gold]，且此牌下一次打出时额外造成1次伤害。",
     "SHUYU_CARD_NING_YU.title":  "「凝雨」",
