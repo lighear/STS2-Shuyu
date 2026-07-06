@@ -40,7 +40,7 @@ public sealed class ZhaRenSuiPian : ModRelicTemplate
         if (participants.Contains(base.Owner.Creature))
         {
             decimal num = Owner.Creature.Block / DynamicVars.Block.BaseValue * DynamicVars["IceThornsPower"].BaseValue;
-            await PowerCmd.Apply<IceThornsPower>(new ThrowingPlayerChoiceContext(), base.Owner.Creature, num, base.Owner.Creature, null);
+            await PowerCmd.Apply<IceThornsPower>(choiceContext, base.Owner.Creature, num, base.Owner.Creature, null);
         }
     }
 }
