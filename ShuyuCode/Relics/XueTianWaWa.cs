@@ -8,7 +8,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Relics;
 
-[RegisterRelic(typeof(ShuyuRelicPool))]
+//[RegisterRelic(typeof(ShuyuRelicPool))]
 public sealed class XueTianWaWa : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Shop;

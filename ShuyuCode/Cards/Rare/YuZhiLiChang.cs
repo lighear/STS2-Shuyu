@@ -42,11 +42,11 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new PowerVar<IceThornsPower>(CurrentPowerAmount),
             new PowerVar<IceShieldPower>(CurrentPowerAmount),
-            new DynamicVar("Increase", 2)
+            new DynamicVar("Increase", 1)
         ];
 
         private bool firstTurnAutoPlay;
-        private int _currentPowerAmount = 4;
+        private int _currentPowerAmount = 5;
         private int _increasedPowerAmount;
 
         [SavedProperty]
@@ -138,7 +138,7 @@ namespace Shuyu.Cards
 
         private void UpdateAmount()
         {
-            CurrentPowerAmount = 4 + IncreasedPowerAmount;
+            CurrentPowerAmount = 5 + IncreasedPowerAmount;
         }
     }
 }

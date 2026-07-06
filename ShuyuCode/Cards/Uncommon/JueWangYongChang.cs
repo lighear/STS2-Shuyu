@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -32,7 +32,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CalculationBaseVar(12),
+            new CalculationBaseVar(8),
             new ExtraDamageVar(3),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
                 (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => !c.IsFrozen() && c != card))
@@ -41,7 +41,7 @@ namespace Shuyu.Cards
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.CalculatedDamage)
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
                 .Execute(choiceContext);
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
@@ -55,7 +55,7 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.CalculationBase.UpgradeValueBy(3);
+            DynamicVars.CalculationBase.UpgradeValueBy(2);
             DynamicVars.ExtraDamage.UpgradeValueBy(1);
         }
     }

@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -36,7 +36,7 @@ public class FragilePower : ModPowerTemplate
         new DynamicVar("DamageIncrease", 1.25m)
     ];
 
-    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, MegaCrit.Sts2.Core.Entities.Cards.CardPlay? cardPlay)
     {
         if (target != Owner || !props.IsPoweredAttack() || target.GetPower<VulnerablePower>() != null)
         {
@@ -54,6 +54,10 @@ public class FragilePower : ModPowerTemplate
 
             await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
 
+            if (CombatState == null)
+            {
+                return;
+            }
             foreach (IOnFragileConverted ip in CombatState.IterateHookListeners().OfType<IOnFragileConverted>())
             {
                 await ip.OnFragileConverted(choiceContext, Owner, applier);

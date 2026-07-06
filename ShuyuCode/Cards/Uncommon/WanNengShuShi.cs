@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -35,13 +35,14 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(4, ValueProp.Move)
+            new DamageVar(4, ValueProp.Move),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
@@ -57,6 +58,7 @@ namespace Shuyu.Cards
                 if (card is FrozenCardModel frozenCard)
                 {
                     await ShuyuMechanismCmd.UnfreezeCard(frozenCard);
+                    await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
                 }
                 else
                 {

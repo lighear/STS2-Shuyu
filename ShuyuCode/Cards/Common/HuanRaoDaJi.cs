@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -34,18 +34,19 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(8, ValueProp.Move),
+            new DamageVar(9, ValueProp.Move),
             new CalculationBaseVar(1),
             new CalculationExtraVar(1),
             new CalculatedVar("CalculatedHits").WithMultiplier(
-                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain)) / 2)
+                (card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => c != card && c.Keywords.Contains(CardKeyword.Retain)) / 2)
+            
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
         }

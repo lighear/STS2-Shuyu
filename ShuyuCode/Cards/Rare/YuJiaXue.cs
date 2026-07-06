@@ -33,25 +33,27 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(2)
+            new PowerVar<IceShieldPower>(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
+            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
+            DynamicVars["IceShieldPower"].UpgradeValueBy(2);
         }
 
-        public async Task OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(CardModel card)
         {
             if (card == this)
             {
                 await FreezingEffect(new ThrowingPlayerChoiceContext());
             }
+            return true;
         }
 
         public async Task AfterUnfreezingCard(CardModel card)
@@ -64,7 +66,7 @@ namespace Shuyu.Cards
 
         private async Task FreezingEffect(PlayerChoiceContext choiceContext)
         {
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
+            //await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
         }
     }

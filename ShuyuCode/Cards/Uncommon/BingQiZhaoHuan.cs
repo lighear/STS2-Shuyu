@@ -41,7 +41,15 @@ namespace Shuyu.Cards
                 .Concat(PileType.Discard.GetPile(Owner).Cards)
                 .Where(c => c.IsFrostforged())
                 .TakeRandom(DynamicVars.Cards.IntValue, CombatState!.RunState.Rng.CombatCardSelection);
-            await CardPileCmd.Add(cards, PileType.Hand);
+            foreach (CardModel card in cards)
+            {
+                await CardPileCmd.Add(card, PileType.Hand);
+            }
+            List<CardModel> cardsfrost = PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrostforged()).ToList();
+            foreach (CardModel card in cardsfrost)
+            {
+                await ShuyuMechanismCmd.FreezeCard(card);
+            }
         }
 
         protected override void OnUpgrade()

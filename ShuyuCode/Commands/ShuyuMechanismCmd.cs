@@ -20,7 +20,7 @@ namespace Shuyu.Commands
     {
         public static bool IsFrozen(this CardModel card) => card is FrozenCardModel;
 
-        public static bool IsFrostforged(this CardModel card) => card.Keywords.Contains(ShuyuKeywords.Frostforged);
+        public static bool IsFrostforged(this CardModel card) => card is IFrostforged;
 
         public static async Task FreezeCard(CardModel card)
         {
@@ -28,20 +28,16 @@ namespace Shuyu.Commands
             {
                 return;
             }
-            var ips = card.CombatState?.IterateHookListeners().OfType<IOnFreezingCard>();
-            if (ips != null)
-            {
-                foreach (IOnFreezingCard ip in ips)
-                {
-                    await ip.OnFreezingCard(card);
-                }
-            }
+            CardCmd.ClearAffliction(card);
 
+            bool unfreeze = false;
             if (card is IFrostforged frostforged)
             {
+                unfreeze = true;
+
                 int count = 1;
                 HuiXiangYongChangPower? power = card.Owner.Creature.GetPower<HuiXiangYongChangPower>();
-                if (power != null && card.IsFrostforged())
+                if (power != null)
                 {
                     power.Flash();
                     count += power.Amount;
@@ -50,9 +46,22 @@ namespace Shuyu.Commands
                 {
                     await frostforged.FrostforgedEffect();
                 }
-                return;
             }
 
+            var ips = card.CombatState?.IterateHookListeners().OfType<IOnFreezingCard>();
+            if (ips != null)
+            {
+                foreach (IOnFreezingCard ip in ips)
+                {
+                    unfreeze = !(await ip.OnFreezingCard(card)) || unfreeze;
+                }
+            }
+
+            if (unfreeze)
+            {
+                return;
+            }
+            
             FrozenCardModel? frozenCard = card.CombatState?.CreateCard<FrozenCardModel>(card.Owner);
             if (frozenCard == null)
             {
@@ -150,7 +159,7 @@ namespace Shuyu.Commands
             await ConfirmIcyDamageTargets(targets, cardSource);
             if (targets.Count > 0)
             {
-                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource);
+                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource, null);
             }
         }
 

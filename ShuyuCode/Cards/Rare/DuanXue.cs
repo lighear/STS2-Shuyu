@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -48,7 +48,7 @@ namespace Shuyu.Cards
                 .WithAttackerFx(() => NDuanXueVfx.Create(cardPlay.Target!, hitCount))
                 .OnlyPlayAnimOnce()
                 .AfterAttackerAnim(async () => await Cmd.Wait(0.15f * hitCount + 0.6f))
-                .FromCard(this)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
@@ -57,7 +57,7 @@ namespace Shuyu.Cards
             {
                 await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .WithHitCount(remainHitCount)
-                    .FromCard(this)
+                    .FromCard(this, cardPlay)
                     .TargetingRandomOpponents(CombatState!)
                     .Execute(choiceContext);
             }

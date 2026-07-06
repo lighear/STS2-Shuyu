@@ -5,8 +5,8 @@
 [node name="ShuyuCharacter" type="Node2D"]
 
 [node name="Visuals" type="Sprite2D" parent="."]
-position = Vector2(4.999996, -185)
-scale = Vector2(0.18295218, 0.18295214)
+position = Vector2(3.999998, -188)
+scale = Vector2(0.19438669, 0.19438666)
 texture = ExtResource("1_58lmd")
 
 [node name="Bounds" type="Control" parent="."]
@@ -20,12 +20,12 @@ offset_bottom = 14.0
 
 [node name="IntentPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(24, -224)
+position = Vector2(-1, -354)
 
 [node name="CenterPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -96)
+position = Vector2(0, -226)
 
 [node name="TalkPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0, -184)
+position = Vector2(-1, -416)
