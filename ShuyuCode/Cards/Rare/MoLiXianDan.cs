@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -43,14 +44,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            /*decimal damage = CombatManager.Instance.History.Entries
-                .OfType<PowerReceivedEntry>()
-                .Where(entry => entry.Power is FragilePower && entry.Applier == Owner.Creature)
-                .Sum(entry => entry.Amount)
-                * DynamicVars["Multiple"].BaseValue;*/
             AttackCommand attackCommand = await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .WithHitVfxNode((Creature target) => NMoLiXianDanVfx.Create(Owner.Creature, target))
                 .Execute(choiceContext);
 
             DamageResult? damageResult = attackCommand.Results.FirstOrDefault()?.FirstOrDefault();
@@ -59,6 +56,7 @@ namespace Shuyu.Cards
                 await DamageCmd.Attack(damageResult.TotalDamage + damageResult.OverkillDamage)
                     .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState!)
+                    .BeforeDamage(async () => await Cmd.Wait(0.8f))
                     .Execute(choiceContext);
             }
         }
