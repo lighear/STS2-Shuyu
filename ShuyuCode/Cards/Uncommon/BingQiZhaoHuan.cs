@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Commands;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -32,7 +33,8 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(1)
+            new CardsVar(1),
+            new EnergyVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -50,6 +52,7 @@ namespace Shuyu.Cards
             {
                 await ShuyuMechanismCmd.FreezeCard(card);
             }
+            await PowerCmd.Apply<NextTurnEnergyPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()

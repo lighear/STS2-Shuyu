@@ -59,6 +59,14 @@ namespace Shuyu.Commands
 
             if (unfreeze)
             {
+                var ips2 = card.CombatState?.IterateHookListeners().OfType<IAfterUnfreezingCard>();
+                if (ips2 != null)
+                {
+                    foreach (IAfterUnfreezingCard ip in ips2)
+                    {
+                        await ip.AfterUnfreezingCard(card);
+                    }
+                }
                 return;
             }
             

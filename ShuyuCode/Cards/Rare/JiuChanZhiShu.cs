@@ -29,6 +29,7 @@ namespace Shuyu.Cards
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
             CardKeyword.Innate,
+            CardKeyword.Retain,
             ShuyuKeywords.Frostforged
         ];
 

@@ -34,7 +34,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new CalculationBaseVar(0),
-            new ExtraDamageVar(3),
+            new ExtraDamageVar(5),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier(
                 (card, _) => CombatManager.Instance.History.Entries
                     .OfType<PowerReceivedEntry>()
