@@ -84,7 +84,7 @@ namespace Shuyu.Vfx
             {
                 _prepareParticles[i].Restart();
             }
-            await Cmd.Wait(0.33f, _cts.Token);
+            await Cmd.Wait(0.15f, _cts.Token);
             for (int i = 0; i < _throwParticles.Count; i++)
 			{
 				_throwParticles[i].Restart();

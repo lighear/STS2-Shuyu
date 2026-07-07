@@ -56,7 +56,7 @@ namespace Shuyu.Cards
                 await DamageCmd.Attack(damageResult.TotalDamage + damageResult.OverkillDamage)
                     .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState!)
-                    .BeforeDamage(async () => await Cmd.Wait(0.8f))
+                    .BeforeDamage(async () => await Cmd.Wait(0.2f))
                     .Execute(choiceContext);
             }
         }

@@ -81,7 +81,7 @@ namespace Shuyu.Vfx
             }
             NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
 
-            await Cmd.Wait(0.7f, _cts.Token);
+            await Cmd.Wait(0.2f, _cts.Token);
             for (int i = 0; i < _secondBulletParticles.Count; i++)
 			{
                 _secondBulletParticles[i].Restart();
