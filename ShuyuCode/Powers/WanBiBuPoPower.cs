@@ -69,7 +69,7 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
         Data data = GetInternalData<Data>();
         if (data.damageReturnTarget != null)
         {
-            await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), data.damageReturnTarget, data.damageReceiving, ValueProp.Unpowered, Owner, null);
+            await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), data.damageReturnTarget, data.damageReceiving, ValueProp.Unpowered, Owner);
         }
     }
 

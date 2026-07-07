@@ -44,6 +44,10 @@ namespace Shuyu.Cards
             foreach (CardModel card in cards)
             {
                 await CardPileCmd.Add(card, PileType.Hand);
+            }
+            List<CardModel> cardsfrost = PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrostforged()).ToList();
+            foreach (CardModel card in cardsfrost)
+            {
                 await ShuyuMechanismCmd.FreezeCard(card);
             }
         }

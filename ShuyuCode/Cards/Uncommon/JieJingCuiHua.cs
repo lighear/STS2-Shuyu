@@ -55,7 +55,7 @@ namespace Shuyu.Cards
             int damage = amount / DynamicVars["IceThornsPower"].IntValue;
             if (damage > 0)
             {
-                await CreatureCmd.Damage(choiceContext, Owner.Creature, damage, ValueProp.Move | ValueProp.Unpowered, this);
+                await CreatureCmd.Damage(choiceContext, Owner.Creature, damage, ValueProp.Move | ValueProp.Unpowered, this, cardPlay);
             }
         }
 

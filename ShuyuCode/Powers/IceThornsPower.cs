@@ -41,7 +41,7 @@ public class IceThornsPower : ModPowerTemplate
     {
         PoPianPower? power = Owner.GetPower<PoPianPower>();
         int damage = await CalculateReflectionDamage(power, target);
-        IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner, null);
+        IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner);
 
         if (power != null)
         {

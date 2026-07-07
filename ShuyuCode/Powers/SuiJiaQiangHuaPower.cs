@@ -30,6 +30,6 @@ public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
     public async Task OnFragileConverted(PlayerChoiceContext choiceContext, Creature powerOwner, Creature? powerApplier)
     {
         await PowerCmd.Apply<WeakPower>(choiceContext, powerOwner, 3, powerApplier, null);
-        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier, null);
+        await CreatureCmd.Damage(choiceContext, powerOwner, Amount, ValueProp.Unpowered, powerApplier ?? Owner);
     }
 }
