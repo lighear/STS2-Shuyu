@@ -60,7 +60,18 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
             // 人物选择图标-锁定状态。
             CharacterSelectLockedIconPath: $"{ImageRoot}/Shuyu_character_select_locked.png",
             // 地图上的角色标记图标、表情轮盘上的角色头像。
-            MapMarkerPath: $"{ImageRoot}/Shuyu_map_marker.png"));
+            MapMarkerPath: $"{ImageRoot}/Shuyu_map_marker.png"),
+        Multiplayer: new(
+            // 多人模式-手指。
+            ArmPointingTexturePath: $"{ImageRoot}/multiplayer_hand_shuyu_point.png",
+            // 多人模式剪刀石头布-石头。
+            ArmRockTexturePath: $"{ImageRoot}/multiplayer_hand_shuyu_rock.png",
+            // 多人模式剪刀石头布-布。
+            ArmPaperTexturePath: $"{ImageRoot}/multiplayer_hand_shuyu_paper.png",
+            // 多人模式剪刀石头布-剪刀。
+            ArmScissorsTexturePath: $"{ImageRoot}/multiplayer_hand_shuyu_scissors.png"
+
+        ));
 
     // 某个字段没写时，RitsuLib 会从占位角色配置里补齐。
     public override string? PlaceholderCharacterId => "ironclad";
