@@ -7,9 +7,28 @@ using MegaCrit.Sts2.Core.TestSupport;
 
 namespace Shuyu.Vfx;
 
-public static class VFXUtil {
+public static class VFXUtil
+{
     // Mod 独立的场景缓存（避免被 PreloadManager 清理）
     public static readonly ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
+
+    public static void PreloadScenes()
+    {
+        //你的场景字符串列表
+        var paths = new List<string>
+        {
+            "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
+        };
+        foreach (var path in paths)
+        {
+            if (ModSceneCache.ContainsKey(path)) continue;
+            var scene = ResourceLoader.Load<PackedScene>(path, null, ResourceLoader.CacheMode.Reuse);
+            if (scene != null)
+            {
+                ModSceneCache[path] = scene;
+            }
+        }
+    }
 
     public static Node2D GenVFXNode(string scenePath) {
         if (ModSceneCache.TryGetValue(scenePath, out var modScene)) {
@@ -60,6 +79,4 @@ public static class VFXUtil {
         }
         return null;
     }
-    
-    
 }

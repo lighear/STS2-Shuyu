@@ -1,8 +1,10 @@
+using Godot;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using Shuyu.Cards;
 using Shuyu.Patches;
 using Shuyu.Relics;
+using Shuyu.Vfx;
 using STS2RitsuLib;
 using STS2RitsuLib.Interop;
 using STS2RitsuLib.Patching.Core;
@@ -51,6 +53,9 @@ public partial class Entry
         // 初始卡牌、初始遗物升级注册。
         RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BingShuangChongJi, JiBingFengBao>();
         RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<BingLengZhiHui, JiHanZhiHui>();
+
+        // 预加载 VFX 场景。
+        VFXUtil.PreloadScenes();
 
         Logger.Info("Shuyu initialized.");
     }
