@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using Shuyu.Afflictions;
+using Shuyu.Commands;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -33,12 +34,12 @@ public class CantFreeze : ModEnchantmentTemplate, IOnFreezingCard
         IconPath: $"{Entry.ResPath}/images/enchantments/{GetType().Name}.png"
     );
 
-    // 决定是否可以附魔到某张卡牌上，这里我们让它只能附魔到获得格挡的卡牌上。
+    
     public override bool CanEnchant(CardModel card)
     {
         if (base.CanEnchant(card))
         {
-            return true;
+            return !card.IsFrostforged();
         }
         return false;
     }
@@ -46,5 +47,10 @@ public class CantFreeze : ModEnchantmentTemplate, IOnFreezingCard
     public async Task<bool> OnFreezingCard(CardModel card)
     {
         return !(card == Card);
+    }
+    
+    protected override void OnEnchant()
+    {
+        base.Card.AddKeyword(CardKeyword.Retain);
     }
 }

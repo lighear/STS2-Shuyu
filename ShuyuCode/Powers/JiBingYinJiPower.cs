@@ -29,9 +29,9 @@ public class JiBingYinJiPower : ModPowerTemplate
             Flash();
             await PowerCmd.Apply<ChillPower>(new ThrowingPlayerChoiceContext(), Owner, 1, Applier, null);
 
-            Creature? enemy = CombatState.HittableEnemies
+            Creature? enemy = CombatState?.HittableEnemies
                 .Where(enemy => !enemy.HasPower<JiBingYinJiPower>())
-                .TakeRandom(1, Owner.CombatState!.RunState.Rng.CombatTargets)
+                .TakeRandom(1, CombatState.RunState.Rng.CombatTargets)
                 .FirstOrDefault();
             if (enemy != null)
             {

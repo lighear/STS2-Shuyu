@@ -12,24 +12,19 @@ using MegaCrit.Sts2.Core.TestSupport;
 
 namespace Shuyu.Vfx
 {
-	public partial class NBingZhenVfx : Node2D
+	public partial class NMoLiXianDanVfx : Node2D
 	{
-		//private static readonly StringName _color = new StringName("color");
-
-		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_BingZhen.tscn";
+		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_MoLiXianDan.tscn";
 
 		[Export(PropertyHint.None, "")]
-		private Array<GpuParticles2D> _throwParticles = new Array<GpuParticles2D>();
-
-		[Export(PropertyHint.None, "")]
-		private Array<GpuParticles2D> _impactParticles = new Array<GpuParticles2D>();
+		private Array<GpuParticles2D> _firstBulletParticles = new Array<GpuParticles2D>();
 
         [Export(PropertyHint.None, "")]
-        private Array<GpuParticles2D> _prepareParticles = new Array<GpuParticles2D>();
+        private Array<GpuParticles2D> _secondBulletParticles = new Array<GpuParticles2D>();
 
         private CancellationTokenSource? _cts;
 
-		public static NBingZhenVfx? Create(Creature owner, Creature? target)
+        public static NMoLiXianDanVfx? Create(Creature owner, Creature? target)
 		{
 			if (TestMode.IsOn)
 			{
@@ -48,16 +43,16 @@ namespace Shuyu.Vfx
 			return Create(nCreature.VfxSpawnPosition, nCreature2.VfxSpawnPosition);
 		}
 
-		public static NBingZhenVfx? Create(Vector2 throwerCenterPosition, Vector2 targetCenterPosition)
+		public static NMoLiXianDanVfx? Create(Vector2 throwerCenterPosition, Vector2 targetCenterPosition)
 		{
 			if (TestMode.IsOn)
 			{
 				return null;
 			}
-			NBingZhenVfx nBingZhenVfx = PreloadManager.Cache.GetScene(scenePath).Instantiate<NBingZhenVfx>(PackedScene.GenEditState.Disabled);
-			nBingZhenVfx.GlobalPosition = targetCenterPosition;
-			nBingZhenVfx.ApplyRotation(throwerCenterPosition, targetCenterPosition);
-			return nBingZhenVfx;
+            NMoLiXianDanVfx nMoLiXianDanVfx = PreloadManager.Cache.GetScene(scenePath).Instantiate<NMoLiXianDanVfx>(PackedScene.GenEditState.Disabled);
+			nMoLiXianDanVfx.GlobalPosition = targetCenterPosition;
+			nMoLiXianDanVfx.ApplyRotation(throwerCenterPosition, targetCenterPosition);
+			return nMoLiXianDanVfx;
 		}
 
 		public void ApplyRotation(Vector2 throwerPosition, Vector2 targetPosition)
@@ -80,21 +75,18 @@ namespace Shuyu.Vfx
 		private async Task PlaySequence()
 		{
 			_cts = new CancellationTokenSource();
-            for (int i = 0; i < _prepareParticles.Count; i++)
+            for (int i = 0; i < _firstBulletParticles.Count; i++)
             {
-                _prepareParticles[i].Restart();
+                _firstBulletParticles[i].Restart();
             }
-            await Cmd.Wait(0.15f, _cts.Token);
-            for (int i = 0; i < _throwParticles.Count; i++)
+            NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
+
+            await Cmd.Wait(0.2f, _cts.Token);
+            for (int i = 0; i < _secondBulletParticles.Count; i++)
 			{
-				_throwParticles[i].Restart();
+                _secondBulletParticles[i].Restart();
 			}
-			await Cmd.Wait(0.15f, _cts.Token);
-			for (int i = 0; i < _impactParticles.Count; i++)
-			{
-				_impactParticles[i].Restart();
-			}
-			NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
+			NGame.Instance?.ScreenShake(ShakeStrength.Medium, ShakeDuration.Normal);
 			await Cmd.Wait(2f, _cts.Token);
 			this.QueueFreeSafely();
 		}

@@ -19,15 +19,15 @@ namespace Shuyu.Vfx
 		[Export(PropertyHint.None, "")]
 		private GpuParticles2D? _beamParticle;
 
-        [Export(PropertyHint.None, "")]
-        private GpuParticles2D? _endParticle;
+		[Export(PropertyHint.None, "")]
+		private GpuParticles2D? _endParticle;
 
-        [Export(PropertyHint.None, "")]
+		[Export(PropertyHint.None, "")]
 		private Array<GpuParticles2D> _endImpacts = new Array<GpuParticles2D>();
 
-        private Array<GpuParticles2D> _beamParticles = new Array<GpuParticles2D>();
+		private Array<GpuParticles2D> _beamParticles = new Array<GpuParticles2D>();
 
-        private CancellationTokenSource? _cts;
+		private CancellationTokenSource? _cts;
 
 		public static NDuanXueVfx? Create(Creature? target, int hitCount)
 		{
@@ -59,11 +59,11 @@ namespace Shuyu.Vfx
 			for (int i = 0; i < hitCount; i++)
 			{
 				GpuParticles2D copy = (GpuParticles2D)nDuanXueVfx._beamParticle.Duplicate();
-                if (copy.Material != null)
-                {
-                    copy.Material = (Material)copy.Material.Duplicate();
-                }
-                nDuanXueVfx.AddChild(copy);
+				if (copy.Material != null)
+				{
+					copy.Material = (Material)copy.Material.Duplicate();
+				}
+				nDuanXueVfx.AddChild(copy);
 				nDuanXueVfx._beamParticles.Add(copy);
 			}
 
@@ -85,44 +85,44 @@ namespace Shuyu.Vfx
 		{
 			_cts = new CancellationTokenSource();
 
-            for (int i = 0; i < _beamParticles.Count; i++)
-            {
-                _beamParticles[i].Restart();
+			for (int i = 0; i < _beamParticles.Count; i++)
+			{
+				_beamParticles[i].Restart();
 
-                ShaderMaterial? mat = _beamParticles[i].Material as ShaderMaterial;
-                if (mat != null)
-                {
-                    Tween tween = CreateTween();
+				ShaderMaterial? mat = _beamParticles[i].Material as ShaderMaterial;
+				if (mat != null)
+				{
+					Tween tween = CreateTween();
 					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("showLength", val)), 0f, 2f, 0.15f)
 						.SetEase(Tween.EaseType.Out);
-                }
+				}
 
-                await Cmd.Wait(0.15f, _cts.Token);
+				await Cmd.Wait(0.15f, _cts.Token);
 				_beamParticles[i].SpeedScale = 0;
-            }
+			}
 
-            for (int i = 0; i < _beamParticles.Count; i++)
-            {
-                _beamParticles[i].SpeedScale = 1;
-                ShaderMaterial? mat = _beamParticles[i].Material as ShaderMaterial;
-                if (mat != null)
-                {
-                    Tween tween = CreateTween();
-                    tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("whiteWeight", val)), 0f, 1f, 0.5f)
-                        .SetEase(Tween.EaseType.In)
+			for (int i = 0; i < _beamParticles.Count; i++)
+			{
+				_beamParticles[i].SpeedScale = 1;
+				ShaderMaterial? mat = _beamParticles[i].Material as ShaderMaterial;
+				if (mat != null)
+				{
+					Tween tween = CreateTween();
+					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("whiteWeight", val)), 0f, 1f, 0.5f)
+						.SetEase(Tween.EaseType.In)
 						.SetTrans(Tween.TransitionType.Quad);
-                }
-            }
-            await Cmd.Wait(0.5f, _cts.Token);
+				}
+			}
+			await Cmd.Wait(0.5f, _cts.Token);
 
-            for (int i = 0; i < _endImpacts.Count; i++)
-            {
-                _endImpacts[i].Restart();
-            }
-            _endParticle?.Restart();
+			for (int i = 0; i < _endImpacts.Count; i++)
+			{
+				_endImpacts[i].Restart();
+			}
+			_endParticle?.Restart();
 
-            NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Short);
-            await Cmd.Wait(2f, _cts.Token);
+			NGame.Instance?.ScreenShake(ShakeStrength.Strong, ShakeDuration.Short);
+			await Cmd.Wait(2f, _cts.Token);
 			this.QueueFreeSafely();
 		}
 	}

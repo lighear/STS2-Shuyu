@@ -1,3 +1,4 @@
+﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -13,14 +14,14 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Relics;
 
-//[RegisterRelic(typeof(ShuyuRelicPool))]
-public sealed class BingSan : ModRelicTemplate
+[RegisterRelic(typeof(ShuyuRelicPool))]
+public sealed class ZhaRenSuiPian : ModRelicTemplate
 {
     public override RelicRarity Rarity => RelicRarity.Uncommon;
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
     [
-        HoverTipFactory.FromPower<FragilePower>()
+        HoverTipFactory.FromPower<IceThornsPower>()
     ];
 
     public override RelicAssetProfile AssetProfile => new(
@@ -30,15 +31,16 @@ public sealed class BingSan : ModRelicTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(2, ValueProp.Unpowered)
+        new BlockVar(4, ValueProp.Unpowered),
+        new PowerVar<IceThornsPower>(1)
     ];
-
-    public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
+    
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (power is FragilePower && applier == Owner.Creature && amount > 0)
+        if (participants.Contains(base.Owner.Creature))
         {
-            Flash();
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, null);
+            decimal num = Owner.Creature.Block / DynamicVars.Block.BaseValue * DynamicVars["IceThornsPower"].BaseValue;
+            await PowerCmd.Apply<IceThornsPower>(choiceContext, base.Owner.Creature, num, base.Owner.Creature, null);
         }
     }
 }
