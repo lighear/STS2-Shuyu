@@ -46,16 +46,17 @@ namespace Shuyu.Cards
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
-            IEnumerable<CardModel> cards =
-                await CardSelectCmd.FromHand(
-                    context: choiceContext,
-                    player: Owner,
-                    prefs: new CardSelectorPrefs(new LocString("card_selection", "TO_UNFREEZE"), 1),
-                    filter: c => c.IsFrozen(),
-                    source: this);
+            IEnumerable<CardModel> cards = (await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), c => c.IsFrozen(), this));
             foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
             {
                 int amount = card.EnergyCost.GetAmountToSpend() * 2;
+                CardModel? original = card._visualCardModel;
+                
+                await card.SetIcyDamageTargets(cardPlay.Target!);
+                await CardCmd.Discard(choiceContext, card);
+                
+                if (original != null) await CardPileCmd.Add(original, PileType.Hand);
+                
                 if (base.IsUpgraded)
                 {
                     foreach (Creature enemy in CombatState!.HittableEnemies)
@@ -67,7 +68,7 @@ namespace Shuyu.Cards
                 {
                     await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, amount, Owner.Creature, this);
                 }
-                await ShuyuMechanismCmd.UnfreezeCard(card);
+                
             }
         }
 
