@@ -19,12 +19,18 @@ namespace Shuyu.Vfx
 		[Export(PropertyHint.None, "")]
 		private Array<GpuParticles2D> _firstBulletParticles = new Array<GpuParticles2D>();
 
-        [Export(PropertyHint.None, "")]
-        private Array<GpuParticles2D> _secondBulletParticles = new Array<GpuParticles2D>();
+		[Export(PropertyHint.None, "")]
+		private Array<GpuParticles2D> _secondBulletParticles = new Array<GpuParticles2D>();
 
-        private CancellationTokenSource? _cts;
+		[Export(PropertyHint.None, "")]
+		private Array<GpuParticles2D> _impactParticles = new Array<GpuParticles2D>();
 
-        public static NMoLiXianDanVfx? Create(Creature owner, Creature? target)
+		[Export(PropertyHint.None, "")]
+		private Node2D _throwContainer;
+
+		private CancellationTokenSource? _cts;
+
+		public static NMoLiXianDanVfx? Create(Creature owner, Creature? target)
 		{
 			if (TestMode.IsOn)
 			{
@@ -49,9 +55,10 @@ namespace Shuyu.Vfx
 			{
 				return null;
 			}
-            NMoLiXianDanVfx nMoLiXianDanVfx = PreloadManager.Cache.GetScene(scenePath).Instantiate<NMoLiXianDanVfx>(PackedScene.GenEditState.Disabled);
+			NMoLiXianDanVfx nMoLiXianDanVfx = PreloadManager.Cache.GetScene(scenePath).Instantiate<NMoLiXianDanVfx>(PackedScene.GenEditState.Disabled);
 			nMoLiXianDanVfx.GlobalPosition = targetCenterPosition;
 			nMoLiXianDanVfx.ApplyRotation(throwerCenterPosition, targetCenterPosition);
+			nMoLiXianDanVfx.ApplyDistance(throwerCenterPosition, targetCenterPosition);
 			return nMoLiXianDanVfx;
 		}
 
@@ -60,6 +67,13 @@ namespace Shuyu.Vfx
 			Vector2 vector = targetPosition - throwerPosition;
 			float rotationDegrees = Mathf.RadToDeg(Mathf.Atan2(vector.Y, vector.X));
 			base.RotationDegrees = rotationDegrees;
+		}
+
+		public void ApplyDistance(Vector2 throwerPosition, Vector2 targetPosition)
+		{
+			float distance = throwerPosition.DistanceTo(targetPosition);
+			float targetX = -distance + 100;
+			_throwContainer.Position = new Vector2(targetX, _throwContainer.Position.Y - 50);
 		}
 
 		public override void _Ready()
@@ -75,16 +89,21 @@ namespace Shuyu.Vfx
 		private async Task PlaySequence()
 		{
 			_cts = new CancellationTokenSource();
-            for (int i = 0; i < _firstBulletParticles.Count; i++)
-            {
-                _firstBulletParticles[i].Restart();
-            }
-            NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
-
-            await Cmd.Wait(0.2f, _cts.Token);
-            for (int i = 0; i < _secondBulletParticles.Count; i++)
+			for (int i = 0; i < _firstBulletParticles.Count; i++)
 			{
-                _secondBulletParticles[i].Restart();
+				_firstBulletParticles[i].Restart();
+			}
+			NGame.Instance?.ScreenShake(ShakeStrength.Weak, ShakeDuration.Short);
+			await Cmd.Wait(0.15f, _cts.Token);
+			for (int i = 0; i < _impactParticles.Count; i++)
+			{
+				_impactParticles[i].Restart();
+			}
+
+			await Cmd.Wait(0.2f, _cts.Token);
+			for (int i = 0; i < _secondBulletParticles.Count; i++)
+			{
+				_secondBulletParticles[i].Restart();
 			}
 			NGame.Instance?.ScreenShake(ShakeStrength.Medium, ShakeDuration.Normal);
 			await Cmd.Wait(2f, _cts.Token);

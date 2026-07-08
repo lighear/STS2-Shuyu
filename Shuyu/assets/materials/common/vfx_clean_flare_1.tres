@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://d30g74i45t14y"]
+
+[ext_resource type="Shader" uid="uid://c6xqikt3vbt72" path="res://Shuyu/assets/shaders/common/vfx_grayscale_particle_shader.gdshader" id="1_igqeb"]
+
+[sub_resource type="Gradient" id="Gradient_igqeb"]
+colors = PackedColorArray(1, 1, 1, 1, 2.454227, 2.454227, 2.454227, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s6wrk"]
+gradient = SubResource("Gradient_igqeb")
+use_hdr = true
+
+[resource]
+shader = ExtResource("1_igqeb")
+shader_parameter/pivot_offset = Vector2(0, 0)
+shader_parameter/lut = SubResource("GradientTexture1D_s6wrk")

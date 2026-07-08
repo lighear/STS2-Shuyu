@@ -56,7 +56,8 @@ namespace Shuyu.Cards
                 await DamageCmd.Attack(damageResult.TotalDamage + damageResult.OverkillDamage)
                     .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState!)
-                    .BeforeDamage(async () => await Cmd.Wait(0.2f))
+                    .WithWaitBeforeHit(0.35f, 0.35f)
+                    .WithHitVfxNode((Creature target) => NMoLiXianDanImpactVfx.Create(Owner.Creature, target))
                     .Execute(choiceContext);
             }
         }
