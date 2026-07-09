@@ -36,7 +36,7 @@ namespace Shuyu.Cards
         
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new EnergyVar(2),
-            new CardsVar(2)
+            new CardsVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -70,7 +70,7 @@ namespace Shuyu.Cards
         protected override void OnUpgrade()
         {
             DynamicVars.Energy.UpgradeValueBy(1);
-            DynamicVars.Cards.UpgradeValueBy(1);
+            //DynamicVars.Cards.UpgradeValueBy(1);
         }
     }
 }
