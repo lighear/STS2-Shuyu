@@ -181,6 +181,8 @@
     "SHUYU_CARD_NI_ZHUAN_JIE_JIE.description":  "获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]和{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n交换[gold]寒冰荆棘[/gold]和[gold]寒冰护盾[/gold]的层数。",
     "SHUYU_CARD_YU_ZHI_LI_CHANG.title":  "预制力场",
     "SHUYU_CARD_YU_ZHI_LI_CHANG.description":  "获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]和{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n战斗开始时失去{energyPrefix:energyIcons(1)}并自动打出，然后将此牌返回到[gold]抽牌堆[/gold]。\n每当手动打出此牌，此牌的[gold]寒冰荆棘[/gold]层数和[gold]寒冰护盾[/gold]层数+{Increase:diff()}。",
+    "SHUYU_CARD_ZHI_HUAN_SHU_SHI.title":  "置换术式",
+    "SHUYU_CARD_ZHI_HUAN_SHU_SHI.description":  "本回合内每当目标的[gold]易碎[/gold]达到5层，你获得{Energy:energyIcons()}并抽{Cards:diff()}张牌。\n[gold]封冻[/gold]至多5张手牌，对目标施加等量的[gold]易碎[/gold]。",
     "SHUYU_CARD_JIAN_DAO_ZHI_TA.title":  "尖刀之塔",
     "SHUYU_CARD_JIAN_DAO_ZHI_TA.description":  "当你获得[gold]寒冰荆棘[/gold]时，所有其他玩家获得相同的层数。\n获得{IceThornsPower:diff()}[gold]寒冰荆棘[/gold]。",
     "SHUYU_CARD_JIN_SHU_JIE_JIE.title":  "禁术 · 结界",

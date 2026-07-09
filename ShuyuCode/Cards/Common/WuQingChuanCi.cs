@@ -57,7 +57,7 @@ namespace Shuyu.Cards
         protected override void OnUpgrade()
         {
             DynamicVars.Damage.UpgradeValueBy(2);
-            DynamicVars["FragilePower"].UpgradeValueBy(1);
+            //DynamicVars["FragilePower"].UpgradeValueBy(1);
         }
         
         private static bool ShouldCountPower(PowerModel power)

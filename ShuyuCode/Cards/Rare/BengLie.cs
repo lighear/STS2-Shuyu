@@ -11,7 +11,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(ShuyuCardPool))]
+    //[RegisterCard(typeof(ShuyuCardPool))]
     public class BengLie : ModCardTemplate
     {
         public BengLie() : base(
