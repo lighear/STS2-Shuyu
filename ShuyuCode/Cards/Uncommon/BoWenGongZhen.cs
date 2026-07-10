@@ -39,7 +39,7 @@ namespace Shuyu.Cards
             new PowerVar<FragilePower>(1),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) =>
             {
-                return card.Owner.Creature.Block * DynamicVars["Multiple"].IntValue / CardPlayDivisor;
+                return card.Owner.Creature.Block * card.DynamicVars["Multiple"].IntValue / ((BoWenGongZhen)card).CardPlayDivisor;
             }),
         ];
         
@@ -54,7 +54,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await DamageCmd.Attack(DynamicVars.CalculatedDamage.IntValue)
+            await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
