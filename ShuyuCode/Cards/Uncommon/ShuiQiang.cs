@@ -10,7 +10,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(ShuyuCardPool))]
+    //[RegisterCard(typeof(ShuyuCardPool))]
     public class ShuiQiang : ModCardTemplate
     {
         public ShuiQiang() : base(
