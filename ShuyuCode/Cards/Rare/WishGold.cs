@@ -22,16 +22,16 @@ namespace Shuyu.Cards
     public class WishGold : ModCardTemplate, JiuChanXuYuanShu.IChoosable
     {
         public WishGold() : base(
-            baseCost: 0,
-            CardType.Skill,
-            CardRarity.Token,
+            baseCost: -1,
+            CardType.Status,
+            CardRarity.Status,
             TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         public override IEnumerable<CardKeyword> CanonicalKeywords => [
-            CardKeyword.Exhaust
+            
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
