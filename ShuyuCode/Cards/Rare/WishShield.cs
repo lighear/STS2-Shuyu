@@ -44,7 +44,7 @@ namespace Shuyu.Cards
 
         public override int MaxUpgradeLevel => 99;
         
-        public async Task OnChosen()
+        public async Task OnChosen(JiuChanXuYuanShu source)
         {
             foreach (Creature ally in Owner.Creature.CombatState!.GetTeammatesOf(Owner.Creature).Where(c => c != null && c.IsAlive && c.IsPlayer))
             {
@@ -53,7 +53,7 @@ namespace Shuyu.Cards
                     item.UpgradeShield();
                 }
             }
-            
+            //source.UpgradeShield();
             await PowerCmd.Apply<IceShieldPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, null);
         }
 

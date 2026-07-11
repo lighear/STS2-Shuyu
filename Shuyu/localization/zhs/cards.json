@@ -196,11 +196,11 @@
 	"SHUYU_CARD_JIU_CHAN_ZHI_SHU.title":  "纠缠之书",
     "SHUYU_CARD_JIU_CHAN_ZHI_SHU.description":  "战斗开始时，将一张此牌的复制加入其他玩家的手中。\n造成{Damage:diff()}点伤害{Repeat:diff()}次，然后令所有其他玩家将纠缠之书移回其手中。\n[gold]冰器[/gold]：所有玩家的纠缠之书伤害增加1次。",
     "SHUYU_CARD_JIU_CHAN_XU_YUAN_SHU.title":  "纠缠许愿书",
-    "SHUYU_CARD_JIU_CHAN_XU_YUAN_SHU.description":  "战斗开始时，将一张此牌的复制加入其他玩家的手中。\n选择一个愿望实现，然后令所有其他玩家将纠缠许愿书移回其手中。\n使用{CanUseTimes:diff()}后在本场战斗中移除，将1张[gold]厄运[/gold]加入抽牌堆。",
+    "SHUYU_CARD_JIU_CHAN_XU_YUAN_SHU.description":  "战斗开始时，将一张此牌的复制加入其他玩家的手中。\n选择一个愿望实现，然后令所有其他玩家将纠缠许愿书移回其手中。\n使用{CanUseTimes:diff()}次后在本场战斗中移除，将1张[gold]厄运[/gold]加入抽牌堆。",
     "SHUYU_CARD_WISH_STRENGTH.title":"力大无穷",
-    "SHUYU_CARD_WISH_STRENGTH.description":"获得{StrengthPower:diff()}[gold]力量[/gold]。\n升级一次所有玩家纠缠许愿书中的[gold]力大无穷[/gold]选项。",
+    "SHUYU_CARD_WISH_STRENGTH.description":"获得{StrengthPower:diff()}[gold]力量[/gold]。\n升级一次所有玩家[gold]纠缠许愿书[/gold]中的[gold]力大无穷[/gold]选项。",
     "SHUYU_CARD_WISH_SHIELD.title":"永生不死",
-    "SHUYU_CARD_WISH_SHIELD.description":"获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n升级一次所有其他玩家纠缠许愿书中的[gold]永生不死[/gold]选项。",
+    "SHUYU_CARD_WISH_SHIELD.description":"获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n升级一次所有玩家[gold]纠缠许愿书[/gold]中的[gold]永生不死[/gold]选项。",
     "SHUYU_CARD_WISH_GOLD.title":"名利双收",
-    "SHUYU_CARD_WISH_GOLD.description":"战斗结束后获得{Gold:diff()}[gold]金币[/gold]\n升级一次所有玩家纠缠许愿书中的[gold]名利双收[/gold]选项。"
+    "SHUYU_CARD_WISH_GOLD.description":"战斗结束后获得{Gold:diff()}[gold]金币[/gold]。\n升级一次所有玩家[gold]纠缠许愿书[/gold]中的[gold]名利双收[/gold]选项。"
 }

@@ -45,7 +45,7 @@ namespace Shuyu.Cards
             await PowerCmd.Apply<RoyaltiesPower>(choiceContext, Owner.Creature, DynamicVars.Gold.BaseValue, Owner.Creature, this);
         }
         
-        public async Task OnChosen()
+        public async Task OnChosen(JiuChanXuYuanShu source)
         {
             foreach (Creature ally in Owner.Creature.CombatState!.GetTeammatesOf(Owner.Creature).Where(c => c != null && c.IsAlive && c.IsPlayer))
             {
@@ -54,7 +54,7 @@ namespace Shuyu.Cards
                     item.UpgradeGold();
                 }
             }
-            
+            //source.UpgradeGold();
             await PowerCmd.Apply<RoyaltiesPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, DynamicVars.Gold.BaseValue, Owner.Creature, this);
         }
 

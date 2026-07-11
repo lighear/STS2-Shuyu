@@ -23,7 +23,7 @@ namespace Shuyu.Cards
     {
         public interface IChoosable
         {
-            Task OnChosen();
+            Task OnChosen(JiuChanXuYuanShu source);
         }
         
         public JiuChanXuYuanShu() : base(
@@ -89,7 +89,7 @@ namespace Shuyu.Cards
             CardModel cardModel = await CardSelectCmd.FromChooseACardScreen(new BlockingPlayerChoiceContext(), wishes, Owner);
             if (cardModel != null)
             {
-                await ((IChoosable)cardModel).OnChosen();
+                await ((IChoosable)cardModel).OnChosen(this);
             }
             
             foreach (Creature ally in CombatState!.GetTeammatesOf(Owner.Creature)
