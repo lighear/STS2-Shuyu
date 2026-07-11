@@ -490,7 +490,6 @@ lifetime = 0.55
 process_material = SubResource("ParticleProcessMaterial_3m4y4")
 
 [node name="throw_container" type="Node2D" parent="."]
-visible = false
 position = Vector2(-1133, 0)
 
 [node name="vfx_dagger_spray_dagger" parent="throw_container" instance=ExtResource("7_h6hpv")]

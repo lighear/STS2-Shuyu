@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bojgssq07w46b"]
+
+[ext_resource type="PackedScene" uid="uid://bp73eyy1t8vok" path="res://Shuyu/scenes/vfx_BingWuPower.tscn" id="2_0m5fp"]
+[ext_resource type="Texture2D" uid="uid://b5h8xcc73cluf" path="res://Shuyu/images/characters/Shuyu_character.png" id="2_coe4j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_coe4j"]
+
+[node name="Test" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_coe4j")
+texture = ExtResource("2_coe4j")
+
+[node name="VfxBingWuPower" parent="Sprite2D" instance=ExtResource("2_0m5fp")]

@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://bp73eyy1t8vok"]
+
+[ext_resource type="Shader" uid="uid://bsuwikdxr6yo" path="res://Shuyu/assets/shaders/vfx_BingWuPower.gdshader" id="1_jiwbe"]
+
+[sub_resource type="Gradient" id="Gradient_y8c68"]
+offsets = PackedFloat32Array(0.18181819, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qb2so"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8bv3r"]
+noise = SubResource("FastNoiseLite_qb2so")
+color_ramp = SubResource("Gradient_y8c68")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e0l6o"]
+shader = ExtResource("1_jiwbe")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_8bv3r")
+shader_parameter/scroll_speed = Vector2(0.1, 0)
+shader_parameter/noise_scale = 0.3
+shader_parameter/fog_color = Color(0.8056478, 0.9135693, 0.97591716, 1)
+shader_parameter/fog_density = 0.8
+shader_parameter/noise_threshold = 0.35
+shader_parameter/noise_softness = 0.4
+shader_parameter/edge_fade_width = 0.3
+shader_parameter/disturbance_strength = 0.02
+shader_parameter/disturbance_frequency = 0.8
+
+[node name="VfxBingWuPower" type="ColorRect"]
+material = SubResource("ShaderMaterial_e0l6o")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -962.0
+offset_top = -1189.0
+offset_right = -962.0
+offset_bottom = -1189.0
+grow_horizontal = 2
+grow_vertical = 2

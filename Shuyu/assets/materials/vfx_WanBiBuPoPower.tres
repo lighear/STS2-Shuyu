@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dwr7pa3dwycf5"]
+
+[ext_resource type="Shader" uid="uid://c5jbev7me206b" path="res://Shuyu/assets/shaders/vfx_WanBiBuPoPower.gdshader" id="1_ncqas"]
+
+[resource]
+shader = ExtResource("1_ncqas")
+shader_parameter/time_speed = 1.0
+shader_parameter/ice_tint = 0.35
+shader_parameter/ice_color = Color(0.55, 0.85, 1, 1)
+shader_parameter/rim_power = 2.2
+shader_parameter/rim_strength = 1.6
+shader_parameter/rim_color = Color(0.8, 0.95, 1, 1)
+shader_parameter/sweep_interval = 5.00000021375
+shader_parameter/sweep_width = 0.12
+shader_parameter/sweep_sharpness = 6.0
+shader_parameter/sweep_strength = 0.50000002375
+shader_parameter/sparkle_strength = 0.6
+shader_parameter/sparkle_size = 0.030000001425
+shader_parameter/sparkle_count = 6

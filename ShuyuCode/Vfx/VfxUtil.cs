@@ -17,6 +17,7 @@ public static class VFXUtil
         //你的场景字符串列表
         var paths = new List<string>
         {
+            "res://Shuyu/scenes/vfx_BingWuPower.tscn",
             "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
         };
         foreach (var path in paths)
