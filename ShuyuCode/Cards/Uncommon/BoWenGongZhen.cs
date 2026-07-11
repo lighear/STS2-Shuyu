@@ -28,15 +28,10 @@ namespace Shuyu.Cards
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
-        protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<FragilePower>()
-        ];
-
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DynamicVar("Multiple", 3),
             new CalculationBaseVar(0m),
             new ExtraDamageVar(1m),
-            new PowerVar<FragilePower>(1),
             new CalculatedDamageVar(ValueProp.Move).WithMultiplier((CardModel card, Creature? _) =>
             {
                 return card.Owner.Creature.Block * card.DynamicVars["Multiple"].IntValue / ((BoWenGongZhen)card).CardPlayDivisor;
@@ -58,8 +53,6 @@ namespace Shuyu.Cards
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
-            
-            await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()

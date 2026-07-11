@@ -127,7 +127,7 @@
     "SHUYU_CARD_JIE_JING_CUI_HUA.title":  "结晶催化",
     "SHUYU_CARD_JIE_JING_CUI_HUA.description":  "将你的[gold]寒冰荆棘[/gold]的层数变为{Multiple:diff()}倍。\n每以此法获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]，受到{ExtraDamage:diff()}点伤害。{InCombat:\n（受到{CalculatedDamage}点伤害）|}",
     "SHUYU_CARD_BO_WEN_GONG_ZHEN.title":  "波纹共振",
-    "SHUYU_CARD_BO_WEN_GONG_ZHEN.description":  "造成相当于自身格挡{Multiple:diff()}倍的伤害。\n施加{FragilePower:diff()}层[gold]易碎[/gold]。\n本回合每使用过一张牌，伤害减半，至多减半四次。{InCombat:\n（造成{CalculatedDamage:diff()}点伤害）|}",
+    "SHUYU_CARD_BO_WEN_GONG_ZHEN.description":  "造成相当于自身格挡{Multiple:diff()}倍的伤害。\n本回合每使用过一张牌，伤害减半，至多减半四次。{InCombat:\n（造成{CalculatedDamage:diff()}点伤害）|}",
     "SHUYU_CARD_CHU_XUE_SHENG_JIE.title":  "初雪圣界",
     "SHUYU_CARD_CHU_XUE_SHENG_JIE.description":  "所有玩家获得{IceShieldPower:diff()}[gold]寒冰护盾[/gold]。\n战斗结束时，拥有[gold]寒冰护盾[/gold]的玩家恢复{Heal:diff()}点生命。",
 	"SHUYU_CARD_BING_QI_ZHAO_HUAN.title":  "冰器召唤",
