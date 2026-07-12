@@ -17,7 +17,7 @@ shader = ExtResource("1_jiwbe")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_8bv3r")
 shader_parameter/scroll_speed = Vector2(0.1, 0)
 shader_parameter/noise_scale = 0.3
-shader_parameter/fog_color = Color(0.8056478, 0.9135693, 0.97591716, 1)
+shader_parameter/fog_color = Color(0.7151948, 0.9372677, 0.99864477, 1)
 shader_parameter/fog_density = 0.8
 shader_parameter/noise_threshold = 0.35
 shader_parameter/noise_softness = 0.4
@@ -27,12 +27,7 @@ shader_parameter/disturbance_frequency = 0.8
 
 [node name="VfxBingWuPower" type="ColorRect"]
 material = SubResource("ShaderMaterial_e0l6o")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = -962.0
 offset_top = -1189.0
-offset_right = -962.0
-offset_bottom = -1189.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 962.0
+offset_bottom = 1189.0

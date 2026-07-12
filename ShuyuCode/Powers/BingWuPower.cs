@@ -1,5 +1,4 @@
 using Godot;
-using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -8,9 +7,11 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Helpers;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
+using Shuyu.Characters;
 
 namespace Shuyu.Powers;
 
@@ -58,26 +59,36 @@ public class BingWuPower : ModPowerTemplate
 
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        Node2D? body = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals?.GetCurrentBody();
-        if (body != null && body.GetNode<ColorRect>("VfxBingWuPower") == null)
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
+        if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxBingWuPower") == null)
         {
-            string scenePath = $"res://Shuyu/scenes/vfx_BingWuPower.tscn";
-            ColorRect vfxBingWuPower;
-            if (VFXUtil.ModSceneCache.TryGetValue(scenePath, out var modScene))
+            string scenePath = "res://Shuyu/scenes/vfx_BingWuPower.tscn";
+            ColorRect vfxBingWuPower = VFXUtil.GenVFXNode<ColorRect>(scenePath);
+            creatureBounds.AddChildSafely(vfxBingWuPower);
+
+            if (Owner.Player?.Character is ShuyuCharacter)
             {
-                vfxBingWuPower = modScene.Instantiate<ColorRect>();
+                vfxBingWuPower.Size = new Vector2(1924 * 0.194f, 2378 * 0.194f);
+                vfxBingWuPower.Position = new Vector2(-962 * 0.194f + 82, -1189 * 0.194f);
             }
             else
             {
-                vfxBingWuPower = PreloadManager.Cache.GetScene(scenePath).Instantiate<ColorRect>();
+                vfxBingWuPower.AnchorLeft = 0;
+                vfxBingWuPower.AnchorTop = 0;
+                vfxBingWuPower.AnchorRight = 1;
+                vfxBingWuPower.AnchorBottom = 1;
+                Vector2 expandSize = creatureBounds.Size * 0.2f;
+                vfxBingWuPower.OffsetLeft = -expandSize.X;
+                vfxBingWuPower.OffsetTop = -expandSize.Y;
+                vfxBingWuPower.OffsetRight = expandSize.X;
+                vfxBingWuPower.OffsetBottom = expandSize.Y;
             }
-            body.AddChild(vfxBingWuPower);
         }
     }
 
     public override async Task AfterRemoved(Creature oldOwner)
     {
-        Node2D? body = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals?.GetCurrentBody();
-        body?.GetNode<ColorRect>("VfxBingWuPower")?.QueueFree();
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals.Bounds;
+        creatureBounds?.GetNodeOrNull<ColorRect>("VfxBingWuPower")?.QueueFree();
     }
 }

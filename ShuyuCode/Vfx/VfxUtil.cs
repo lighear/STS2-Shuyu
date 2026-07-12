@@ -17,6 +17,8 @@ public static class VFXUtil
         //你的场景字符串列表
         var paths = new List<string>
         {
+            "res://Shuyu/scenes/vfx_ChillPower_particle.tscn",
+            "res://Shuyu/scenes/vfx_ChillPower_background.tscn",
             "res://Shuyu/scenes/vfx_BingWuPower.tscn",
             "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
         };
@@ -38,13 +40,13 @@ public static class VFXUtil
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<Node2D>();
     }
 
-    public static T GenVFXNode<T>(string scenePath) where T : Node2D {
+    public static T GenVFXNode<T>(string scenePath) where T : CanvasItem {
         if (ModSceneCache.TryGetValue(scenePath, out var modScene)) {
             return modScene.Instantiate<T>();
         }
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
     }
-    
+
     public static Node2D? PlaySimple(string scenePath, Vector2 position, float lifetime = 2f) {
         if (!TestMode.IsOn && NCombatRoom.Instance != null) {
             Node2D node2D = GenVFXNode(scenePath);

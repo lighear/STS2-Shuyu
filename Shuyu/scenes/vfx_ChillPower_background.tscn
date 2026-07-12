@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfohylfclmjf7"]
+
+[ext_resource type="Shader" uid="uid://dn8haslvonvtc" path="res://Shuyu/assets/shaders/vfx_ChillPower_background.gdshader" id="1_jh1si"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cq33g"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4ipo1"]
+noise = SubResource("FastNoiseLite_cq33g")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fjp6n"]
+shader = ExtResource("1_jh1si")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_4ipo1")
+shader_parameter/MistIntensity = 1.0
+shader_parameter/MistColor = Color(0.6466658, 0.82097936, 0.9797413, 1)
+shader_parameter/NoiseScale1 = 0.40000001574012
+shader_parameter/FlowSpeed1 = Vector2(0.02, 0.01)
+shader_parameter/NoiseScale2 = 0.10000000149012
+shader_parameter/FlowSpeed2 = Vector2(-0.01, 0.02)
+shader_parameter/MixRatio = 0.5
+shader_parameter/NoiseContrast = 0.80000003474012
+shader_parameter/BreathMin = 0.6000000285
+shader_parameter/BreathMax = 0.70000003325
+shader_parameter/BreathSpeed = 0.40000001574012
+shader_parameter/EdgeFade = 0.30000001425
+
+[node name="VfxChillPowerBackground" type="ColorRect"]
+material = SubResource("ShaderMaterial_fjp6n")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -962.0
+offset_top = -1189.0
+offset_right = -962.0
+offset_bottom = -1189.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,0 +1,128 @@
+[gd_scene load_steps=20 format=3 uid="uid://b85p7wsxbe2uu"]
+
+[ext_resource type="Shader" uid="uid://cllhtpmms6qch" path="res://Shuyu/assets/shaders/vfx_ChillPower_particle.gdshader" id="1_ahbda"]
+[ext_resource type="Texture2D" uid="uid://vvutw2uyyaeu" path="res://Shuyu/assets/images/snowflake.png" id="2_r6xdo"]
+[ext_resource type="Texture2D" uid="uid://d18475yoes2kv" path="res://Shuyu/assets/images/common_glow.png" id="3_1bvyv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_boj8u"]
+shader = ExtResource("1_ahbda")
+shader_parameter/opacity = 1.0
+shader_parameter/enable_blur = true
+shader_parameter/blur_radius = 20.0
+shader_parameter/blur_direction = 0
+shader_parameter/motion_blur_angle = 0.0
+shader_parameter/motion_blur_distance = 0.0
+
+[sub_resource type="Curve" id="Curve_nejw8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 0.8), 0.0, 0.0, 0, 0, Vector2(0.90000004, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_1y080"]
+curve = SubResource("Curve_nejw8")
+
+[sub_resource type="Curve" id="Curve_jsy7p"]
+_limits = [1.0, 1.15, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.15), 0.03565544, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_catue"]
+curve = SubResource("Curve_jsy7p")
+
+[sub_resource type="Gradient" id="Gradient_y65vp"]
+colors = PackedColorArray(0.5823076, 0.9314188, 0.96660584, 1, 0.7977378, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4ipo1"]
+gradient = SubResource("Gradient_y65vp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_h6dm3"]
+particle_flag_disable_z = true
+particle_flag_damping_as_friction = true
+emission_shape = 3
+emission_box_extents = Vector3(200, 200, 1)
+angle_min = -1080.0
+angle_max = 1080.0
+angle_curve = SubResource("CurveTexture_catue")
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 9.8, 0)
+damping_min = 0.5
+damping_max = 1.0
+scale_min = 0.02
+scale_max = 0.03
+color_initial_ramp = SubResource("GradientTexture1D_4ipo1")
+alpha_curve = SubResource("CurveTexture_1y080")
+sub_emitter_mode = 1
+sub_emitter_frequency = 2.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_cadag"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_1v42t"]
+_data = [Vector2(0, 0), 0.0, 2.7143373, 0, 0, Vector2(0.5, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.1036146, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="CurveTexture" id="CurveTexture_wxufo"]
+curve = SubResource("Curve_1v42t")
+
+[sub_resource type="Gradient" id="Gradient_vc8wa"]
+colors = PackedColorArray(0, 0.85430586, 1, 1, 0.735357, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h0dfc"]
+gradient = SubResource("Gradient_vc8wa")
+
+[sub_resource type="Curve" id="Curve_xhcbg"]
+_data = [Vector2(0, 0), 0.0, 5.9933763, 0, 0, Vector2(0.29863483, 1), 0.0, 0.0, 0, 0, Vector2(0.7013652, 1), -0.0089949025, -0.0089949025, 0, 0, Vector2(1, 0), -7.428404, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_bnvyh"]
+curve = SubResource("Curve_xhcbg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tnyen"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_disable_z = true
+particle_flag_damping_as_friction = true
+emission_shape_offset = Vector3(0, -20, 0)
+emission_shape_scale = Vector3(1.1, 1, 1)
+emission_shape = 3
+emission_box_extents = Vector3(150, 211, 1)
+direction = Vector3(0, -1, 0)
+spread = 60.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 9.8, 0)
+radial_accel_min = -5.000002
+radial_accel_max = 4.9999976
+tangential_accel_min = -5.000002
+tangential_accel_max = 4.9999976
+damping_min = 0.5
+damping_max = 0.5
+scale_min = 0.049999997
+scale_max = 0.12
+scale_curve = SubResource("CurveTexture_bnvyh")
+color_initial_ramp = SubResource("GradientTexture1D_h0dfc")
+alpha_curve = SubResource("CurveTexture_wxufo")
+
+[node name="VfxChillPowerParticle" type="Node2D"]
+
+[node name="snowflake" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_boj8u")
+amount = 10
+sub_emitter = NodePath("../common_specks")
+texture = ExtResource("2_r6xdo")
+lifetime = 5.0
+explosiveness = 0.2
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_h6dm3")
+
+[node name="common_specks" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_cadag")
+amount = 20
+texture = ExtResource("3_1bvyv")
+lifetime = 5.0
+randomness = 0.5
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tnyen")

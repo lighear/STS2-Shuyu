@@ -1,17 +1,18 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+﻿using Godot;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Interfaces;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-
 namespace Shuyu.Powers;
 
 [RegisterPower]
@@ -108,15 +109,62 @@ public class ChillPower : ModPowerTemplate
         }
     }
 
-    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
         SelfApplied = true;
         UpdateDescription();
-        return base.AfterApplied(applier, cardSource);
+
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
+        if (creatureBounds != null && creatureBounds.GetNodeOrNull<Node2D>("VfxChillPowerParticle") == null)
+        {
+            string particlePath = "res://Shuyu/scenes/vfx_ChillPower_particle.tscn";
+            Node2D vfxChillPowerParticle = VFXUtil.GenVFXNode<Node2D>(particlePath);
+            creatureBounds.AddChildSafely(vfxChillPowerParticle);
+
+            vfxChillPowerParticle.Position = creatureBounds.Size / 2;
+            GpuParticles2D snowflake = vfxChillPowerParticle.GetNodeOrNull<GpuParticles2D>("snowflake");
+            if (snowflake != null)
+            {
+                float width = creatureBounds.Size.X;
+                float height = creatureBounds.Size.Y;
+
+                snowflake.Position = new Vector2(0, -height * 0.3f);
+
+                ParticleProcessMaterial mat = (ParticleProcessMaterial)snowflake.ProcessMaterial.Duplicate();
+                mat.EmissionBoxExtents = new Vector3(width * 0.5f, height * 0.5f, 1);
+                mat.InitialVelocityMin = height * 0.15f;
+                mat.InitialVelocityMax = height * 0.35f;
+                mat.Gravity = new Vector3(0, height * 0.2f, 0);
+
+                snowflake.ProcessMaterial = mat;
+            }
+
+
+            string backgroundPath = "res://Shuyu/scenes/vfx_ChillPower_background.tscn";
+            ColorRect vfxChillPowerBackground = VFXUtil.GenVFXNode<ColorRect>(backgroundPath);
+            creatureBounds.AddChildSafely(vfxChillPowerBackground);
+
+            vfxChillPowerBackground.AnchorLeft = 0;
+            vfxChillPowerBackground.AnchorTop = 0;
+            vfxChillPowerBackground.AnchorRight = 1;
+            vfxChillPowerBackground.AnchorBottom = 1;
+            Vector2 expandSize = creatureBounds.Size * 0.2f;
+            vfxChillPowerBackground.OffsetLeft = -expandSize.X;
+            vfxChillPowerBackground.OffsetTop = -expandSize.Y;
+            vfxChillPowerBackground.OffsetRight = expandSize.X;
+            vfxChillPowerBackground.OffsetBottom = expandSize.Y;
+        }
     }
 
     public void UpdateDescription()
     {
         DynamicVars.Damage.BaseValue = ChillDamage;
+    }
+
+    public override async Task AfterRemoved(Creature oldOwner)
+    {
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals.Bounds;
+        creatureBounds?.GetNodeOrNull<Node2D>("VfxChillPowerParticle")?.QueueFree();
+        creatureBounds?.GetNodeOrNull<ColorRect>("VfxChillPowerBackground")?.QueueFree();
     }
 }

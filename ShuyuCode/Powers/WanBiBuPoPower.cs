@@ -6,10 +6,10 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Interfaces;
-using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -89,10 +89,21 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
 
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
+        NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
         Material shaderMaterial = PreloadManager.Cache.GetMaterial("res://Shuyu/assets/materials/vfx_WanBiBuPoPower.tres");
-        Node2D? body = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals?.GetCurrentBody();
-        if (shaderMaterial != null && body != null)
+        if (creatureVisual == null || shaderMaterial == null)
         {
+            return;
+        }
+
+        if (creatureVisual.IsSpineNode)
+        {
+            saveMaterial = creatureVisual.SpineBody?.GetNormalMaterial();
+            creatureVisual.SpineBody?.SetNormalMaterial((Material)shaderMaterial.Duplicate());
+        }
+        else
+        {
+            Node2D body = creatureVisual.GetCurrentBody();
             saveMaterial = body.Material;
             body.Material = (Material)shaderMaterial.Duplicate();
         }
@@ -100,9 +111,20 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
 
     public override async Task AfterRemoved(Creature oldOwner)
     {
-        Node2D? body = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals?.GetCurrentBody();
-        if (body != null)
+        NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals;
+        if (creatureVisual == null)
         {
+            return;
+        }
+
+        if (creatureVisual.IsSpineNode)
+        {
+            creatureVisual.SpineBody?.SetNormalMaterial(saveMaterial);
+            saveMaterial = null;
+        }
+        else
+        {
+            Node2D body = creatureVisual.GetCurrentBody();
             body.Material = saveMaterial;
             saveMaterial = null;
         }
