@@ -77,7 +77,7 @@ public class FragilePower : ModPowerTemplate
 
     public async Task ConvertIfThresholdMet(PlayerChoiceContext choiceContext, Creature? applier)
     {
-        if (Amount < 5 || IsConverting)
+        if (IsConverting)
         {
             return;
         }
@@ -85,20 +85,23 @@ public class FragilePower : ModPowerTemplate
         IsConverting = true;
         try
         {
-            Flash();
-            IOnFragileConverted[] listeners =
-                CombatState?.IterateHookListeners().OfType<IOnFragileConverted>().ToArray() ?? [];
-
-            await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
-
-            foreach (IOnFragileConverted ip in listeners.OrderBy(ip => ip is ZhiHuanShuShiPower ? 0 : 1))
+            while (Amount >= 5 && Owner.CombatState != null)
             {
-                await ip.OnFragileConverted(choiceContext, Owner, applier);
-            }
+                Flash();
+                IOnFragileConverted[] listeners =
+                    CombatState?.IterateHookListeners().OfType<IOnFragileConverted>().ToArray() ?? [];
 
-            if (Owner.CombatState != null && Owner.IsAlive)
-            {
-                await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier, null);
+                await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
+
+                foreach (IOnFragileConverted ip in listeners.OrderBy(ip => ip is ZhiHuanShuShiPower ? 0 : 1))
+                {
+                    await ip.OnFragileConverted(choiceContext, Owner, applier);
+                }
+
+                if (Owner.CombatState != null && Owner.IsAlive)
+                {
+                    await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier, null);
+                }
             }
         }
         finally
