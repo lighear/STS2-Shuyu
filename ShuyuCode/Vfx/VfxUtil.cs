@@ -20,6 +20,7 @@ public static class VFXUtil
             "res://Shuyu/scenes/vfx_ChillPower_particle.tscn",
             "res://Shuyu/scenes/vfx_ChillPower_background.tscn",
             "res://Shuyu/scenes/vfx_BingWuPower.tscn",
+            "res://Shuyu/scenes/vfx_WanBiBuPoPower_ring.tscn",
             "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
         };
         foreach (var path in paths)

@@ -5,11 +5,14 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
 using Shuyu.Interfaces;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -107,6 +110,33 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
             saveMaterial = body.Material;
             body.Material = (Material)shaderMaterial.Duplicate();
         }
+
+
+        var creatureBounds = creatureVisual.Bounds;
+        if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxWanBiBuPoPowerRing") == null)
+        {
+            string scenePath = "res://Shuyu/scenes/vfx_WanBiBuPoPower_ring.tscn";
+            ColorRect vfxWanBiBuPoPowerRing = VFXUtil.GenVFXNode<ColorRect>(scenePath);
+            creatureBounds.AddChildSafely(vfxWanBiBuPoPowerRing);
+
+            if (Owner.Player?.Character is ShuyuCharacter)
+            {
+                vfxWanBiBuPoPowerRing.Size = new Vector2(2378 * 0.194f, 2378 * 0.194f);
+                vfxWanBiBuPoPowerRing.Position = new Vector2(-1189 * 0.194f + 82, -1189 * 0.194f);
+            }
+            else
+            {
+                vfxWanBiBuPoPowerRing.AnchorLeft = 0;
+                vfxWanBiBuPoPowerRing.AnchorTop = 0;
+                vfxWanBiBuPoPowerRing.AnchorRight = 1;
+                vfxWanBiBuPoPowerRing.AnchorBottom = 1;
+                Vector2 expandSize = creatureBounds.Size * 0.2f;
+                vfxWanBiBuPoPowerRing.OffsetLeft = -expandSize.X;
+                vfxWanBiBuPoPowerRing.OffsetTop = -expandSize.Y;
+                vfxWanBiBuPoPowerRing.OffsetRight = expandSize.X;
+                vfxWanBiBuPoPowerRing.OffsetBottom = expandSize.Y;
+            }
+        }
     }
 
     public override async Task AfterRemoved(Creature oldOwner)
@@ -128,5 +158,8 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
             body.Material = saveMaterial;
             saveMaterial = null;
         }
+
+
+        creatureVisual.Bounds.GetNodeOrNull<ColorRect>("VfxWanBiBuPoPowerRing")?.QueueFree();
     }
 }

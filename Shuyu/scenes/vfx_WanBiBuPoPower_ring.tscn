@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://t38x0wrlhhfc"]
+
+[ext_resource type="Shader" uid="uid://c6qljyahypegh" path="res://Shuyu/assets/shaders/vfx_WanBiBuPoPower_ring.gdshader" id="1_283ab"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_283ab"]
+shader = ExtResource("1_283ab")
+shader_parameter/radius = 0.9
+shader_parameter/thickness = 0.01
+shader_parameter/shield_color = Color(1, 1, 1, 1)
+shader_parameter/breathe_speed = 1.5
+shader_parameter/breathe_amount = 0.01
+shader_parameter/flow_speed = 4.0
+shader_parameter/flow_blobs = 3.0
+
+[node name="VfxWanBiBuPoPowerRing" type="ColorRect"]
+material = SubResource("ShaderMaterial_283ab")
+offset_right = 40.0
+offset_bottom = 40.0
