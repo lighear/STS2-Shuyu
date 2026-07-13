@@ -23,13 +23,13 @@ namespace Shuyu.Patches
 
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            Type? d26 = typeof(CardSelectCmd).GetNestedType("<FromHandForDiscard>d__26", BindingFlags.NonPublic);
-            if (d26 == null)
+            Type? asyncMethod = typeof(CardSelectCmd).GetNestedType("<FromHandForDiscard>d__29", BindingFlags.NonPublic);
+            if (asyncMethod == null)
             {
                 Entry.Logger.Error("[Shuyu][FrozenGlowWhenDiscardPatch] Failed to get async method CardSelectCmd.FromHandForDiscard.");
                 return instructions;
             }
-            FieldInfo prefsField = AccessTools.Field(d26, "prefs");
+            FieldInfo prefsField = AccessTools.Field(asyncMethod, "prefs");
             MethodInfo setShouldGlow = AccessTools.Method(typeof(CardSelectorPrefs), "set_ShouldGlowGold");
             MethodInfo addCondition = AccessTools.Method(typeof(FrozenGlowWhenDiscardPatch), "AddFrozenGlowCondition");
 
