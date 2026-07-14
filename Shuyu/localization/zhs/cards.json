@@ -39,7 +39,7 @@
     "SHUYU_CARD_JIN_SHU_DA_JI.title":  "禁术打击",
     "SHUYU_CARD_JIN_SHU_DA_JI.description":  "造成{Damage:diff()}点伤害2次，施加[gold]寒冷[/gold]。\n将一张[gold]厄运[/gold]加入[gold]抽牌堆[/gold]。",
     "SHUYU_CARD_HAN_GUANG_JIANG_LIN.title":  "寒光降临",
-    "SHUYU_CARD_HAN_GUANG_JIANG_LIN.description":  "造成{Damage:diff()}点伤害，丢弃1张牌，生成1张[gold]冰针[/gold]。",
+    "SHUYU_CARD_HAN_GUANG_JIANG_LIN.description":  "造成{Damage:diff()}点伤害，丢弃1张牌，生成1张[gold]{IfUpgraded:show:冰针+|冰针}[/gold]。",
     "SHUYU_CARD_BING_JING_ZHI_WU.title":  "冰晶之舞",
     "SHUYU_CARD_BING_JING_ZHI_WU.description":  "获得{Block:diff()}点[gold]格挡[/gold]。\n生成1张[gold]{IfUpgraded:show:冰针+|冰针}[/gold]。\n下回合开始时生成1张[gold]{IfUpgraded:show:冰针+|冰针}[/gold]",
     "SHUYU_CARD_BING_SHI_ZI.title":  "冰十字",
