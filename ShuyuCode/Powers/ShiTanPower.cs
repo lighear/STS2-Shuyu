@@ -58,7 +58,7 @@ public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
 
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult _, ValueProp props, Creature? dealer, CardModel? __)
     {
-        if (target == Owner && _.TotalDamage > 0 && !TriggeredThisTurn)
+        if (target == Owner && !TriggeredThisTurn)
         {
             Flash();
             TriggeredThisTurn = true;

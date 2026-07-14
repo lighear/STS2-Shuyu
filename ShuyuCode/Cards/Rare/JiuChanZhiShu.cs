@@ -13,7 +13,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(ShuyuCardPool))]
+    //[RegisterCard(typeof(ShuyuCardPool))]
     public class JiuChanZhiShu : ModCardTemplate, IFrostforged
     {
         public JiuChanZhiShu() : base(
@@ -77,7 +77,7 @@ namespace Shuyu.Cards
             DynamicVars.Damage.UpgradeValueBy(2);
         }
 
-        private decimal ExtraRepeatFromFrozen;
+        private decimal _extraRepeatFromFrozen;
 
         public async Task FrostforgedEffect()
         {
@@ -86,7 +86,7 @@ namespace Shuyu.Cards
                 foreach (JiuChanZhiShu item in ally.Player!.PlayerCombatState!.AllCards.OfType<JiuChanZhiShu>())
                 {
                     item.DynamicVars.Repeat.BaseValue++;
-                    item.ExtraRepeatFromFrozen++;
+                    item._extraRepeatFromFrozen++;
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace Shuyu.Cards
         protected override void AfterDowngraded()
         {
             base.AfterDowngraded();
-            DynamicVars.Repeat.BaseValue += ExtraRepeatFromFrozen;
+            DynamicVars.Repeat.BaseValue += _extraRepeatFromFrozen;
         }
     }
 }
