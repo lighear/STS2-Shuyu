@@ -1,4 +1,6 @@
 ﻿{
   "SHUYU_KEYWORD_FROSTFORGED.description": "拥有冰器的牌被封冻时，解除其封冻并触发冰器效果。",
-  "SHUYU_KEYWORD_FROSTFORGED.title": "冰器"
+  "SHUYU_KEYWORD_FROSTFORGED.title": "冰器",
+  "SHUYU_KEYWORD_TARGETED.description": "若丢弃的牌是[gold]封冻牌[/gold]，其掷冰伤害优先作用于目标。",
+  "SHUYU_KEYWORD_TARGETED.title": "锚定"
 }

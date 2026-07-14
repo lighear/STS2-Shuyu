@@ -28,6 +28,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromCard<BingZhen>(),
+            HoverTipFactory.FromKeyword(ShuyuKeywords.Targeted),
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 

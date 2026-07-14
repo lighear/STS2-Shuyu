@@ -32,6 +32,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             ..HoverTipFactory.FromAffliction<Frozen>(),
+            HoverTipFactory.FromKeyword(ShuyuKeywords.Targeted),
             HoverTipFactory.FromPower<FragilePower>()
         ];
 
@@ -46,16 +47,25 @@ namespace Shuyu.Cards
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
 
-            IEnumerable<CardModel> cards = (await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), c => c.IsFrozen(), this));
-            foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
+            IEnumerable<CardModel> cards = (await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), null, this));
+
+            foreach (CardModel card in cards)
             {
                 int amount = card.EnergyCost.GetAmountToSpend() * 2;
-                CardModel? original = card._visualCardModel;
+                if (card is FrozenCardModel frozenCard)
+                {
+                    CardModel? original = frozenCard._visualCardModel;
                 
-                await card.SetIcyDamageTargets(cardPlay.Target!);
-                await CardCmd.Discard(choiceContext, card);
+                    await frozenCard.SetIcyDamageTargets(cardPlay.Target!);
+                    await CardCmd.Discard(choiceContext, frozenCard);
                 
-                if (original != null) await CardPileCmd.Add(original, PileType.Hand);
+                    if (original != null) await CardPileCmd.Add(original, PileType.Hand);
+                }
+                else
+                {
+                    await CardCmd.Discard(choiceContext, card);
+                    await CardPileCmd.Add(card, PileType.Hand);
+                }
                 
                 if (base.IsUpgraded)
                 {
@@ -68,7 +78,6 @@ namespace Shuyu.Cards
                 {
                     await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, amount, Owner.Creature, this);
                 }
-                
             }
         }
 
