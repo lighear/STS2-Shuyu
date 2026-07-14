@@ -27,7 +27,8 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromCard<BingZhen>(),
+            HoverTipFactory.FromCard<BingZhen>(IsUpgraded),
+            HoverTipFactory.FromKeyword(ShuyuKeywords.Targeted),
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
@@ -54,7 +55,7 @@ namespace Shuyu.Cards
             }
             await CardCmd.Discard(choiceContext, cards);
 
-            await BingZhen.CreateInHand(Owner, DynamicVars.Cards.IntValue, CombatState!, upgrade: false);
+            await BingZhen.CreateInHand(Owner, DynamicVars.Cards.IntValue, CombatState!, upgrade: IsUpgraded);
         }   
 
         protected override void OnUpgrade()

@@ -1,5 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -19,7 +20,7 @@ namespace Shuyu.Cards
             baseCost: 1,
             CardType.Skill,
             CardRarity.Rare,
-            TargetType.AnyEnemy)
+            TargetType.AllEnemies)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -33,16 +34,19 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DynamicVar("EnemyStrengthLoss", 1),
+            new DynamicVar("EnemyStrengthLoss", 2),
             new DynamicVar("ExtraEnemyStrengthLoss", 1),
             new RepeatVar(3)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<StrengthPower>(choiceContext, cardPlay.Target!, -DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);
-            ShiWenZhengPower? power = await PowerCmd.Apply<ShiWenZhengPower>(choiceContext, cardPlay.Target!, DynamicVars["ExtraEnemyStrengthLoss"].BaseValue, Owner.Creature, this);
-            power?.SetMaxStrengthLossCount(DynamicVars.Repeat.IntValue);
+            foreach (Creature enemy in CombatState!.HittableEnemies)
+            {
+                await PowerCmd.Apply<StrengthPower>(choiceContext,enemy, -DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);
+                ShiWenZhengPower? power = await PowerCmd.Apply<ShiWenZhengPower>(choiceContext, enemy, DynamicVars["ExtraEnemyStrengthLoss"].BaseValue, Owner.Creature, this);
+                power?.SetMaxStrengthLossCount(DynamicVars.Repeat.IntValue);
+            }
         }
 
         protected override void OnUpgrade()
