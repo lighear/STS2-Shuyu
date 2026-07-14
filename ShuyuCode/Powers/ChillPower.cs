@@ -91,6 +91,15 @@ public class ChillPower : ModPowerTemplate
     {
         if (amount != 0 && power.GetTypeForAmount(amount) == PowerType.Debuff && power.Owner == Owner && power is not ITemporaryPower)
         {
+            if (amount > 0)
+            {
+                await (Owner.GetPower<FragilePower>()?.ConvertIfThresholdMet(choiceContext, applier) ?? Task.CompletedTask);
+                if (!Owner.IsAlive)
+                {
+                    return;
+                }
+            }
+
             if (power is ChillPower)
             {
                 if (SelfApplied)
