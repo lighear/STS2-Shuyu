@@ -35,8 +35,9 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(5, ValueProp.Move),
-            new EnergyVar(1)
+            new DamageVar(4, ValueProp.Move),
+            new EnergyVar(1),
+            new CardsVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -45,6 +46,8 @@ namespace Shuyu.Cards
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
+            
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
 
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(

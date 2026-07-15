@@ -36,6 +36,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         targets.Clear();
         count = 1;
         Owner ??= original.Owner;
+        _tags = original.Tags.ToHashSet();
         return this;
     }
 
