@@ -40,6 +40,19 @@ public sealed class FrozenCardModel : ModCardTemplate
         return this;
     }
 
+    protected override void DeepCloneFields()
+    {
+        base.DeepCloneFields();
+
+        // Frozen cards wrap the card they replaced. CardModel's default cloning only
+        // performs a memberwise copy of fields it does not own, which would make every
+        // frozen clone point at the same wrapped card. Clone the wrapped card through
+        // the combat card scope as well so each frozen clone can be independently
+        // unfrozen (e.g. after Dual Wield or Nightmare creates it).
+        _visualCardModel = _visualCardModel?.CreateClone();
+        targets = targets.ToList();
+    }
+
     public async Task SetIcyDamageTargets(Creature target)
     {
         this.targets.Clear();
