@@ -46,6 +46,8 @@ namespace Shuyu.Cards
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
+            
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
 
             IEnumerable<CardModel> cards =
                 await CardSelectCmd.FromHand(
@@ -67,7 +69,6 @@ namespace Shuyu.Cards
                     await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
                 }
             }
-            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
         }
 
         protected override void OnUpgrade()
