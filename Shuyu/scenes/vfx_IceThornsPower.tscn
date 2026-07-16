@@ -1,0 +1,108 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NIceThornsPowerVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/ice_thorn_particle.svg" id="2_texture"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/snowflake.png" id="3_snowflake"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_scale"]
+_data = [Vector2(0, 0.32), 0.0, 2.8, 0, 0, Vector2(0.22, 1), 0.0, 0.0, 0, 0, Vector2(0.72, 0.9), 0.0, -0.35, 0, 0, Vector2(1, 0.18), -2.5, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_scale"]
+curve = SubResource("Curve_scale")
+
+[sub_resource type="Curve" id="Curve_alpha"]
+_data = [Vector2(0, 0), 0.0, 7.0, 0, 0, Vector2(0.12, 1), 0.0, 0.0, 0, 0, Vector2(0.68, 0.76), -0.2, -0.2, 0, 0, Vector2(1, 0), -3.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_alpha"]
+curve = SubResource("Curve_alpha")
+
+[sub_resource type="Gradient" id="Gradient_ice"]
+colors = PackedColorArray(1, 1, 1, 1, 0.6, 0.88, 1, 0.72)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_ice"]
+gradient = SubResource("Gradient_ice")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_thorn"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 7.0
+initial_velocity_min = 8.0
+initial_velocity_max = 19.0
+damping_min = 2.0
+damping_max = 4.5
+scale_min = 0.27
+scale_max = 0.43
+scale_curve = SubResource("CurveTexture_scale")
+color_initial_ramp = SubResource("GradientTexture_ice")
+alpha_curve = SubResource("CurveTexture_alpha")
+
+[sub_resource type="Curve" id="Curve_snowflake_scale"]
+_data = [Vector2(0, 0.45), 0.0, 2.4, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.78, 0.92), 0.0, -0.25, 0, 0, Vector2(1, 0.3), -2.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_snowflake_scale"]
+curve = SubResource("Curve_snowflake_scale")
+
+[sub_resource type="Gradient" id="Gradient_snowflake"]
+colors = PackedColorArray(1, 1, 1, 1, 0.68, 0.88, 1, 0.8)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_snowflake"]
+gradient = SubResource("Gradient_snowflake")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_snowflake"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 12.0
+initial_velocity_min = 3.5
+initial_velocity_max = 11.0
+damping_min = 0.8
+damping_max = 2.2
+angular_velocity_min = -55.0
+angular_velocity_max = 55.0
+scale_min = 0.026
+scale_max = 0.046
+scale_curve = SubResource("CurveTexture_snowflake_scale")
+color_initial_ramp = SubResource("GradientTexture_snowflake")
+alpha_curve = SubResource("CurveTexture_alpha")
+
+[node name="VfxIceThornsPower" type="Node2D" node_paths=PackedStringArray("_emitterTemplate", "_snowflakeEmitterTemplate")]
+script = ExtResource("1_script")
+_emitterTemplate = NodePath("EmitterTemplate")
+_snowflakeEmitterTemplate = NodePath("SnowflakeEmitterTemplate")
+
+[node name="EmitterTemplate" type="GPUParticles2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 1
+texture = ExtResource("2_texture")
+lifetime = 3.2
+one_shot = true
+explosiveness = 1.0
+randomness = 0.58
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-64, -128, 128, 256)
+process_material = SubResource("ParticleProcessMaterial_thorn")
+
+[node name="SnowflakeEmitterTemplate" type="GPUParticles2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 1
+texture = ExtResource("3_snowflake")
+lifetime = 3.6
+one_shot = true
+explosiveness = 1.0
+randomness = 0.65
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-96, -96, 192, 192)
+process_material = SubResource("ParticleProcessMaterial_snowflake")
