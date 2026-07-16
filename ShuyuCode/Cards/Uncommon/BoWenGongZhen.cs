@@ -54,6 +54,17 @@ namespace Shuyu.Cards
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             Node2D? vfxNode = VFXUtil.PlaySimple("res://Shuyu/scenes/vfx/vfx_BoWenGongZhen.tscn", NCombatRoom.Instance?.GetCreatureNode(cardPlay.Target)?.VfxSpawnPosition ?? Vector2.Zero, 2f);
+            if (vfxNode != null)
+            {
+                if (DynamicVars.CalculatedDamage.Calculate(cardPlay.Target) > 20)
+                {
+                    vfxNode.Scale = new Vector2((float)0.5, (float)0.5);
+                }
+                else
+                {
+                    vfxNode.Scale = new Vector2((float)0.25, (float)0.25);
+                }
+            }
             
             await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .FromCard(this, cardPlay)
