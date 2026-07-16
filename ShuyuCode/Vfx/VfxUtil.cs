@@ -4,6 +4,8 @@ using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+using MegaCrit.Sts2.Core.Nodes.Vfx.Utilities;
 
 namespace Shuyu.Vfx;
 
@@ -82,5 +84,15 @@ public static class VFXUtil
             return node2D;
         }
         return null;
+    }
+    
+    public static void FitVFX(this Node2D node, Vector2 nodeStartPos, Vector2 nodeEndPos, Vector2 sceneStartPos, Vector2 sceneEndPos)
+    {
+        Vector2 val = nodeStartPos - nodeEndPos;
+        Vector2 val2 = sceneStartPos - sceneEndPos;
+        float rotation = ((Vector2)(val2)).Angle() - ((Vector2)(val)).Angle();
+        float num = ((Vector2)(val2)).Length() / ((Vector2)(val)).Length();
+        node.Rotation = rotation;
+        node.Scale = Vector2.One * num;
     }
 }
