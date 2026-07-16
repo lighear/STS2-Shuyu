@@ -48,6 +48,7 @@ public partial class NIceThornsPowerVfx : Node2D
     private readonly List<bool> _isSnowflakeEmitter = [];
     private readonly List<double> _secondsUntilEmission = [];
     private readonly RandomNumberGenerator _rng = new();
+    private bool _rngIsRandomized;
     private Vector2 _boundsSize;
     private int _stackAmount;
     private int _activeEmitterCount;
@@ -58,7 +59,7 @@ public partial class NIceThornsPowerVfx : Node2D
 
     public override void _Ready()
     {
-        _rng.Randomize();
+        EnsureRngRandomized();
         EnsureEmitters();
         Refresh();
     }
@@ -85,6 +86,7 @@ public partial class NIceThornsPowerVfx : Node2D
 
     public void Configure(Vector2 boundsSize, int stackAmount)
     {
+        EnsureRngRandomized();
         _boundsSize = boundsSize;
         _stackAmount = stackAmount;
         EnsureEmitters();
@@ -118,9 +120,19 @@ public partial class NIceThornsPowerVfx : Node2D
             _emitters.Add(emitter);
             _isSnowflakeEmitter.Add(isSnowflake);
 
-            // Fill in gradually during the first lifetime instead of bursting.
-            _secondsUntilEmission.Add(emitter.Lifetime * i / MaxEmitterCount);
+            _secondsUntilEmission.Add(0.0);
         }
+    }
+
+    private void EnsureRngRandomized()
+    {
+        if (_rngIsRandomized)
+        {
+            return;
+        }
+
+        _rng.Randomize();
+        _rngIsRandomized = true;
     }
 
     private void Refresh()
@@ -132,9 +144,26 @@ public partial class NIceThornsPowerVfx : Node2D
 
         float cappedStacks = Mathf.Clamp(_stackAmount, 0, MaxVisualStacks);
         float strength = cappedStacks / MaxVisualStacks;
-        _activeEmitterCount = _stackAmount <= 0
+        int previousActiveEmitterCount = _activeEmitterCount;
+        int nextActiveEmitterCount = _stackAmount <= 0
             ? 0
             : (int)MathF.Round(Mathf.Lerp(MinEmitterCount, MaxEmitterCount, strength));
+        _activeEmitterCount = nextActiveEmitterCount;
+
+        if (previousActiveEmitterCount <= 0 && _activeEmitterCount > 0)
+        {
+            RandomizeInitialEmissionOrder(_activeEmitterCount);
+        }
+        else if (_activeEmitterCount > previousActiveEmitterCount)
+        {
+            // Emitters unlocked by a stack increase should not start as a
+            // simultaneous burst or resume the old index-based scan pattern.
+            for (int i = previousActiveEmitterCount; i < _activeEmitterCount; i++)
+            {
+                _secondsUntilEmission[i] = _rng.RandfRange(0f, (float)_emitters[i].Lifetime);
+            }
+        }
+
         _opacity = Mathf.Lerp(MinOpacity, MaxOpacity, strength);
         _radiusX = _boundsSize.X * HorizontalRadiusFactor + 3f;
         _radiusY = _boundsSize.Y * VerticalRadiusFactor + 3f;
@@ -149,6 +178,30 @@ public partial class NIceThornsPowerVfx : Node2D
             {
                 emitter.Emitting = false;
             }
+        }
+    }
+
+    private void RandomizeInitialEmissionOrder(int emitterCount)
+    {
+        int[] shuffledSlots = new int[emitterCount];
+        for (int i = 0; i < emitterCount; i++)
+        {
+            shuffledSlots[i] = i;
+        }
+
+        // Fisher-Yates gives every spatial emitter an equal chance to occupy
+        // every time slot. Slots stay evenly spaced, so the opening is random
+        // without turning into a distracting burst.
+        for (int i = emitterCount - 1; i > 0; i--)
+        {
+            int swapIndex = _rng.RandiRange(0, i);
+            (shuffledSlots[i], shuffledSlots[swapIndex]) = (shuffledSlots[swapIndex], shuffledSlots[i]);
+        }
+
+        double fillDuration = _emitterTemplate?.Lifetime ?? 3.2;
+        for (int i = 0; i < emitterCount; i++)
+        {
+            _secondsUntilEmission[i] = fillDuration * shuffledSlots[i] / emitterCount;
         }
     }
 
