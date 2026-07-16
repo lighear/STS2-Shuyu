@@ -1,0 +1,23 @@
+<svg width="256" height="1440" viewBox="0 0 64 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="core" x1="17" y1="15" x2="29" y2="345" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.18"/>
+      <stop offset="0.20" stop-color="#FFFFFF" stop-opacity="0.86"/>
+      <stop offset="0.52" stop-color="#DCEBFF" stop-opacity="0.68"/>
+      <stop offset="0.84" stop-color="#F7FAFF" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.16"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Every ribbon converges at both tips and widens smoothly toward the middle. -->
+  <path d="M14 18C68 90 70 270 14 342C34 270 32 90 14 18Z" fill="#B8D4FF" fill-opacity="0.020"/>
+  <path d="M14 18C65 90 67 270 14 342C37 270 35 90 14 18Z" fill="#BCD7FF" fill-opacity="0.024"/>
+  <path d="M14 18C62 90 64 270 14 342C40 270 38 90 14 18Z" fill="#C2DCFF" fill-opacity="0.029"/>
+  <path d="M14 18C60 90 62 270 14 342C42 270 40 90 14 18Z" fill="#C9E0FF" fill-opacity="0.035"/>
+  <path d="M14 18C58 90 60 270 14 342C44 270 42 90 14 18Z" fill="#D0E5FF" fill-opacity="0.043"/>
+  <path d="M14 18C56 90 58 270 14 342C46 270 44 90 14 18Z" fill="#D8EAFF" fill-opacity="0.053"/>
+  <path d="M14 18C54.5 90 56.5 270 14 342C47.5 270 45.5 90 14 18Z" fill="#E0EEFF" fill-opacity="0.067"/>
+  <path d="M14 18C53.2 90 55.2 270 14 342C48.8 270 46.8 90 14 18Z" fill="#E8F3FF" fill-opacity="0.085"/>
+  <path d="M14 18C52 90 54 270 14 342C50 270 48 90 14 18Z" fill="#EFF7FF" fill-opacity="0.110"/>
+  <path d="M14 18C50 90 52 270 14 342" stroke="url(#core)" stroke-width="3" stroke-linecap="round"/>
+</svg>

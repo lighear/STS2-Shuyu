@@ -11,7 +11,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using Shuyu.Characters;
 
 namespace Shuyu.Powers;
 
@@ -59,17 +58,26 @@ public class BingWuPower : ModPowerTemplate
 
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
-        if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxBingWuPower") == null)
+        var creatureVisuals = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureBounds = creatureVisuals?.Bounds;
+        if (creatureVisuals != null && creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxBingWuPower") == null)
         {
             string scenePath = "res://Shuyu/scenes/vfx_BingWuPower.tscn";
             ColorRect vfxBingWuPower = VFXUtil.GenVFXNode<ColorRect>(scenePath);
             creatureBounds.AddChildSafely(vfxBingWuPower);
 
-            if (Owner.Player?.Character is ShuyuCharacter)
+            if (creatureVisuals.GetCurrentBody() is Sprite2D sprite && sprite.Texture != null)
             {
-                vfxBingWuPower.Size = new Vector2(1924 * 0.194f, 2378 * 0.194f);
-                vfxBingWuPower.Position = new Vector2(-962 * 0.194f + 82, -1189 * 0.194f);
+                Vector2 spriteSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
+                Vector2 effectSize = new(spriteSize.X * (1924f / 2378f), spriteSize.Y);
+                Vector2 visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+
+                vfxBingWuPower.AnchorLeft = 0f;
+                vfxBingWuPower.AnchorTop = 0f;
+                vfxBingWuPower.AnchorRight = 0f;
+                vfxBingWuPower.AnchorBottom = 0f;
+                vfxBingWuPower.Size = effectSize;
+                vfxBingWuPower.Position = visualCenter - effectSize * 0.5f;
             }
             else
             {

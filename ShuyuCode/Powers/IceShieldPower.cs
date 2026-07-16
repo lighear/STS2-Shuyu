@@ -3,8 +3,13 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using Godot;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -13,6 +18,9 @@ namespace Shuyu.Powers;
 [RegisterPower]
 public class IceShieldPower : ModPowerTemplate
 {
+    private const string VfxNodeName = "VfxIceShieldPower";
+    private const string VfxScenePath = "res://Shuyu/scenes/vfx_IceShieldPower.tscn";
+
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
@@ -20,6 +28,58 @@ public class IceShieldPower : ModPowerTemplate
         IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
+
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        DisplayAmountChanged -= OnDisplayAmountChanged;
+        DisplayAmountChanged += OnDisplayAmountChanged;
+        UpdateVfx();
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        DisplayAmountChanged -= OnDisplayAmountChanged;
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals.Bounds;
+        creatureBounds?.GetNodeOrNull<NIceShieldPowerVfx>(VfxNodeName)?.QueueFree();
+        return Task.CompletedTask;
+    }
+
+    private void OnDisplayAmountChanged()
+    {
+        UpdateVfx();
+    }
+
+    private void UpdateVfx()
+    {
+        var creatureVisuals = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureBounds = creatureVisuals?.Bounds;
+        if (creatureVisuals == null || creatureBounds == null)
+        {
+            return;
+        }
+
+        Vector2 visualSize = creatureBounds.Size;
+        Vector2 visualCenter = creatureBounds.Size * 0.5f;
+
+        if (Owner.Player?.Character is ShuyuCharacter &&
+            creatureVisuals.GetCurrentBody() is Sprite2D sprite &&
+            sprite.Texture != null)
+        {
+            visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
+            visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+        }
+
+        NIceShieldPowerVfx? vfx = creatureBounds.GetNodeOrNull<NIceShieldPowerVfx>(VfxNodeName);
+        if (vfx == null)
+        {
+            vfx = VFXUtil.GenVFXNode<NIceShieldPowerVfx>(VfxScenePath);
+            creatureBounds.AddChildSafely(vfx);
+        }
+
+        vfx.Position = visualCenter;
+        vfx.Configure(visualSize, Amount);
+    }
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {

@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Characters;
 using Shuyu.Interfaces;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -119,10 +118,18 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
             ColorRect vfxWanBiBuPoPowerRing = VFXUtil.GenVFXNode<ColorRect>(scenePath);
             creatureBounds.AddChildSafely(vfxWanBiBuPoPowerRing);
 
-            if (Owner.Player?.Character is ShuyuCharacter)
+            if (creatureVisual.GetCurrentBody() is Sprite2D sprite && sprite.Texture != null)
             {
-                vfxWanBiBuPoPowerRing.Size = new Vector2(2378 * 0.194f, 2378 * 0.194f);
-                vfxWanBiBuPoPowerRing.Position = new Vector2(-1189 * 0.194f + 82, -1189 * 0.194f);
+                Vector2 visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
+                float ringDiameter = Mathf.Max(visualSize.X, visualSize.Y);
+                Vector2 visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+
+                vfxWanBiBuPoPowerRing.AnchorLeft = 0f;
+                vfxWanBiBuPoPowerRing.AnchorTop = 0f;
+                vfxWanBiBuPoPowerRing.AnchorRight = 0f;
+                vfxWanBiBuPoPowerRing.AnchorBottom = 0f;
+                vfxWanBiBuPoPowerRing.Size = Vector2.One * ringDiameter;
+                vfxWanBiBuPoPowerRing.Position = visualCenter - vfxWanBiBuPoPowerRing.Size * 0.5f;
             }
             else
             {

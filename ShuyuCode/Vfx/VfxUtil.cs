@@ -24,6 +24,7 @@ public static class VFXUtil
             "res://Shuyu/scenes/vfx_BingWuPower.tscn",
             "res://Shuyu/scenes/vfx_WanBiBuPoPower_ring.tscn",
             "res://Shuyu/scenes/vfx_IceThornsPower.tscn",
+            "res://Shuyu/scenes/vfx_IceShieldPower.tscn",
             "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
         };
         foreach (var path in paths)

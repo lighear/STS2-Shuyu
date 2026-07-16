@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NIceShieldPowerVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/ice_shield_side.svg" id="2_shield"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/snowflake.png" id="3_snowflake"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 0
+
+[sub_resource type="Curve" id="Curve_snow_alpha"]
+_data = [Vector2(0, 0), 0.0, 3.6, 0, 0, Vector2(0.18, 0.72), 0.0, 0.0, 0, 0, Vector2(0.74, 0.58), -0.2, -0.2, 0, 0, Vector2(1, 0), -2.8, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_snow_alpha"]
+curve = SubResource("Curve_snow_alpha")
+
+[sub_resource type="Gradient" id="Gradient_snow"]
+colors = PackedColorArray(1, 1, 1, 1, 0.62, 0.88, 1, 0.74)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_snow"]
+gradient = SubResource("Gradient_snow")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_snow"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(17, 143, 1)
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 7.0
+gravity = Vector3(0, -1.2, 0)
+damping_min = 0.35
+damping_max = 0.9
+angular_velocity_min = -38.0
+angular_velocity_max = 38.0
+scale_min = 0.012
+scale_max = 0.028
+color_initial_ramp = SubResource("GradientTexture_snow")
+alpha_curve = SubResource("CurveTexture_snow_alpha")
+
+[node name="VfxIceShieldPower" type="Node2D" node_paths=PackedStringArray("_leftShield", "_rightShield", "_leftSnowflakes", "_rightSnowflakes")]
+script = ExtResource("1_script")
+_leftShield = NodePath("LeftShield")
+_rightShield = NodePath("RightShield")
+_leftSnowflakes = NodePath("LeftSnowflakes")
+_rightSnowflakes = NodePath("RightSnowflakes")
+
+[node name="LeftShield" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+texture = ExtResource("2_shield")
+flip_h = true
+
+[node name="RightShield" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+texture = ExtResource("2_shield")
+
+[node name="LeftSnowflakes" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 8
+texture = ExtResource("3_snowflake")
+lifetime = 5.2
+preprocess = 3.5
+randomness = 0.76
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-64, -192, 128, 384)
+process_material = SubResource("ParticleProcessMaterial_snow")
+
+[node name="RightSnowflakes" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 8
+texture = ExtResource("3_snowflake")
+lifetime = 5.2
+preprocess = 3.5
+randomness = 0.76
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-64, -192, 128, 384)
+process_material = SubResource("ParticleProcessMaterial_snow")
