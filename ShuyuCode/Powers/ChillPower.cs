@@ -123,14 +123,21 @@ public class ChillPower : ModPowerTemplate
         SelfApplied = true;
         UpdateDescription();
 
-        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
-        if (creatureBounds != null && creatureBounds.GetNodeOrNull<Node2D>("VfxChillPowerParticle") == null)
+        var creatureVisuals = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureBounds = creatureVisuals?.Bounds;
+        if (creatureVisuals != null && creatureBounds != null && creatureBounds.GetNodeOrNull<Node2D>("VfxChillPowerParticle") == null)
         {
+            Vector2 visualCenter = creatureBounds.Size * 0.5f;
+            if (creatureVisuals.GetCurrentBody() is Sprite2D sprite && sprite.Texture != null)
+            {
+                visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+            }
+
             string particlePath = $"{VFXUtil.PowerVfxPath}/vfx_ChillPower_particle.tscn";
             Node2D vfxChillPowerParticle = VFXUtil.GenVFXNode<Node2D>(particlePath);
             creatureBounds.AddChildSafely(vfxChillPowerParticle);
 
-            vfxChillPowerParticle.Position = creatureBounds.Size / 2;
+            vfxChillPowerParticle.Position = visualCenter;
             GpuParticles2D snowflake = vfxChillPowerParticle.GetNodeOrNull<GpuParticles2D>("snowflake");
             if (snowflake != null)
             {
@@ -153,15 +160,14 @@ public class ChillPower : ModPowerTemplate
             ColorRect vfxChillPowerBackground = VFXUtil.GenVFXNode<ColorRect>(backgroundPath);
             creatureBounds.AddChildSafely(vfxChillPowerBackground);
 
-            vfxChillPowerBackground.AnchorLeft = 0;
-            vfxChillPowerBackground.AnchorTop = 0;
-            vfxChillPowerBackground.AnchorRight = 1;
-            vfxChillPowerBackground.AnchorBottom = 1;
             Vector2 expandSize = creatureBounds.Size * 0.2f;
-            vfxChillPowerBackground.OffsetLeft = -expandSize.X;
-            vfxChillPowerBackground.OffsetTop = -expandSize.Y;
-            vfxChillPowerBackground.OffsetRight = expandSize.X;
-            vfxChillPowerBackground.OffsetBottom = expandSize.Y;
+            Vector2 backgroundSize = creatureBounds.Size + expandSize * 2f;
+            vfxChillPowerBackground.AnchorLeft = 0f;
+            vfxChillPowerBackground.AnchorTop = 0f;
+            vfxChillPowerBackground.AnchorRight = 0f;
+            vfxChillPowerBackground.AnchorBottom = 0f;
+            vfxChillPowerBackground.Size = backgroundSize;
+            vfxChillPowerBackground.Position = visualCenter - backgroundSize * 0.5f;
         }
     }
 

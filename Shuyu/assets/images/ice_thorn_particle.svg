@@ -1,0 +1,19 @@
+<svg width="48" height="148" viewBox="0 0 48 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ice" x1="24" y1="2" x2="24" y2="145" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4FFFF" stop-opacity="0.98"/>
+      <stop offset="0.28" stop-color="#BCEFFF" stop-opacity="0.82"/>
+      <stop offset="0.78" stop-color="#5ECDEB" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#3AAECC" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="19" y1="9" x2="27" y2="130" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.9"/>
+      <stop offset="0.7" stop-color="#D8FAFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#D8FAFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 1.5L46 144C37.5 139.5 31 138 24 138C17 138 10.5 139.5 2 144L24 1.5Z" fill="#6DDCF5" fill-opacity="0.13"/>
+  <path d="M24 2L39.5 142C33.7 138.8 28.5 137.2 24 137.2C19.5 137.2 14.3 138.8 8.5 142L24 2Z" fill="url(#ice)"/>
+  <path d="M24 7L26.8 129L20.2 135L24 7Z" fill="url(#shine)"/>
+  <path d="M24 12L14.5 133" stroke="#E9FDFF" stroke-opacity="0.22" stroke-width="1.2"/>
+</svg>

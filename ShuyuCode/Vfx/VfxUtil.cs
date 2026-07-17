@@ -22,6 +22,8 @@ public static class VFXUtil
         //你的场景字符串列表
         var paths = new List<string>
         {
+            $"{PowerVfxPath}/vfx_IceThornsPower.tscn",
+            $"{PowerVfxPath}/vfx_IceShieldPower.tscn",
             $"{PowerVfxPath}/vfx_ChillPower_particle.tscn",
             $"{PowerVfxPath}/vfx_ChillPower_background.tscn",
             $"{PowerVfxPath}/vfx_BingWuPower.tscn",
