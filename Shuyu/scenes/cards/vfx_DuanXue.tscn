@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://c6oilc6llo82b" path="res://ShuyuCode/Vfx/NDuanXueVfx.cs" id="1_6w3ls"]
 [ext_resource type="Shader" uid="uid://bvyy1nfvmy54l" path="res://Shuyu/assets/shaders/vfx_DuanXue.tres" id="1_uxwgt"]
 [ext_resource type="Texture2D" uid="uid://rlqg12gjr8fa" path="res://Shuyu/assets/images/common_ring_polar_a.png" id="2_gw7he"]
-[ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/vfx/common/vfx_common_specks.tscn" id="3_0xr85"]
+[ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/common/vfx_common_specks.tscn" id="3_0xr85"]
 [ext_resource type="Texture2D" uid="uid://dbvsskvsg6v3a" path="res://Shuyu/assets/images/long_rice_no__glow_particle.png" id="4_6w3ls"]
-[ext_resource type="PackedScene" uid="uid://0vk581j1pecs" path="res://Shuyu/scenes/vfx/common/vfx_common_ring_polar_a.tscn" id="6_qekan"]
-[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://Shuyu/scenes/vfx/common/vfx_common_glow.tscn" id="7_qhkrm"]
+[ext_resource type="PackedScene" uid="uid://0vk581j1pecs" path="res://Shuyu/scenes/common/vfx_common_ring_polar_a.tscn" id="6_qekan"]
+[ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://Shuyu/scenes/common/vfx_common_glow.tscn" id="7_qhkrm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xr85"]
 shader = ExtResource("1_uxwgt")

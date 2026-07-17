@@ -4,11 +4,12 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
-using MegaCrit.Sts2.Core.Helpers;
 using Shuyu.Cards;
 using Shuyu.Characters;
 using Shuyu.Vfx;
@@ -95,7 +96,8 @@ public class LianXuJingGePower : ModPowerTemplate
 
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
+        NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureBounds = creatureVisual?.Bounds;
         if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower") == null)
         {
             string scenePath = $"{VFXUtil.PowerVfxPath}/vfx_LianXuJingGePower.tscn";
@@ -103,10 +105,18 @@ public class LianXuJingGePower : ModPowerTemplate
             vfxLianXuJingGePower.Material = (ShaderMaterial)vfxLianXuJingGePower.Material.Duplicate();
             creatureBounds.AddChildSafely(vfxLianXuJingGePower);
 
-            if (Owner.Player?.Character is ShuyuCharacter)
+            if (creatureVisual?.GetCurrentBody() is Sprite2D sprite && sprite.Texture != null)
             {
-                vfxLianXuJingGePower.Size = new Vector2(2378 * 0.15f, 2378 * 0.15f);
-                vfxLianXuJingGePower.Position = new Vector2(-1189 * 0.15f + 123, -1189 * 0.15f);
+                Vector2 visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
+                float ringDiameter = Mathf.Max(visualSize.X, visualSize.Y);
+                Vector2 visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+
+                vfxLianXuJingGePower.AnchorLeft = 0f;
+                vfxLianXuJingGePower.AnchorTop = 0f;
+                vfxLianXuJingGePower.AnchorRight = 0f;
+                vfxLianXuJingGePower.AnchorBottom = 0f;
+                vfxLianXuJingGePower.Size = Vector2.One * ringDiameter;
+                vfxLianXuJingGePower.Position = visualCenter - vfxLianXuJingGePower.Size * 0.5f;
             }
             else
             {

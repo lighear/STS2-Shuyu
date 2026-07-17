@@ -12,7 +12,7 @@ namespace Shuyu.Vfx;
 public static class VFXUtil
 {
     public static readonly string PowerVfxPath = "res://Shuyu/scenes/powers";
-    public static readonly string CardVfxPath = "res://Shuyu/scenes/vfx";
+    public static readonly string CardVfxPath = "res://Shuyu/scenes/cards";
 
     // Mod 独立的场景缓存（避免被 PreloadManager 清理）
     public static readonly ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
@@ -30,6 +30,8 @@ public static class VFXUtil
             $"{PowerVfxPath}/vfx_WanBiBuPoPower_ring.tscn",
             $"{PowerVfxPath}/vfx_LianXuJingGePower.tscn",
             $"{CardVfxPath}/vfx_HanXingZhuiLuo.tscn",
+            $"{CardVfxPath}/vfx_BoWenGongZhen.tscn",
+            $"{CardVfxPath}/vfx_LinZhiTong.tscn",
         };
         foreach (var path in paths)
         {

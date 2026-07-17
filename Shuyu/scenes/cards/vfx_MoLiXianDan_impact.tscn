@@ -1,11 +1,11 @@
 [gd_scene load_steps=44 format=3 uid="uid://boty0v33ncryx"]
 
 [ext_resource type="Script" uid="uid://cwwlaqjuh86uw" path="res://ShuyuCode/Vfx/NMoLiXianDanImpactVfx.cs" id="1_j14xe"]
-[ext_resource type="PackedScene" uid="uid://wt5ycmi5c6wi" path="res://Shuyu/scenes/vfx/common/vfx_dagger_impact_core.tscn" id="2_cm5ba"]
-[ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/vfx/common/vfx_common_specks.tscn" id="3_8mpjl"]
+[ext_resource type="PackedScene" uid="uid://wt5ycmi5c6wi" path="res://Shuyu/scenes/common/vfx_dagger_impact_core.tscn" id="2_cm5ba"]
+[ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/common/vfx_common_specks.tscn" id="3_8mpjl"]
 [ext_resource type="Texture2D" uid="uid://dbvsskvsg6v3a" path="res://Shuyu/assets/images/long_rice_no__glow_particle.png" id="4_4jup8"]
-[ext_resource type="PackedScene" uid="uid://b48wtkhta5hyi" path="res://Shuyu/scenes/vfx/common/vfx_common_hit_flare.tscn" id="5_amsc3"]
-[ext_resource type="PackedScene" uid="uid://d2g2jup57s1q" path="res://Shuyu/scenes/vfx/common/vfx_poof.tscn" id="6_pwl4n"]
+[ext_resource type="PackedScene" uid="uid://b48wtkhta5hyi" path="res://Shuyu/scenes/common/vfx_common_hit_flare.tscn" id="5_amsc3"]
+[ext_resource type="PackedScene" uid="uid://d2g2jup57s1q" path="res://Shuyu/scenes/common/vfx_poof.tscn" id="6_pwl4n"]
 
 [sub_resource type="Curve" id="Curve_osxqj"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.2902, 0.0, 0, 0]

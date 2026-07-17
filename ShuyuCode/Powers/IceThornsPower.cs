@@ -19,7 +19,7 @@ namespace Shuyu.Powers;
 public class IceThornsPower : ModPowerTemplate
 {
     private const string VfxNodeName = "VfxIceThornsPower";
-    private const string VfxScenePath = "res://Shuyu/scenes/vfx_IceThornsPower.tscn";
+    private readonly string VfxScenePath = $"{VFXUtil.PowerVfxPath}/vfx_IceThornsPower.tscn";
 
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
