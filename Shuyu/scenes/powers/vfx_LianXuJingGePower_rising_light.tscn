@@ -6,11 +6,14 @@
 shader = ExtResource("1_shader")
 shader_parameter/light_color = Color(0.28, 0.72, 1, 1)
 shader_parameter/active = 0.0
+shader_parameter/growth = 0.0
 shader_parameter/opacity = 0.48
 shader_parameter/breath_speed = 1.15
 shader_parameter/ray_count = 56.0
 shader_parameter/ellipse_width_ratio = 0.94
-shader_parameter/ground_curve_ratio = 0.344
+shader_parameter/ground_curve_ratio = 0.115
+shader_parameter/max_length_multiplier = 3.0
+shader_parameter/max_brightness_multiplier = 1.3
 
 [node name="VfxLianXuJingGePowerRisingLight" type="ColorRect"]
 material = SubResource("ShaderMaterial_rising_light")

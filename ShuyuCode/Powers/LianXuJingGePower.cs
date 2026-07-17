@@ -25,7 +25,10 @@ public class LianXuJingGePower : ModPowerTemplate
     private const float GroundHeightFactor = 0.213f;
     private const float FootOffsetFactor = 0.39f;
     private const float RisingLightWidthFactor = 0.94f;
-    private const float RisingLightHeightFactor = 0.31f;
+    private const float RisingLightBaseHeightFactor = 0.31f;
+    private const float RisingLightMaxLengthMultiplier = 3f;
+    private const float RisingLightHeightFactor = RisingLightBaseHeightFactor * RisingLightMaxLengthMultiplier;
+    private const int MaxBingZhenVfxCount = 5;
 
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Single;
@@ -60,6 +63,7 @@ public class LianXuJingGePower : ModPowerTemplate
     }
 
     private bool nowActive = false;
+    private int bingZhenVfxCount = 0;
     
     protected override object InitInternalData()
     {
@@ -87,11 +91,22 @@ public class LianXuJingGePower : ModPowerTemplate
             else if (cardPlay.Card is BingZhen)
             {
                 bool wasActive = nowActive;
+                int previousVfxCount = bingZhenVfxCount;
                 nowActive = true;
+                bingZhenVfxCount = Math.Min(MaxBingZhenVfxCount, bingZhenVfxCount + 1);
                 NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
-                if (!wasActive && creatureVisual != null)
+                if (creatureVisual != null)
                 {
-                    VfxActivate(creatureVisual);
+                    if (!wasActive)
+                    {
+                        VfxActivate(creatureVisual);
+                    }
+
+                    UpdateRisingLightGrowth(
+                        creatureVisual,
+                        GrowthForBingZhenCount(previousVfxCount),
+                        GrowthForBingZhenCount(bingZhenVfxCount)
+                    );
                 }
 
                 await CreatureCmd.GainBlock(base.Owner, DynamicVars.Block.BaseValue, ValueProp.Unpowered, null, fast: true);
@@ -224,5 +239,30 @@ public class LianXuJingGePower : ModPowerTemplate
                 .SetEase(Tween.EaseType.Out)
                 .SetTrans(Tween.TransitionType.Cubic);
         }
+    }
+
+    private static float GrowthForBingZhenCount(int count)
+    {
+        return Mathf.Clamp((count - 1f) / (MaxBingZhenVfxCount - 1f), 0f, 1f);
+    }
+
+    private static void UpdateRisingLightGrowth(NCreatureVisuals creatureVisual, float from, float to)
+    {
+        ColorRect? risingLight = GetRisingLightNode(creatureVisual);
+        if (risingLight?.Material is not ShaderMaterial mat)
+        {
+            return;
+        }
+
+        if (Mathf.IsEqualApprox(from, to))
+        {
+            mat.SetShaderParameter("growth", to);
+            return;
+        }
+
+        Tween tween = risingLight.CreateTween();
+        tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("growth", val)), from, to, 0.42f)
+            .SetEase(Tween.EaseType.Out)
+            .SetTrans(Tween.TransitionType.Cubic);
     }
 }
