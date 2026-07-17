@@ -6,19 +6,21 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_coe4j"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8cl1c"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ii6a0"]
 shader = ExtResource("3_wu7t6")
-shader_parameter/color_normal = Color(0.3, 0.75, 1, 1)
-shader_parameter/color_active = Color(1, 0.2, 0.25, 1)
+shader_parameter/color_normal = Color(1, 1, 1, 1)
+shader_parameter/color_active = Color(0.3019608, 0.7490196, 1, 1)
 shader_parameter/active = 0.0
 shader_parameter/hex_count = 5.000000142499999
 shader_parameter/edge_width = 0.15000000642648
 shader_parameter/pulse_speed = 2.000000095
 shader_parameter/pulse_frequency = 6.0
 shader_parameter/breath_speed = 1.0000000475
+shader_parameter/flicker_speed = 0.50000002049012
 shader_parameter/curvature = 0.50000002375
 shader_parameter/glow_intensity = 2.0
 shader_parameter/base_alpha = 0.06
+shader_parameter/opacity = 0.400000019
 shader_parameter/falloff_power = 2.0
 
 [node name="Test" type="Node2D"]
@@ -28,8 +30,8 @@ material = SubResource("ShaderMaterial_coe4j")
 texture = ExtResource("2_coe4j")
 
 [node name="VfxLianXuJingGePower" parent="Sprite2D" instance=ExtResource("2_ii6a0")]
-material = SubResource("ShaderMaterial_8cl1c")
-offset_left = -953.0
-offset_top = -1030.0
-offset_right = 1032.0
-offset_bottom = 955.0
+material = SubResource("ShaderMaterial_ii6a0")
+offset_left = -945.0
+offset_top = -945.0
+offset_right = 1000.0
+offset_bottom = 1000.0
