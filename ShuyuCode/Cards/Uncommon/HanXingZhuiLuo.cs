@@ -36,7 +36,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            VFXUtil.PlaySimple("res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn", VfxCmd.GetSideCenter(CombatSide.Enemy, CombatState!) ?? Vector2.Zero, 2f);
+            VFXUtil.PlaySimple($"{VFXUtil.CardVfxPath}/vfx_HanXingZhuiLuo.tscn", VfxCmd.GetSideCenter(CombatSide.Enemy, CombatState!) ?? Vector2.Zero, 2f);
 
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)

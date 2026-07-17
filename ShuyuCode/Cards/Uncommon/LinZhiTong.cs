@@ -43,7 +43,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            Node2D vfxNode = VFXUtil.GenVFXNode($"{Entry.ResPath}/scenes/vfx/vfx_LinZhiTong.tscn");
+            Node2D vfxNode = VFXUtil.GenVFXNode($"{VFXUtil.CardVfxPath}/vfx_LinZhiTong.tscn");
             Node obj = ((Node)vfxNode).FindChild("StartPos", true, true);
             Node2D startNode = (Node2D)(object)((obj is Node2D) ? obj : null);
             
