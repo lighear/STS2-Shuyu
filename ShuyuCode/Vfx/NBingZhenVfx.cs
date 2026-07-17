@@ -16,7 +16,7 @@ namespace Shuyu.Vfx
 	{
 		//private static readonly StringName _color = new StringName("color");
 
-		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_BingZhen.tscn";
+		public static readonly string scenePath = $"{VFXUtil.CardVfxPath}/vfx_BingZhen.tscn";
 
 		[Export(PropertyHint.None, "")]
 		private Array<GpuParticles2D> _throwParticles = new Array<GpuParticles2D>();

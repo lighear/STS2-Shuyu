@@ -14,7 +14,7 @@ namespace Shuyu.Vfx
 {
 	public partial class NDuanXueVfx : Node2D
 	{
-		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_DuanXue.tscn";
+		public static readonly string scenePath = $"{VFXUtil.CardVfxPath}/vfx_DuanXue.tscn";
 
 		[Export(PropertyHint.None, "")]
 		private GpuParticles2D? _beamParticle;

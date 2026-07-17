@@ -14,7 +14,7 @@ namespace Shuyu.Vfx
 {
 	public partial class NMoLiXianDanVfx : Node2D
 	{
-		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_MoLiXianDan.tscn";
+		public static readonly string scenePath = $"{VFXUtil.CardVfxPath}/vfx_MoLiXianDan.tscn";
 
 		[Export(PropertyHint.None, "")]
 		private Array<GpuParticles2D> _firstBulletParticles = new Array<GpuParticles2D>();

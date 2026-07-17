@@ -12,7 +12,7 @@ namespace Shuyu.Vfx
 {
 	public partial class NMoLiXianDanImpactVfx : Node2D
 	{
-		public static readonly string scenePath = $"{Entry.ResPath}/scenes/vfx/vfx_MoLiXianDan_impact.tscn";
+		public static readonly string scenePath = $"{VFXUtil.CardVfxPath}/vfx_MoLiXianDan_impact.tscn";
 
         [Export(PropertyHint.None, "")]
         private Array<GpuParticles2D> _impactParticles = new Array<GpuParticles2D>();
