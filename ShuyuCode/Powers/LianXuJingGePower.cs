@@ -21,6 +21,12 @@ namespace Shuyu.Powers;
 [RegisterPower]
 public class LianXuJingGePower : ModPowerTemplate
 {
+    private const float GroundWidthFactor = 0.967f;
+    private const float GroundHeightFactor = 0.213f;
+    private const float FootOffsetFactor = 0.39f;
+    private const float RisingLightWidthFactor = 0.94f;
+    private const float RisingLightHeightFactor = 0.31f;
+
     public override PowerType Type => PowerType.Debuff;
     public override PowerStackType StackType => PowerStackType.Single;
     public override PowerInstanceType InstanceType => PowerInstanceType.Instanced;
@@ -80,11 +86,12 @@ public class LianXuJingGePower : ModPowerTemplate
             }
             else if (cardPlay.Card is BingZhen)
             {
+                bool wasActive = nowActive;
                 nowActive = true;
-                ColorRect? vfxNode = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower");
-                if (vfxNode != null)
+                NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+                if (!wasActive && creatureVisual != null)
                 {
-                    VfxActivate(vfxNode);
+                    VfxActivate(creatureVisual);
                 }
 
                 await CreatureCmd.GainBlock(base.Owner, DynamicVars.Block.BaseValue, ValueProp.Unpowered, null, fast: true);
@@ -98,54 +105,124 @@ public class LianXuJingGePower : ModPowerTemplate
     {
         NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
         var creatureBounds = creatureVisual?.Bounds;
-        if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower") == null)
+        if (creatureVisual != null && creatureBounds != null && GetVfxNode(creatureVisual) == null)
         {
             string scenePath = $"{VFXUtil.PowerVfxPath}/vfx_LianXuJingGePower.tscn";
             ColorRect vfxLianXuJingGePower = VFXUtil.GenVFXNode<ColorRect>(scenePath);
             vfxLianXuJingGePower.Material = (ShaderMaterial)vfxLianXuJingGePower.Material.Duplicate();
-            creatureBounds.AddChildSafely(vfxLianXuJingGePower);
+            creatureVisual.AddChildSafely(vfxLianXuJingGePower);
 
-            if (creatureVisual?.GetCurrentBody() is Sprite2D sprite && sprite.Texture != null)
+            // Bounds is a sibling drawn after Visuals, so anything parented to
+            // Bounds will cover the character. Parent the floor beside the
+            // body and insert it immediately before the body instead.
+            Node2D body = creatureVisual.GetCurrentBody();
+            creatureVisual.MoveChild(vfxLianXuJingGePower, body.GetIndex());
+
+            string risingLightScenePath = $"{VFXUtil.PowerVfxPath}/vfx_LianXuJingGePower_rising_light.tscn";
+            ColorRect risingLight = VFXUtil.GenVFXNode<ColorRect>(risingLightScenePath);
+            risingLight.Material = (ShaderMaterial)risingLight.Material.Duplicate();
+            if (risingLight.Material is ShaderMaterial risingLightMaterial)
+            {
+                risingLightMaterial.SetShaderParameter("ellipse_width_ratio", RisingLightWidthFactor);
+                risingLightMaterial.SetShaderParameter(
+                    "ground_curve_ratio",
+                    GroundHeightFactor * 0.5f / RisingLightHeightFactor
+                );
+            }
+            creatureVisual.AddChildSafely(risingLight);
+            creatureVisual.MoveChild(risingLight, body.GetIndex() + 1);
+
+            if (body is Sprite2D sprite && sprite.Texture != null)
             {
                 Vector2 visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
-                float ringDiameter = Mathf.Max(visualSize.X, visualSize.Y);
-                Vector2 visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+                Vector2 visualCenter = creatureVisual.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
+                Vector2 groundSize = new(
+                    visualSize.X * GroundWidthFactor,
+                    visualSize.Y * GroundHeightFactor
+                );
+                Vector2 footCenter = visualCenter + Vector2.Down * (visualSize.Y * FootOffsetFactor);
 
                 vfxLianXuJingGePower.AnchorLeft = 0f;
                 vfxLianXuJingGePower.AnchorTop = 0f;
                 vfxLianXuJingGePower.AnchorRight = 0f;
                 vfxLianXuJingGePower.AnchorBottom = 0f;
-                vfxLianXuJingGePower.Size = Vector2.One * ringDiameter;
-                vfxLianXuJingGePower.Position = visualCenter - vfxLianXuJingGePower.Size * 0.5f;
+                vfxLianXuJingGePower.Size = groundSize;
+                vfxLianXuJingGePower.Position = footCenter - groundSize * 0.5f;
+
+                Vector2 risingLightSize = new(
+                    groundSize.X * RisingLightWidthFactor,
+                    visualSize.Y * RisingLightHeightFactor
+                );
+                float risingLightBottom = footCenter.Y + groundSize.Y * 0.5f;
+                risingLight.Size = risingLightSize;
+                risingLight.Position = new Vector2(
+                    footCenter.X - risingLightSize.X * 0.5f,
+                    risingLightBottom - risingLightSize.Y
+                );
             }
             else
             {
-                vfxLianXuJingGePower.AnchorLeft = 0;
-                vfxLianXuJingGePower.AnchorTop = 0;
-                vfxLianXuJingGePower.AnchorRight = 1;
-                vfxLianXuJingGePower.AnchorBottom = 1;
-                Vector2 expandSize = creatureBounds.Size * 0.2f;
-                vfxLianXuJingGePower.OffsetLeft = -expandSize.X;
-                vfxLianXuJingGePower.OffsetTop = -expandSize.Y;
-                vfxLianXuJingGePower.OffsetRight = expandSize.X;
-                vfxLianXuJingGePower.OffsetBottom = expandSize.Y;
+                Vector2 groundSize = new(
+                    creatureBounds.Size.X * GroundWidthFactor,
+                    creatureBounds.Size.Y * GroundHeightFactor
+                );
+                Vector2 footCenter = creatureBounds.Position + new Vector2(
+                    creatureBounds.Size.X * 0.5f,
+                    creatureBounds.Size.Y * 0.86f
+                );
+
+                vfxLianXuJingGePower.AnchorLeft = 0f;
+                vfxLianXuJingGePower.AnchorTop = 0f;
+                vfxLianXuJingGePower.AnchorRight = 0f;
+                vfxLianXuJingGePower.AnchorBottom = 0f;
+                vfxLianXuJingGePower.Size = groundSize;
+                vfxLianXuJingGePower.Position = footCenter - groundSize * 0.5f;
+
+                Vector2 risingLightSize = new(
+                    groundSize.X * RisingLightWidthFactor,
+                    creatureBounds.Size.Y * RisingLightHeightFactor
+                );
+                float risingLightBottom = footCenter.Y + groundSize.Y * 0.5f;
+                risingLight.Size = risingLightSize;
+                risingLight.Position = new Vector2(
+                    footCenter.X - risingLightSize.X * 0.5f,
+                    risingLightBottom - risingLightSize.Y
+                );
             }
         }
     }
 
     public override async Task AfterRemoved(Creature oldOwner)
     {
-        NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals.Bounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower")?.QueueFree();
+        NCreatureVisuals? creatureVisual = NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals;
+        GetVfxNode(creatureVisual)?.QueueFree();
+        GetRisingLightNode(creatureVisual)?.QueueFree();
     }
 
-    private void VfxActivate(ColorRect vfxNode)
+    private static ColorRect? GetVfxNode(NCreatureVisuals? creatureVisual)
     {
-        if (vfxNode.Material is ShaderMaterial mat)
+        return creatureVisual?.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower");
+    }
+
+    private static ColorRect? GetRisingLightNode(NCreatureVisuals? creatureVisual)
+    {
+        return creatureVisual?.GetNodeOrNull<ColorRect>("VfxLianXuJingGePowerRisingLight");
+    }
+
+    private void VfxActivate(NCreatureVisuals creatureVisual)
+    {
+        Tween tween = creatureVisual.CreateTween().SetParallel();
+        foreach (ColorRect? vfxNode in new[] { GetVfxNode(creatureVisual), GetRisingLightNode(creatureVisual) })
         {
-            Tween tween = vfxNode.CreateTween();
-            tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("active", val)), 0f, 1f, 0.2f)
-                .SetEase(Tween.EaseType.In)
-                .SetTrans(Tween.TransitionType.Quad);
+            if (vfxNode?.Material is not ShaderMaterial mat)
+            {
+                continue;
+            }
+
+            mat.SetShaderParameter("active", 0f);
+            tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("active", val)), 0f, 1f, 0.65f)
+                .SetEase(Tween.EaseType.Out)
+                .SetTrans(Tween.TransitionType.Cubic);
         }
     }
 }

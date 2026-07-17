@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_LianXuJingGePower_rising_light.gdshader" id="1_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rising_light"]
+shader = ExtResource("1_shader")
+shader_parameter/light_color = Color(0.28, 0.72, 1, 1)
+shader_parameter/active = 0.0
+shader_parameter/opacity = 0.48
+shader_parameter/breath_speed = 1.15
+shader_parameter/ray_count = 56.0
+shader_parameter/ellipse_width_ratio = 0.94
+shader_parameter/ground_curve_ratio = 0.344
+
+[node name="VfxLianXuJingGePowerRisingLight" type="ColorRect"]
+material = SubResource("ShaderMaterial_rising_light")
+mouse_filter = 2
