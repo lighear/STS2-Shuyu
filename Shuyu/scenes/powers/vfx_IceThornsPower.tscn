@@ -1,8 +1,12 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://ShuyuCode/Vfx/NIceThornsPowerVfx.cs" id="1_script"]
 [ext_resource type="Texture2D" path="res://Shuyu/assets/images/ice_thorn_particle.svg" id="2_texture"]
 [ext_resource type="Texture2D" path="res://Shuyu/assets/images/snowflake.png" id="3_snowflake"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_IceThornParticle.gdshader" id="4_thorn_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_thorn"]
+shader = ExtResource("4_thorn_shader")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
 blend_mode = 1
@@ -77,7 +81,7 @@ _snowflakeEmitterTemplate = NodePath("SnowflakeEmitterTemplate")
 
 [node name="EmitterTemplate" type="GPUParticles2D" parent="."]
 visible = false
-material = SubResource("CanvasItemMaterial_add")
+material = SubResource("ShaderMaterial_thorn")
 emitting = false
 amount = 1
 texture = ExtResource("2_texture")

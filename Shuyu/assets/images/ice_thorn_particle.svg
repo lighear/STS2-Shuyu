@@ -11,9 +11,17 @@
       <stop offset="0.7" stop-color="#D8FAFF" stop-opacity="0.18"/>
       <stop offset="1" stop-color="#D8FAFF" stop-opacity="0"/>
     </linearGradient>
+    <linearGradient id="tipEdge" x1="24" y1="1" x2="24" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="1"/>
+      <stop offset="0.24" stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="0.68" stop-color="#EAFBFF" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#EAFBFF" stop-opacity="0"/>
+    </linearGradient>
   </defs>
   <path d="M24 1.5L46 144C37.5 139.5 31 138 24 138C17 138 10.5 139.5 2 144L24 1.5Z" fill="#6DDCF5" fill-opacity="0.13"/>
   <path d="M24 2L39.5 142C33.7 138.8 28.5 137.2 24 137.2C19.5 137.2 14.3 138.8 8.5 142L24 2Z" fill="url(#ice)"/>
   <path d="M24 7L26.8 129L20.2 135L24 7Z" fill="url(#shine)"/>
+  <path d="M24 1.5L30.4 61" stroke="url(#tipEdge)" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M24 1.5L17.6 61" stroke="url(#tipEdge)" stroke-width="1.7" stroke-linecap="round"/>
   <path d="M24 12L14.5 133" stroke="#E9FDFF" stroke-opacity="0.22" stroke-width="1.2"/>
 </svg>

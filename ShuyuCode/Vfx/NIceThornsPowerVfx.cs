@@ -21,6 +21,13 @@ public partial class NIceThornsPowerVfx : Node2D
     private const float VerticalRadiusFactor = 0.47f;
     private const float SideArcHalfAngle = Mathf.Pi * 0.30f;
     private const float MaxCycleJitter = 0.45f;
+    private const float MaxThornSpeedMultiplier = 1.8f;
+    private const float ThornLifetime = 3.2f;
+    private const float SnowflakeLifetime = 3.6f;
+    private const float ThornDampingMin = 2f;
+    private const float ThornDampingMax = 4.5f;
+    private const float SnowflakeDampingMin = 0.8f;
+    private const float SnowflakeDampingMax = 2.2f;
     private const int SnowflakeIntervalPerSide = 5;
 
     private static readonly Color[] ThornTints =
@@ -56,6 +63,7 @@ public partial class NIceThornsPowerVfx : Node2D
     private float _radiusX;
     private float _radiusY;
     private float _sizeScale;
+    private float _thornSpeedMultiplier = 1f;
 
     public override void _Ready()
     {
@@ -80,7 +88,8 @@ public partial class NIceThornsPowerVfx : Node2D
             }
 
             EmitParticle(i);
-            _secondsUntilEmission[i] = _emitters[i].Lifetime + _rng.RandfRange(0f, MaxCycleJitter);
+            float cycleScale = _isSnowflakeEmitter[i] ? 1f : _thornSpeedMultiplier;
+            _secondsUntilEmission[i] = GetEmitterLifetime(i) + _rng.RandfRange(0f, MaxCycleJitter / cycleScale);
         }
     }
 
@@ -144,11 +153,26 @@ public partial class NIceThornsPowerVfx : Node2D
 
         float cappedStacks = Mathf.Clamp(_stackAmount, 0, MaxVisualStacks);
         float strength = cappedStacks / MaxVisualStacks;
+        float speedStrength = Mathf.Clamp((cappedStacks - 1f) / (MaxVisualStacks - 1f), 0f, 1f);
         int previousActiveEmitterCount = _activeEmitterCount;
+        float previousThornSpeedMultiplier = _thornSpeedMultiplier;
+        _thornSpeedMultiplier = Mathf.Lerp(1f, MaxThornSpeedMultiplier, speedStrength);
         int nextActiveEmitterCount = _stackAmount <= 0
             ? 0
             : (int)MathF.Round(Mathf.Lerp(MinEmitterCount, MaxEmitterCount, strength));
         _activeEmitterCount = nextActiveEmitterCount;
+
+        if (previousActiveEmitterCount > 0 && !Mathf.IsEqualApprox(previousThornSpeedMultiplier, _thornSpeedMultiplier))
+        {
+            float scheduleScale = previousThornSpeedMultiplier / _thornSpeedMultiplier;
+            for (int i = 0; i < Math.Min(previousActiveEmitterCount, _activeEmitterCount); i++)
+            {
+                if (!_isSnowflakeEmitter[i])
+                {
+                    _secondsUntilEmission[i] *= scheduleScale;
+                }
+            }
+        }
 
         if (previousActiveEmitterCount <= 0 && _activeEmitterCount > 0)
         {
@@ -160,7 +184,7 @@ public partial class NIceThornsPowerVfx : Node2D
             // simultaneous burst or resume the old index-based scan pattern.
             for (int i = previousActiveEmitterCount; i < _activeEmitterCount; i++)
             {
-                _secondsUntilEmission[i] = _rng.RandfRange(0f, (float)_emitters[i].Lifetime);
+                _secondsUntilEmission[i] = _rng.RandfRange(0f, GetEmitterLifetime(i));
             }
         }
 
@@ -198,7 +222,7 @@ public partial class NIceThornsPowerVfx : Node2D
             (shuffledSlots[i], shuffledSlots[swapIndex]) = (shuffledSlots[swapIndex], shuffledSlots[i]);
         }
 
-        double fillDuration = _emitterTemplate?.Lifetime ?? 3.2;
+        double fillDuration = ThornLifetime / _thornSpeedMultiplier;
         for (int i = 0; i < emitterCount; i++)
         {
             _secondsUntilEmission[i] = fillDuration * shuffledSlots[i] / emitterCount;
@@ -246,7 +270,9 @@ public partial class NIceThornsPowerVfx : Node2D
             : _rng.RandfRange(0.45f, 1.32f);
         float speed = isSnowflake
             ? _rng.RandfRange(3.5f, 11f)
-            : _rng.RandfRange(7f, 23f);
+            : _rng.RandfRange(7f, 23f) * _thornSpeedMultiplier;
+        float motionScale = isSnowflake ? 1f : _thornSpeedMultiplier;
+        emitter.Lifetime = GetEmitterLifetime(emitterIndex);
         emitter.Scale = Vector2.One * (_sizeScale * sizeVariation);
 
         Color[] palette = isSnowflake ? SnowflakeTints : ThornTints;
@@ -259,8 +285,18 @@ public partial class NIceThornsPowerVfx : Node2D
         {
             material.InitialVelocityMin = speed * 0.92f;
             material.InitialVelocityMax = speed * 1.08f;
+            float dampingScale = motionScale * motionScale;
+            material.DampingMin = (isSnowflake ? SnowflakeDampingMin : ThornDampingMin) * dampingScale;
+            material.DampingMax = (isSnowflake ? SnowflakeDampingMax : ThornDampingMax) * dampingScale;
         }
 
         emitter.Restart();
+    }
+
+    private float GetEmitterLifetime(int emitterIndex)
+    {
+        return _isSnowflakeEmitter[emitterIndex]
+            ? SnowflakeLifetime
+            : ThornLifetime / _thornSpeedMultiplier;
     }
 }
