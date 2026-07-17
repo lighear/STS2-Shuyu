@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwlkqs2g314dn"]
+
+[ext_resource type="Shader" uid="uid://bn7o4fx0g5v34" path="res://Shuyu/assets/shaders/vfx_LianXuJingGePower.gdshader" id="1_boxrn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_26igw"]
+shader = ExtResource("1_boxrn")
+shader_parameter/color_normal = Color(0.3, 0.75, 1, 1)
+shader_parameter/color_active = Color(1, 0.2, 0.25, 1)
+shader_parameter/active = 0.0
+shader_parameter/hex_count = 5.000000142499999
+shader_parameter/edge_width = 0.15000000642648
+shader_parameter/pulse_speed = 2.000000095
+shader_parameter/pulse_frequency = 6.0
+shader_parameter/breath_speed = 1.0000000475
+shader_parameter/curvature = 0.50000002375
+shader_parameter/glow_intensity = 2.0
+shader_parameter/base_alpha = 0.06
+shader_parameter/falloff_power = 2.0
+
+[node name="VfxLianXuJingGePower" type="ColorRect"]
+material = SubResource("ShaderMaterial_26igw")

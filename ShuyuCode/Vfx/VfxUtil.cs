@@ -11,6 +11,9 @@ namespace Shuyu.Vfx;
 
 public static class VFXUtil
 {
+    public static readonly string PowerVfxPath = "res://Shuyu/scenes/powers";
+    public static readonly string CardVfxPath = "res://Shuyu/scenes/vfx";
+
     // Mod 独立的场景缓存（避免被 PreloadManager 清理）
     public static readonly ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
 
@@ -19,11 +22,12 @@ public static class VFXUtil
         //你的场景字符串列表
         var paths = new List<string>
         {
-            "res://Shuyu/scenes/vfx_ChillPower_particle.tscn",
-            "res://Shuyu/scenes/vfx_ChillPower_background.tscn",
-            "res://Shuyu/scenes/vfx_BingWuPower.tscn",
-            "res://Shuyu/scenes/vfx_WanBiBuPoPower_ring.tscn",
-            "res://Shuyu/scenes/vfx/vfx_HanXingZhuiLuo.tscn",
+            $"{PowerVfxPath}/vfx_ChillPower_particle.tscn",
+            $"{PowerVfxPath}/vfx_ChillPower_background.tscn",
+            $"{PowerVfxPath}/vfx_BingWuPower.tscn",
+            $"{PowerVfxPath}/vfx_WanBiBuPoPower_ring.tscn",
+            $"{PowerVfxPath}/vfx_LianXuJingGePower.tscn",
+            $"{CardVfxPath}/vfx_HanXingZhuiLuo.tscn",
         };
         foreach (var path in paths)
         {

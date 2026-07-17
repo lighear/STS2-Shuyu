@@ -115,14 +115,14 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
         var creatureBounds = creatureVisual.Bounds;
         if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxWanBiBuPoPowerRing") == null)
         {
-            string scenePath = "res://Shuyu/scenes/vfx_WanBiBuPoPower_ring.tscn";
+            string scenePath = $"{VFXUtil.PowerVfxPath}/vfx_WanBiBuPoPower_ring.tscn";
             ColorRect vfxWanBiBuPoPowerRing = VFXUtil.GenVFXNode<ColorRect>(scenePath);
             creatureBounds.AddChildSafely(vfxWanBiBuPoPowerRing);
 
             if (Owner.Player?.Character is ShuyuCharacter)
             {
                 vfxWanBiBuPoPowerRing.Size = new Vector2(2378 * 0.194f, 2378 * 0.194f);
-                vfxWanBiBuPoPowerRing.Position = new Vector2(-1189 * 0.194f + 82, -1189 * 0.194f);
+                vfxWanBiBuPoPowerRing.Position = new Vector2(-1189 * 0.194f + 123, -1189 * 0.194f);
             }
             else
             {

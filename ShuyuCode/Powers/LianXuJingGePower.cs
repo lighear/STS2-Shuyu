@@ -1,13 +1,17 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using Godot;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Helpers;
 using Shuyu.Cards;
+using Shuyu.Characters;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -76,10 +80,62 @@ public class LianXuJingGePower : ModPowerTemplate
             else if (cardPlay.Card is BingZhen)
             {
                 nowActive = true;
+                ColorRect? vfxNode = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower");
+                if (vfxNode != null)
+                {
+                    VfxActivate(vfxNode);
+                }
+
                 await CreatureCmd.GainBlock(base.Owner, DynamicVars.Block.BaseValue, ValueProp.Unpowered, null, fast: true);
                 await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner.Player!);
                 await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner.Player!);
             }
+        }
+    }
+
+    public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
+        if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower") == null)
+        {
+            string scenePath = $"{VFXUtil.PowerVfxPath}/vfx_LianXuJingGePower.tscn";
+            ColorRect vfxLianXuJingGePower = VFXUtil.GenVFXNode<ColorRect>(scenePath);
+            vfxLianXuJingGePower.Material = (ShaderMaterial)vfxLianXuJingGePower.Material.Duplicate();
+            creatureBounds.AddChildSafely(vfxLianXuJingGePower);
+
+            if (Owner.Player?.Character is ShuyuCharacter)
+            {
+                vfxLianXuJingGePower.Size = new Vector2(2378 * 0.15f, 2378 * 0.15f);
+                vfxLianXuJingGePower.Position = new Vector2(-1189 * 0.15f + 123, -1189 * 0.15f);
+            }
+            else
+            {
+                vfxLianXuJingGePower.AnchorLeft = 0;
+                vfxLianXuJingGePower.AnchorTop = 0;
+                vfxLianXuJingGePower.AnchorRight = 1;
+                vfxLianXuJingGePower.AnchorBottom = 1;
+                Vector2 expandSize = creatureBounds.Size * 0.2f;
+                vfxLianXuJingGePower.OffsetLeft = -expandSize.X;
+                vfxLianXuJingGePower.OffsetTop = -expandSize.Y;
+                vfxLianXuJingGePower.OffsetRight = expandSize.X;
+                vfxLianXuJingGePower.OffsetBottom = expandSize.Y;
+            }
+        }
+    }
+
+    public override async Task AfterRemoved(Creature oldOwner)
+    {
+        NCombatRoom.Instance?.GetCreatureNode(oldOwner)?.Visuals.Bounds.GetNodeOrNull<ColorRect>("VfxLianXuJingGePower")?.QueueFree();
+    }
+
+    private void VfxActivate(ColorRect vfxNode)
+    {
+        if (vfxNode.Material is ShaderMaterial mat)
+        {
+            Tween tween = vfxNode.CreateTween();
+            tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("active", val)), 0f, 1f, 0.2f)
+                .SetEase(Tween.EaseType.In)
+                .SetTrans(Tween.TransitionType.Quad);
         }
     }
 }

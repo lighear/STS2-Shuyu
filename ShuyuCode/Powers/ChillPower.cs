@@ -126,7 +126,7 @@ public class ChillPower : ModPowerTemplate
         var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
         if (creatureBounds != null && creatureBounds.GetNodeOrNull<Node2D>("VfxChillPowerParticle") == null)
         {
-            string particlePath = "res://Shuyu/scenes/vfx_ChillPower_particle.tscn";
+            string particlePath = $"{VFXUtil.PowerVfxPath}/vfx_ChillPower_particle.tscn";
             Node2D vfxChillPowerParticle = VFXUtil.GenVFXNode<Node2D>(particlePath);
             creatureBounds.AddChildSafely(vfxChillPowerParticle);
 
@@ -149,7 +149,7 @@ public class ChillPower : ModPowerTemplate
             }
 
 
-            string backgroundPath = "res://Shuyu/scenes/vfx_ChillPower_background.tscn";
+            string backgroundPath = $"{VFXUtil.PowerVfxPath}/vfx_ChillPower_background.tscn";
             ColorRect vfxChillPowerBackground = VFXUtil.GenVFXNode<ColorRect>(backgroundPath);
             creatureBounds.AddChildSafely(vfxChillPowerBackground);
 

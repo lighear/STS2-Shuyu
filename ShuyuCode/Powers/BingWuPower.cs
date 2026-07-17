@@ -62,14 +62,14 @@ public class BingWuPower : ModPowerTemplate
         var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals.Bounds;
         if (creatureBounds != null && creatureBounds.GetNodeOrNull<ColorRect>("VfxBingWuPower") == null)
         {
-            string scenePath = "res://Shuyu/scenes/vfx_BingWuPower.tscn";
+            string scenePath = $"{VFXUtil.PowerVfxPath}/vfx_BingWuPower.tscn";
             ColorRect vfxBingWuPower = VFXUtil.GenVFXNode<ColorRect>(scenePath);
             creatureBounds.AddChildSafely(vfxBingWuPower);
 
             if (Owner.Player?.Character is ShuyuCharacter)
             {
                 vfxBingWuPower.Size = new Vector2(1924 * 0.194f, 2378 * 0.194f);
-                vfxBingWuPower.Position = new Vector2(-962 * 0.194f + 82, -1189 * 0.194f);
+                vfxBingWuPower.Position = new Vector2(-962 * 0.194f + 123, -1189 * 0.194f);
             }
             else
             {
