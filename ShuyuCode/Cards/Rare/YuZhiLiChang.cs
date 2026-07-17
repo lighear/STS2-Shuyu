@@ -5,16 +5,11 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Saves.Runs;
-using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
-using Shuyu.Relics;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using STS2RitsuLib.Utils;
 
 namespace Shuyu.Cards
 {
@@ -98,13 +93,15 @@ namespace Shuyu.Cards
             }
         }
 
-        public override (PileType, CardPilePosition) ModifyCardPlayResultPileTypeAndPosition(CardModel card, bool isAutoPlay, ResourceInfo resources, PileType pileType, CardPilePosition position)
+        protected override CardLocation GetResultLocationForCardPlay()
         {
-            if (card == this && firstTurnAutoPlay)
+            CardLocation resultLocationForCardPlay = base.GetResultLocationForCardPlay();
+            if (firstTurnAutoPlay)
             {
-                return (PileType.Draw, CardPilePosition.Random);
+                resultLocationForCardPlay.pileType = PileType.Draw;
+                resultLocationForCardPlay.position = CardPilePosition.Random;
             }
-            return base.ModifyCardPlayResultPileTypeAndPosition(card, isAutoPlay, resources, pileType, position);
+            return resultLocationForCardPlay;
         }
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
