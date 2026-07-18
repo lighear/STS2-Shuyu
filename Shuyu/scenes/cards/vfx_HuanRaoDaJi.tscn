@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NHuanRaoDaJiVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/ice_diamond.svg" id="2_diamond"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/common_glow.png" id="3_glow"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[node name="VfxHuanRaoDaJi" type="Node2D" node_paths=PackedStringArray("_crystalTemplate", "_impactFlash")]
+z_index = 20
+script = ExtResource("1_script")
+_crystalTemplate = NodePath("CrystalTemplate")
+_impactFlash = NodePath("ImpactFlash")
+
+[node name="CrystalTemplate" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_add")
+texture = ExtResource("2_diamond")
+
+[node name="ImpactFlash" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_add")
+texture = ExtResource("3_glow")

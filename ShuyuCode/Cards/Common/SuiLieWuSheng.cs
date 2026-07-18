@@ -13,6 +13,7 @@ using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Powers;
 using Shuyu.Commands;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -42,6 +43,8 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await NSuiLieWuShengVfx.Play(cardPlay.Target);
+
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
