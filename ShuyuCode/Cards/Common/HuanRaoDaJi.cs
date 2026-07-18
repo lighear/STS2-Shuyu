@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using System.Linq.Expressions;
@@ -44,6 +45,8 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await NHuanRaoDaJiVfx.Play(cardPlay.Target);
+
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
                 .FromCard(this, cardPlay)

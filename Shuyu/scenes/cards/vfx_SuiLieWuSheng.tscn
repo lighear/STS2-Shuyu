@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NSuiLieWuShengVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/radial_ice_cracks.png" id="2_cracks"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_SuiLieWuShengCracks.gdshader" id="3_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/tint = Color(0.34, 0.78, 1, 0.34)
+shader_parameter/opacity = 0.0
+shader_parameter/glow_radius = 8.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_core"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+shader_parameter/tint = Color(0.92, 0.985, 1, 0.82)
+shader_parameter/opacity = 0.0
+shader_parameter/glow_radius = 0.0
+
+[node name="VfxSuiLieWuSheng" type="Node2D" node_paths=PackedStringArray("_glowCracks", "_coreCracks")]
+z_index = 24
+script = ExtResource("1_script")
+_glowCracks = NodePath("GlowCracks")
+_coreCracks = NodePath("CoreCracks")
+
+[node name="GlowCracks" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_glow")
+texture = ExtResource("2_cracks")
+
+[node name="CoreCracks" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_core")
+texture = ExtResource("2_cracks")

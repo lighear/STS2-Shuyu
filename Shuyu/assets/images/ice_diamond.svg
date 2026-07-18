@@ -1,0 +1,19 @@
+<svg width="48" height="92" viewBox="0 0 48 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ice" x1="24" y1="2" x2="24" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.32" stop-color="#DDF9FF" stop-opacity="0.96"/>
+      <stop offset="0.72" stop-color="#72D7F5" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#2C96C9" stop-opacity="0.58"/>
+    </linearGradient>
+    <filter id="glow" x="-70%" y="-40%" width="240%" height="180%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+  </defs>
+  <path d="M24 2L46 46L24 90L2 46L24 2Z" fill="#8CEBFF" fill-opacity="0.52" filter="url(#glow)"/>
+  <path d="M24 2L43 46L24 90L5 46L24 2Z" fill="url(#ice)"/>
+  <path d="M24 2L24 90L5 46L24 2Z" fill="#59C4ED" fill-opacity="0.3"/>
+  <path d="M24 2L43 46L24 38L5 46L24 2Z" fill="#FFFFFF" fill-opacity="0.24"/>
+  <path d="M24 4L27 38L24 84L20 47L24 4Z" fill="#FFFFFF" fill-opacity="0.54"/>
+  <path d="M24 2L43 46L24 90L5 46L24 2Z" stroke="#ECFDFF" stroke-opacity="0.86" stroke-width="1.4"/>
+</svg>
