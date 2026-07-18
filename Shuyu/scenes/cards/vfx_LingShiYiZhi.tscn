@@ -1,0 +1,125 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NLingShiYiZhiVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/snowflake.png" id="2_snowflake"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_LingShiYiZhiWhiteout.gdshader" id="3_whiteout_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_whiteout"]
+resource_local_to_scene = true
+shader = ExtResource("3_whiteout_shader")
+shader_parameter/tint = Color(0.94, 0.98, 1, 1)
+shader_parameter/strength = 0.0
+shader_parameter/center_alpha = 0.1
+shader_parameter/edge_alpha = 0.6
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_snow"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_alpha"]
+_data = [Vector2(0, 0), 0.0, 7.5, 0, 0, Vector2(0.12, 0.86), 0.0, 0.0, 0, 0, Vector2(0.78, 0.72), 0.0, -0.25, 0, 0, Vector2(1, 0), -5.5, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_alpha"]
+curve = SubResource("Curve_alpha")
+
+[sub_resource type="Curve" id="Curve_scale"]
+_limits = [0.7, 1.2, 0.0, 1.0]
+_data = [Vector2(0, 0.82), 0.0, 0.16, 0, 0, Vector2(1, 1.08), 0.12, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_scale"]
+curve = SubResource("Curve_scale")
+
+[sub_resource type="Gradient" id="Gradient_snow"]
+offsets = PackedFloat32Array(0, 0.52, 1)
+colors = PackedColorArray(0.58, 0.84, 1, 1, 1, 1, 1, 1, 0.72, 0.91, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_snow"]
+gradient = SubResource("Gradient_snow")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_edge_snow"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(960, 58, 1)
+direction = Vector3(0, 1, 0)
+spread = 42.0
+initial_velocity_min = 18.0
+initial_velocity_max = 58.0
+damping_min = 2.0
+damping_max = 7.0
+angular_velocity_min = -42.0
+angular_velocity_max = 42.0
+scale_min = 0.09
+scale_max = 0.21
+scale_curve = SubResource("CurveTexture_scale")
+color_initial_ramp = SubResource("GradientTexture_snow")
+alpha_curve = SubResource("CurveTexture_alpha")
+
+[node name="VfxLingShiYiZhi" type="Node2D" node_paths=PackedStringArray("_whiteout", "_snowLayer", "_topSnow", "_bottomSnow", "_leftSnow", "_rightSnow")]
+z_index = 100
+script = ExtResource("1_script")
+_whiteout = NodePath("Whiteout")
+_snowLayer = NodePath("SnowLayer")
+_topSnow = NodePath("SnowLayer/TopSnow")
+_bottomSnow = NodePath("SnowLayer/BottomSnow")
+_leftSnow = NodePath("SnowLayer/LeftSnow")
+_rightSnow = NodePath("SnowLayer/RightSnow")
+
+[node name="Whiteout" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_whiteout")
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="SnowLayer" type="Node2D" parent="."]
+
+[node name="TopSnow" type="GPUParticles2D" parent="SnowLayer"]
+material = SubResource("CanvasItemMaterial_snow")
+amount = 80
+texture = ExtResource("2_snowflake")
+lifetime = 1.8
+preprocess = 0.8
+randomness = 0.72
+visibility_rect = Rect2(-1400, -900, 2800, 1800)
+fixed_fps = 45
+interpolate = true
+fract_delta = true
+process_material = SubResource("ParticleProcessMaterial_edge_snow")
+
+[node name="BottomSnow" type="GPUParticles2D" parent="SnowLayer"]
+material = SubResource("CanvasItemMaterial_snow")
+amount = 80
+texture = ExtResource("2_snowflake")
+lifetime = 1.8
+preprocess = 0.8
+randomness = 0.72
+visibility_rect = Rect2(-1400, -900, 2800, 1800)
+fixed_fps = 45
+interpolate = true
+fract_delta = true
+process_material = SubResource("ParticleProcessMaterial_edge_snow")
+
+[node name="LeftSnow" type="GPUParticles2D" parent="SnowLayer"]
+material = SubResource("CanvasItemMaterial_snow")
+amount = 45
+texture = ExtResource("2_snowflake")
+lifetime = 1.8
+preprocess = 0.8
+randomness = 0.72
+visibility_rect = Rect2(-1400, -900, 2800, 1800)
+fixed_fps = 45
+interpolate = true
+fract_delta = true
+process_material = SubResource("ParticleProcessMaterial_edge_snow")
+
+[node name="RightSnow" type="GPUParticles2D" parent="SnowLayer"]
+material = SubResource("CanvasItemMaterial_snow")
+amount = 45
+texture = ExtResource("2_snowflake")
+lifetime = 1.8
+preprocess = 0.8
+randomness = 0.72
+visibility_rect = Rect2(-1400, -900, 2800, 1800)
+fixed_fps = 45
+interpolate = true
+fract_delta = true
+process_material = SubResource("ParticleProcessMaterial_edge_snow")

@@ -36,6 +36,7 @@ public static class VFXUtil
             $"{CardVfxPath}/vfx_JueWangYongChang.tscn",
             $"{CardVfxPath}/vfx_HuanRaoDaJi.tscn",
             $"{CardVfxPath}/vfx_SuiLieWuSheng.tscn",
+            $"{CardVfxPath}/vfx_LingShiYiZhi.tscn",
         };
         foreach (var path in paths)
         {
