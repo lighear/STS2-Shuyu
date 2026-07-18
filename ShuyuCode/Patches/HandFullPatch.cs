@@ -37,6 +37,15 @@ namespace Shuyu.Patches
         {
             IEnumerable<CardModel> drawnCards = await originalTask;
 
+            // CardPileCmd.Draw also returns no cards when combat is already over or
+            // ending. That is not a hand-full event, and running a win check here can
+            // tear down combat while the attack that caused the victory is still
+            // resolving (for example, lethal thorns followed by Gremlin Horn).
+            if (CombatManager.Instance.IsOverOrEnding)
+            {
+                return drawnCards;
+            }
+
             if (!Hook.ShouldDraw(player.Creature.CombatState!, player, fromHandDraw, out _)
                 || PileType.Draw.GetPile(player).Cards.Count + PileType.Discard.GetPile(player).Cards.Count == 0)
             {
