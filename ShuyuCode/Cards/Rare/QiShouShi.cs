@@ -26,7 +26,7 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<IceShieldPower>(),
+            //HoverTipFactory.FromPower<IceShieldPower>(),
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
@@ -35,14 +35,14 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(3),
+            //new PowerVar<IceShieldPower>(3),
             new EnergyVar(1),
             new CardsVar(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
+            //await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
             await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
             await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, 1, this);
