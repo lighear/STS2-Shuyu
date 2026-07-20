@@ -29,6 +29,8 @@ public static class VFXUtil
             $"{PowerVfxPath}/vfx_BingWuPower.tscn",
             $"{PowerVfxPath}/vfx_WanBiBuPoPower_ring.tscn",
             $"{PowerVfxPath}/vfx_LianXuJingGePower.tscn",
+            $"{PowerVfxPath}/vfx_YiLiuXingTaiPowerWave.tscn",
+            $"{PowerVfxPath}/vfx_YiLiuXingTaiPowerImpact.tscn",
             $"{CardVfxPath}/vfx_HanXingZhuiLuo.tscn",
             $"{CardVfxPath}/vfx_BoWenGongZhen.tscn",
             $"{CardVfxPath}/vfx_LinZhiTong.tscn",
@@ -38,6 +40,8 @@ public static class VFXUtil
             $"{CardVfxPath}/vfx_HuanRaoDaJi.tscn",
             $"{CardVfxPath}/vfx_SuiLieWuSheng.tscn",
             $"{CardVfxPath}/vfx_LingShiYiZhi.tscn",
+            $"{CardVfxPath}/vfx_JinShuNiShangEdge.tscn",
+            $"{CardVfxPath}/vfx_JinShuNiShangFogRing.tscn",
         };
         foreach (var path in paths)
         {

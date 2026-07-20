@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -59,6 +60,9 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            NJinShuNiShangEdgeVfx.Play();
+            await NJinShuNiShangFogRingVfx.PlayOpening(Owner.Creature);
+
             int hp = Owner.Creature.CurrentHp;
             int hpBeforeCombatStart = HpBeforeCombatStart;
             if (hp < hpBeforeCombatStart)

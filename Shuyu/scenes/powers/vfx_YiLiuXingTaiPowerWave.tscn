@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NYiLiuXingTaiWaveVfx.cs" id="1_script"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_YiLiuXingTaiPowerWave.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wave"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/progress = 0.0
+shader_parameter/line_color = Color(0.55, 0.9, 1, 1)
+shader_parameter/distortion_strength = 0.005
+shader_parameter/panel_side_pixels = 720.0
+shader_parameter/start_radius = 0.055
+
+[node name="VfxYiLiuXingTaiPowerWave" type="Node2D" node_paths=PackedStringArray("_wavePanel")]
+z_index = 8
+script = ExtResource("1_script")
+_wavePanel = NodePath("BackBufferCopy/WavePanel")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="WavePanel" type="ColorRect" parent="BackBufferCopy"]
+material = SubResource("ShaderMaterial_wave")
+offset_left = -360.0
+offset_top = -360.0
+offset_right = 360.0
+offset_bottom = 360.0
+mouse_filter = 2
