@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Commands;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -28,29 +29,38 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+            HoverTipFactory.FromPower<IceShieldPower>(),
             ..HoverTipFactory.FromAffliction<Frozen>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(5, ValueProp.Move),
+            new PowerVar<IceShieldPower>(4),
             new CardsVar(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
 
             List<CardModel> cards = PileType.Draw.GetPile(Owner).Cards.Where(c => c.Type == CardType.Status || c.Type == CardType.Curse).ToList();
+            List<CardModel> handcards = PileType.Hand.GetPile(Owner).Cards.Where(c => c.Type == CardType.Status || c.Type == CardType.Curse).ToList();
+            
+            foreach (CardModel card in handcards)
+            {
+                await ShuyuMechanismCmd.FreezeCard(card);
+            }
+            
             foreach (CardModel card in cards)
             {
                 await ShuyuMechanismCmd.FreezeCard(card);
             }
-            await CardPileCmd.Draw(choiceContext, cards.Count * DynamicVars.Cards.IntValue, Owner);
+            
+            await CardPileCmd.Draw(choiceContext, (cards.Count + handcards.Count) * DynamicVars.Cards.IntValue, Owner);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(2);
+            DynamicVars["IceShieldPower"].UpgradeValueBy(1);
             DynamicVars.Cards.UpgradeValueBy(1);
         }
     }

@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -27,7 +28,8 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromCard<BingZhen>()
+            HoverTipFactory.FromCard<BingZhen>(),
+            HoverTipFactory.FromPower<ChillPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
@@ -42,14 +44,17 @@ namespace Shuyu.Cards
                 .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
                 .Execute(choiceContext);
-
+            if (IsUpgraded)
+            {
+                await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
+            }
             await CardCmd.Discard(choiceContext, await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 2), null, this));
             await BingZhen.CreateInHand(Owner, 2, CombatState!, false);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(4);
+            //DynamicVars.Damage.UpgradeValueBy(4);
         }
     }
 }
