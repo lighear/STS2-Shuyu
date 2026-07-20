@@ -30,13 +30,15 @@ namespace Shuyu.Cards
             {
                 if (IsUpgraded)
                 {
-                    return [HoverTipFactory.FromKeyword(CardKeyword.Retain),
+                    return [HoverTipFactory.FromKeyword(CardKeyword.Exhaust),
+                        HoverTipFactory.FromKeyword(CardKeyword.Retain),
                         HoverTipFactory.FromPower<StrengthPower>(),
                         HoverTipFactory.FromPower<DexterityPower>()];
                 }
                 else
                 {
-                    return [HoverTipFactory.FromKeyword(CardKeyword.Retain),
+                    return [HoverTipFactory.FromKeyword(CardKeyword.Exhaust),
+                        HoverTipFactory.FromKeyword(CardKeyword.Retain),
                         HoverTipFactory.FromPower<StrengthPower>()];
                 }
             }

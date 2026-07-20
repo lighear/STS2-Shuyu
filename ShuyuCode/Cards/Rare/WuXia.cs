@@ -43,11 +43,19 @@ namespace Shuyu.Cards
             await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
 
             List<CardModel> cards = PileType.Draw.GetPile(Owner).Cards.Where(c => c.Type == CardType.Status || c.Type == CardType.Curse).ToList();
+            List<CardModel> handcards = PileType.Hand.GetPile(Owner).Cards.Where(c => c.Type == CardType.Status || c.Type == CardType.Curse).ToList();
+            
+            foreach (CardModel card in handcards)
+            {
+                await ShuyuMechanismCmd.FreezeCard(card);
+            }
+            
             foreach (CardModel card in cards)
             {
                 await ShuyuMechanismCmd.FreezeCard(card);
             }
-            await CardPileCmd.Draw(choiceContext, cards.Count * DynamicVars.Cards.IntValue, Owner);
+            
+            await CardPileCmd.Draw(choiceContext, (cards.Count + handcards.Count) * DynamicVars.Cards.IntValue, Owner);
         }
 
         protected override void OnUpgrade()

@@ -38,6 +38,10 @@ namespace Shuyu.Cards
             }),
         ];
         
+        protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+            HoverTipFactory.Static(StaticHoverTip.Block)
+        ];
+        
         private int CardPlayDivisor
         {
             get

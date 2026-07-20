@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Commands;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -29,7 +30,8 @@ namespace Shuyu.Cards
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromCard<BingZhen>(IsUpgraded),
             HoverTipFactory.FromKeyword(ShuyuKeywords.Targeted),
-            ..HoverTipFactory.FromAffliction<Frozen>()
+            ..HoverTipFactory.FromAffliction<Frozen>(),
+            HoverTipFactory.FromPower<ChillPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [

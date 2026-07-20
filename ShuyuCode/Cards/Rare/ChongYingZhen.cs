@@ -33,12 +33,14 @@ namespace Shuyu.Cards
                 {
                     return [HoverTipFactory.FromCard<BingZhen>(),
                         HoverTipFactory.Static(StaticHoverTip.ReplayStatic),
-                        HoverTipFactory.FromPower<StrengthPower>()];
+                        HoverTipFactory.FromPower<StrengthPower>(),
+                        HoverTipFactory.FromPower<ChillPower>(),];
                 }
                 else
                 {
                     return [HoverTipFactory.FromCard<BingZhen>(),
-                        HoverTipFactory.Static(StaticHoverTip.ReplayStatic)];
+                        HoverTipFactory.Static(StaticHoverTip.ReplayStatic),
+                        HoverTipFactory.FromPower<ChillPower>(),];
                 }
             }
         }

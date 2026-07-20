@@ -29,7 +29,8 @@ namespace Shuyu.Cards
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<WeakPower>(),
             HoverTipFactory.FromPower<FragilePower>(),
-            HoverTipFactory.FromCard<BingZhen>(base.IsUpgraded)
+            HoverTipFactory.FromCard<BingZhen>(base.IsUpgraded),
+            HoverTipFactory.FromPower<ChillPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
