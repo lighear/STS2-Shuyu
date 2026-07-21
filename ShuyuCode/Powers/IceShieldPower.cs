@@ -78,7 +78,12 @@ public class IceShieldPower : ModPowerTemplate
         }
 
         vfx.Position = visualCenter;
-        vfx.Configure(visualSize, Amount);
+        vfx.Configure(visualSize, Amount, Owner.HasPower<JinShuJieJiePower>());
+    }
+
+    public void RefreshVfx()
+    {
+        UpdateVfx();
     }
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)

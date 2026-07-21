@@ -25,6 +25,18 @@ public class JinShuJieJiePower : ModPowerTemplate
         HoverTipFactory.FromPower<IceShieldPower>()
     ];
 
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        Owner.GetPower<IceShieldPower>()?.RefreshVfx();
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        oldOwner.GetPower<IceShieldPower>()?.RefreshVfx();
+        return Task.CompletedTask;
+    }
+
     public override async Task BeforeDamageReceived(PlayerChoiceContext choiceContext, Creature target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         if (target == Owner && props.IsPoweredAttack() && amount >= 1)

@@ -30,13 +30,21 @@ public partial class NIceShieldPowerVfx : Node2D
     [Export]
     private GpuParticles2D? _rightSnowflakes;
 
+    [Export]
+    private GpuParticles2D? _leftDarkSnowflakes;
+
+    [Export]
+    private GpuParticles2D? _rightDarkSnowflakes;
+
     private Vector2 _leftBasePosition;
     private Vector2 _rightBasePosition;
     private float _shieldScale;
     private float _thicknessScale = 1f;
+    private float _darkSnowVerticalOffset;
     private float _opacity;
     private float _elapsed;
     private bool _active;
+    private bool _showDarkSnowflakes;
     private bool _particleMaterialsLocalized;
 
     public override void _Ready()
@@ -78,9 +86,23 @@ public partial class NIceShieldPowerVfx : Node2D
             _rightSnowflakes.Position = _rightBasePosition + new Vector2(breathExpansion, 0f);
             SetSnowflakeAlpha(_rightSnowflakes, _opacity * (0.62f + (breathWave + 1f) * 0.05f));
         }
+
+        if (_leftDarkSnowflakes != null)
+        {
+            _leftDarkSnowflakes.Position = _leftBasePosition
+                + new Vector2(-breathExpansion, _darkSnowVerticalOffset);
+            SetDarkSnowflakeAlpha(_leftDarkSnowflakes, _opacity * (0.58f + (breathWave + 1f) * 0.05f));
+        }
+
+        if (_rightDarkSnowflakes != null)
+        {
+            _rightDarkSnowflakes.Position = _rightBasePosition
+                + new Vector2(breathExpansion, _darkSnowVerticalOffset);
+            SetDarkSnowflakeAlpha(_rightDarkSnowflakes, _opacity * (0.58f + (breathWave + 1f) * 0.05f));
+        }
     }
 
-    public void Configure(Vector2 boundsSize, int stackAmount)
+    public void Configure(Vector2 boundsSize, int stackAmount, bool showDarkSnowflakes)
     {
         if (_leftShield == null || _rightShield == null || boundsSize.X <= 0f || boundsSize.Y <= 0f)
         {
@@ -91,6 +113,7 @@ public partial class NIceShieldPowerVfx : Node2D
 
         float cappedStacks = Mathf.Clamp(stackAmount, 0, MaxVisualStacks);
         _active = stackAmount > 0;
+        _showDarkSnowflakes = _active && showDarkSnowflakes;
         float strength = Mathf.Clamp(
             (cappedStacks - 1f) / (MaxVisualStacks - 1f),
             0f,
@@ -106,6 +129,7 @@ public partial class NIceShieldPowerVfx : Node2D
         );
         float horizontalOffset = boundsSize.X * HorizontalOffsetFactor + 2f;
         float verticalOffset = boundsSize.Y * 0.01f;
+        _darkSnowVerticalOffset = -boundsSize.Y * 0.10f;
 
         _leftBasePosition = new Vector2(-horizontalOffset, verticalOffset);
         _rightBasePosition = new Vector2(horizontalOffset, verticalOffset);
@@ -121,6 +145,8 @@ public partial class NIceShieldPowerVfx : Node2D
 
         ConfigureSnowflakes(_leftSnowflakes, _leftBasePosition, boundsSize);
         ConfigureSnowflakes(_rightSnowflakes, _rightBasePosition, boundsSize);
+        ConfigureDarkSnowflakes(_leftDarkSnowflakes, _leftBasePosition, boundsSize);
+        ConfigureDarkSnowflakes(_rightDarkSnowflakes, _rightBasePosition, boundsSize);
     }
 
     private static void SetShieldAlpha(Sprite2D shield, float alpha)
@@ -143,6 +169,16 @@ public partial class NIceShieldPowerVfx : Node2D
         if (_rightSnowflakes?.ProcessMaterial != null)
         {
             _rightSnowflakes.ProcessMaterial = (Material)_rightSnowflakes.ProcessMaterial.Duplicate();
+        }
+
+        if (_leftDarkSnowflakes?.ProcessMaterial != null)
+        {
+            _leftDarkSnowflakes.ProcessMaterial = (Material)_leftDarkSnowflakes.ProcessMaterial.Duplicate();
+        }
+
+        if (_rightDarkSnowflakes?.ProcessMaterial != null)
+        {
+            _rightDarkSnowflakes.ProcessMaterial = (Material)_rightDarkSnowflakes.ProcessMaterial.Duplicate();
         }
 
         _particleMaterialsLocalized = true;
@@ -173,5 +209,40 @@ public partial class NIceShieldPowerVfx : Node2D
     private static void SetSnowflakeAlpha(GpuParticles2D emitter, float alpha)
     {
         emitter.Modulate = new Color(0.94f, 0.97f, 1f, Mathf.Clamp(alpha, 0f, 1f));
+    }
+
+    private void ConfigureDarkSnowflakes(GpuParticles2D? emitter, Vector2 position, Vector2 boundsSize)
+    {
+        if (emitter == null)
+        {
+            return;
+        }
+
+        // Dark flakes begin in a narrow band above the shield and fall for a
+        // fixed short lifetime. Velocity and gravity scale with creature size,
+        // placing their final fade close to the shield's lower edge.
+        emitter.Position = position + new Vector2(0f, _darkSnowVerticalOffset);
+        emitter.Visible = _showDarkSnowflakes;
+        emitter.Emitting = _showDarkSnowflakes;
+        emitter.Lifetime = 2.15f;
+        emitter.Randomness = 0.10f;
+        SetDarkSnowflakeAlpha(emitter, _opacity * 0.64f);
+
+        if (emitter.ProcessMaterial is ParticleProcessMaterial material)
+        {
+            material.EmissionBoxExtents = new Vector3(
+                Mathf.Max(12f, boundsSize.X * 0.045f),
+                Mathf.Max(10f, boundsSize.Y * 0.055f),
+                1f
+            );
+            material.InitialVelocityMin = boundsSize.Y * 0.04f;
+            material.InitialVelocityMax = boundsSize.Y * 0.065f;
+            material.Gravity = new Vector3(0f, boundsSize.Y * 0.16f, 0f);
+        }
+    }
+
+    private static void SetDarkSnowflakeAlpha(GpuParticles2D emitter, float alpha)
+    {
+        emitter.Modulate = new Color(0.025f, 0.018f, 0.045f, Mathf.Clamp(alpha, 0f, 1f));
     }
 }

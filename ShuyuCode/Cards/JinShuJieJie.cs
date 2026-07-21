@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Powers;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -42,6 +43,9 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            NJinShuJieJieEdgeVfx.Play();
+            await NJinShuJieJieShieldVfx.PlayOpening(Owner.Creature);
+
             await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
             await EYun.CreateInDrawPile(Owner, 1, CombatState!);
             await PowerCmd.Apply<JinShuJieJiePower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);

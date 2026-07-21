@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NJinShuJieJieShieldVfx.cs" id="1_script"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/vfx_JinShuJieJieShield.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/jin_shu_jie_jie_black_shield.png" id="3_shield"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shield"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/progress = 0.0
+shader_parameter/deep_color = Color(0.006, 0.005, 0.012, 1)
+shader_parameter/cold_color = Color(0.055, 0.037, 0.085, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_shield"]
+blend_mode = 0
+
+[node name="VfxJinShuJieJieShield" type="Node2D" node_paths=PackedStringArray("_fogShield", "_solidShield")]
+z_index = 25
+script = ExtResource("1_script")
+_fogShield = NodePath("FogShield")
+_solidShield = NodePath("SolidShield")
+
+[node name="FogShield" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_shield")
+mouse_filter = 2
+
+[node name="SolidShield" type="Sprite2D" parent="."]
+modulate = Color(0.055, 0.038, 0.075, 0)
+material = SubResource("CanvasItemMaterial_shield")
+texture = ExtResource("3_shield")

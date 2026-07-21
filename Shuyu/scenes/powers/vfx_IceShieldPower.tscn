@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://ShuyuCode/Vfx/NIceShieldPowerVfx.cs" id="1_script"]
 [ext_resource type="Texture2D" path="res://Shuyu/assets/images/ice_shield_side.svg" id="2_shield"]
@@ -38,12 +38,38 @@ scale_max = 0.028
 color_initial_ramp = SubResource("GradientTexture_snow")
 alpha_curve = SubResource("CurveTexture_snow_alpha")
 
-[node name="VfxIceShieldPower" type="Node2D" node_paths=PackedStringArray("_leftShield", "_rightShield", "_leftSnowflakes", "_rightSnowflakes")]
+[sub_resource type="Gradient" id="Gradient_dark_snow"]
+colors = PackedColorArray(1, 1, 1, 1, 0.68, 0.64, 0.74, 0.76)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_dark_snow"]
+gradient = SubResource("Gradient_dark_snow")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dark_snow"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(17, 143, 1)
+direction = Vector3(0, 1, 0)
+spread = 34.0
+initial_velocity_min = 12.0
+initial_velocity_max = 22.0
+gravity = Vector3(0, 50, 0)
+damping_min = 0.2
+damping_max = 0.55
+angular_velocity_min = -65.0
+angular_velocity_max = 65.0
+scale_min = 0.018
+scale_max = 0.042
+color_initial_ramp = SubResource("GradientTexture_dark_snow")
+alpha_curve = SubResource("CurveTexture_snow_alpha")
+
+[node name="VfxIceShieldPower" type="Node2D" node_paths=PackedStringArray("_leftShield", "_rightShield", "_leftSnowflakes", "_rightSnowflakes", "_leftDarkSnowflakes", "_rightDarkSnowflakes")]
 script = ExtResource("1_script")
 _leftShield = NodePath("LeftShield")
 _rightShield = NodePath("RightShield")
 _leftSnowflakes = NodePath("LeftSnowflakes")
 _rightSnowflakes = NodePath("RightSnowflakes")
+_leftDarkSnowflakes = NodePath("LeftDarkSnowflakes")
+_rightDarkSnowflakes = NodePath("RightDarkSnowflakes")
 
 [node name="LeftShield" type="Sprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_add")
@@ -81,3 +107,31 @@ fixed_fps = 30
 interpolate = true
 visibility_rect = Rect2(-64, -192, 128, 384)
 process_material = SubResource("ParticleProcessMaterial_snow")
+
+[node name="LeftDarkSnowflakes" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 4
+texture = ExtResource("3_snowflake")
+lifetime = 2.15
+preprocess = 1.95
+randomness = 0.1
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-64, -192, 128, 384)
+process_material = SubResource("ParticleProcessMaterial_dark_snow")
+
+[node name="RightDarkSnowflakes" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+emitting = false
+amount = 4
+texture = ExtResource("3_snowflake")
+lifetime = 2.15
+preprocess = 1.95
+randomness = 0.1
+local_coords = true
+fixed_fps = 30
+interpolate = true
+visibility_rect = Rect2(-64, -192, 128, 384)
+process_material = SubResource("ParticleProcessMaterial_dark_snow")
