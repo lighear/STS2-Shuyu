@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NBingChaDaPaoVfx.cs" id="1_script"]
+[ext_resource type="AudioStream" path="res://Shuyu/assets/audio/bing_cha_da_pao_gunshot.ogg" id="2_gunshot"]
+
+[node name="VfxBingChaDaPao" type="Node2D" node_paths=PackedStringArray("_gunshots")]
+z_index = 24
+script = ExtResource("1_script")
+_gunshots = [NodePath("Gunshot1"), NodePath("Gunshot2"), NodePath("Gunshot3")]
+
+[node name="Gunshot1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_gunshot")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="Gunshot2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_gunshot")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="Gunshot3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_gunshot")
+volume_db = -8.0
+bus = &"SFX"

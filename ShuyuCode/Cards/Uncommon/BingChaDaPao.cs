@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Interfaces;
 using Shuyu.Powers;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -50,10 +51,17 @@ namespace Shuyu.Cards
 
             for (int i = 0; i < repeatCount; i++)
             {
-                await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                var attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this, cardPlay)
-                    .TargetingAllOpponents(CombatState)
-                    .Execute(choiceContext);
+                    .TargetingAllOpponents(CombatState);
+
+                if (i == 0)
+                {
+                    attack.AfterAttackerAnim(async () =>
+                        await NBingChaDaPaoVfx.PlayVolley(Owner.Creature, CombatState.HittableEnemies));
+                }
+
+                await attack.Execute(choiceContext);
 
                 await PowerCmd.Apply<FragilePower>(choiceContext, CombatState.HittableEnemies, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
             }
