@@ -9,6 +9,7 @@ using Shuyu.Afflictions;
 using Shuyu.Characters;
 using Shuyu.Interfaces;
 using Shuyu.Powers;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -38,6 +39,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            NYuJiaXueVfx.Create();
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
             await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
         }
@@ -66,6 +68,7 @@ namespace Shuyu.Cards
 
         private async Task FreezingEffect(PlayerChoiceContext choiceContext)
         {
+            NYuJiaXueVfx.Create();
             //await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
         }

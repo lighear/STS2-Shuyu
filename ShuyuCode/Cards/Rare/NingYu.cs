@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Interfaces;
 using Shuyu.Powers;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -42,6 +43,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await NNingYuFragileSlashVfx.Play(cardPlay.Target!);
             for (int i = 0; i < DynamicVars.Repeat.IntValue; i++)
             {
                 await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
@@ -49,6 +51,8 @@ namespace Shuyu.Cards
             if (cardPlay.Target!.IsAlive)
             {
                 decimal damage = cardPlay.Target!.Powers.Count(p => p.TypeForCurrentAmount == PowerType.Debuff) * DynamicVars["Multiple"].BaseValue;
+                await Cmd.Wait(0.15f);
+                await NNingYuDebuffImpactVfx.Play(cardPlay.Target);
                 await CreatureCmd.Damage(choiceContext, cardPlay.Target, damage, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this, cardPlay);
             }
         }

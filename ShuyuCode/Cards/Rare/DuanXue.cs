@@ -47,7 +47,8 @@ namespace Shuyu.Cards
                 .WithHitCount(hitCount)
                 .WithAttackerFx(() => NDuanXueVfx.Create(cardPlay.Target!, hitCount))
                 .OnlyPlayAnimOnce()
-                .AfterAttackerAnim(async () => await Cmd.Wait(0.15f * hitCount + 0.6f))
+                .AfterAttackerAnim(async () => await Cmd.Wait(
+                    NDuanXueVfx.GetImpactTime(hitCount) + NDuanXueVfx.ImpactToDamageDelay))
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);

@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -35,6 +36,8 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            NHongNiVfx? rainbow = NHongNiVfx.Create(CombatState!);
+
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
@@ -47,6 +50,11 @@ namespace Shuyu.Cards
                 {
                     await PowerCmd.Apply(choiceContext, debuff, enemy, debuff.Amount, Owner.Creature, this);
                 }
+            }
+
+            if (rainbow != null)
+            {
+                await rainbow.FinishAsync();
             }
         }
 

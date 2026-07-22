@@ -15,6 +15,14 @@ namespace Shuyu.Vfx
 	public partial class NDuanXueVfx : Node2D
 	{
 		public static readonly string scenePath = $"{VFXUtil.CardVfxPath}/vfx_DuanXue.tscn";
+		public const float BeamBuildDuration = 0.10f;
+		public const float ChargeDuration = 0.30f;
+		public const float ImpactToDamageDelay = 0.10f;
+
+		public static float GetImpactTime(int hitCount)
+		{
+			return Mathf.Max(0, hitCount) * BeamBuildDuration + ChargeDuration;
+		}
 
 		[Export(PropertyHint.None, "")]
 		private GpuParticles2D? _beamParticle;
@@ -93,11 +101,11 @@ namespace Shuyu.Vfx
 				if (mat != null)
 				{
 					Tween tween = CreateTween();
-					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("showLength", val)), 0f, 2f, 0.15f)
+					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("showLength", val)), 0f, 2f, BeamBuildDuration)
 						.SetEase(Tween.EaseType.Out);
 				}
 
-				await Cmd.Wait(0.15f, _cts.Token);
+				await Cmd.Wait(BeamBuildDuration, _cts.Token);
 				_beamParticles[i].SpeedScale = 0;
 			}
 
@@ -108,12 +116,12 @@ namespace Shuyu.Vfx
 				if (mat != null)
 				{
 					Tween tween = CreateTween();
-					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("whiteWeight", val)), 0f, 1f, 0.5f)
+					tween.TweenMethod(Callable.From<float>(val => mat.SetShaderParameter("whiteWeight", val)), 0f, 1f, ChargeDuration)
 						.SetEase(Tween.EaseType.In)
 						.SetTrans(Tween.TransitionType.Quad);
 				}
 			}
-			await Cmd.Wait(0.5f, _cts.Token);
+			await Cmd.Wait(ChargeDuration, _cts.Token);
 
 			for (int i = 0; i < _endImpacts.Count; i++)
 			{

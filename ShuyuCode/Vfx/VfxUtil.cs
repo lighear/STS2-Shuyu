@@ -37,6 +37,8 @@ public static class VFXUtil
             $"{CardVfxPath}/vfx_BingJingMoZhen.tscn",
             $"{CardVfxPath}/vfx_YinZhiShu.tscn",
             $"{CardVfxPath}/vfx_JueWangYongChang.tscn",
+            $"{CardVfxPath}/vfx_YuJiaXue.tscn",
+            $"{CardVfxPath}/vfx_HongNi.tscn",
             $"{CardVfxPath}/vfx_HuanRaoDaJi.tscn",
             $"{CardVfxPath}/vfx_BingChaDaPao.tscn",
             $"{CardVfxPath}/vfx_SuiLieWuSheng.tscn",

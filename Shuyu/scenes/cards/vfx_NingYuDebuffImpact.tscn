@@ -1,0 +1,106 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NNingYuDebuffImpactVfx.cs" id="1_script"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/common/vfx_ring_polar_shader.gdshader" id="2_ring_shader"]
+[ext_resource type="Shader" path="res://Shuyu/assets/shaders/common/vfx_grayscale_particle_shader.gdshader" id="3_glow_shader"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/ning_yu_debuff_impact_ring.png" id="4_ring"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/ning_yu_debuff_impact_glow.png" id="5_glow"]
+
+[sub_resource type="Curve" id="Curve_ring_erosion"]
+_data = [Vector2(0, 0.499536), 0.0, 1.15666, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ring_erosion"]
+width = 64
+curve = SubResource("Curve_ring_erosion")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ring"]
+shader = ExtResource("2_ring_shader")
+shader_parameter/erosion_curve = SubResource("CurveTexture_ring_erosion")
+shader_parameter/erosion_offset = 0.1
+
+[sub_resource type="Gradient" id="Gradient_glow_lut"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture_glow_lut"]
+gradient = SubResource("Gradient_glow_lut")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+shader = ExtResource("3_glow_shader")
+shader_parameter/pivot_offset = Vector2(0, 0)
+shader_parameter/lut = SubResource("GradientTexture_glow_lut")
+
+[sub_resource type="Curve" id="Curve_ring_emission"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 3), 0.0, -8.75114, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ring_emission"]
+curve = SubResource("Curve_ring_emission")
+
+[sub_resource type="Curve" id="Curve_ring_scale"]
+_data = [Vector2(0, 0.245202), 0.0, 9.35466, 0, 0, Vector2(0.149871, 0.850288), 0.184002, 0.184002, 0, 0, Vector2(1, 1), 0.16094, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ring_scale"]
+curve = SubResource("Curve_ring_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ring"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_ring_scale")
+color = Color(0.42, 0.78, 1, 0.92)
+emission_curve = SubResource("CurveTexture_ring_emission")
+
+[sub_resource type="Curve" id="Curve_glow_alpha"]
+_data = [Vector2(0, 0.353316), 0.0, -0.753348, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_glow_alpha"]
+curve = SubResource("Curve_glow_alpha")
+
+[sub_resource type="Curve" id="Curve_glow_scale"]
+_data = [Vector2(0, 0), 0.0, 11.5422, 0, 0, Vector2(0.203175, 0.842474), 0.0, 0.210613, 0, 0, Vector2(1, 1), 0.197691, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_glow_scale"]
+curve = SubResource("Curve_glow_scale")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_glow"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_glow_scale")
+color = Color(0.40, 0.86, 1, 0.88)
+alpha_curve = SubResource("CurveTexture_glow_alpha")
+
+[node name="VfxNingYuDebuffImpact" type="Node2D" node_paths=PackedStringArray("_ring", "_glow")]
+script = ExtResource("1_script")
+_ring = NodePath("Ring")
+_glow = NodePath("Glow")
+
+[node name="Ring" type="GPUParticles2D" parent="."]
+z_index = 2
+material = SubResource("ShaderMaterial_ring")
+emitting = false
+amount = 1
+texture = ExtResource("4_ring")
+lifetime = 0.7
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ring")
+
+[node name="Glow" type="GPUParticles2D" parent="."]
+z_index = 1
+material = SubResource("ShaderMaterial_glow")
+emitting = false
+amount = 1
+texture = ExtResource("5_glow")
+lifetime = 0.9
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_glow")
