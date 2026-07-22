@@ -30,8 +30,8 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(7, ValueProp.Move),
-            new PowerVar<IceThornsPower>(5)
+            new BlockVar(6, ValueProp.Move),
+            new PowerVar<IceThornsPower>(6)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
