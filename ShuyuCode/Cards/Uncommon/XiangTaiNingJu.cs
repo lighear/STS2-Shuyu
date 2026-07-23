@@ -14,9 +14,9 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class NingJu : ModCardTemplate
+    public class XiangTaiNingJu : ModCardTemplate
     {
-        public NingJu() : base(
+        public XiangTaiNingJu() : base(
             baseCost: 1,
             CardType.Skill,
             CardRarity.Uncommon,

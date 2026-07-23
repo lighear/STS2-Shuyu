@@ -12,9 +12,9 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class JianDaoZhiTa : ModCardTemplate
+    public class QianMianJingLang : ModCardTemplate
     {
-        public JianDaoZhiTa() : base(
+        public QianMianJingLang() : base(
             baseCost: 2,
             CardType.Power,
             CardRarity.Rare,
@@ -35,7 +35,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<JianDaoZhiTaPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
+            await PowerCmd.Apply<QianMianJingLangPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
             await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
         }
 
