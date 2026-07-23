@@ -93,7 +93,7 @@ public class FragilePower : ModPowerTemplate
 
                 await PowerCmd.ModifyAmount(choiceContext, this, -5, null, null);
 
-                foreach (IOnFragileConverted ip in listeners.OrderBy(ip => ip is ZhiHuanShuShiPower ? 0 : 1))
+                foreach (IOnFragileConverted ip in listeners.OrderBy(ip => (ip is ZhiHuanShuShiPower || ip is ShuiSeLiuHuoPower)? 0 : 1))
                 {
                     await ip.OnFragileConverted(choiceContext, Owner, applier);
                 }
