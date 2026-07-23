@@ -13,10 +13,10 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    //[RegisterCard(typeof(ShuyuCardPool))]
-    public class SuiJiaQiangHua : ModCardTemplate
+    [RegisterCard(typeof(ShuyuCardPool))]
+    public class ShuiSeLiuHuo : ModCardTemplate
     {
-        public SuiJiaQiangHua() : base(
+        public ShuiSeLiuHuo() : base(
             baseCost: 1,
             CardType.Power,
             CardRarity.Uncommon,
@@ -27,21 +27,26 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<FragilePower>(),
-            HoverTipFactory.FromPower<WeakPower>()
+            HoverTipFactory.FromPower<StrengthPower>(),
+            HoverTipFactory.FromPower<DexterityPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new DamageVar(10, ValueProp.Unpowered)
+            new PowerVar<StrengthPower>(1),
+            new PowerVar<DexterityPower>(1)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<SuiJiaQiangHuaPower>(choiceContext, Owner.Creature, DynamicVars.Damage.BaseValue, Owner.Creature, this);
+            ShuiSeLiuHuoPower? power = await PowerCmd.Apply<ShuiSeLiuHuoPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue, Owner.Creature, this);
+            power?.AddStrength(DynamicVars.Strength.BaseValue);
+            power?.AddDexterity(DynamicVars.Dexterity.BaseValue);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(5);
+            DynamicVars.Strength.UpgradeValueBy(1);
+            DynamicVars.Dexterity.UpgradeValueBy(1);
         }
     }
 }
