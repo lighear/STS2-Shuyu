@@ -49,7 +49,7 @@ namespace Shuyu.Cards
         protected override void OnUpgrade()
         {
             DynamicVars.Block.UpgradeValueBy(4);
-            DynamicVars.Dexterity.UpgradeValueBy(1);
+            //DynamicVars.Dexterity.UpgradeValueBy(1);
         }
     }
 }
