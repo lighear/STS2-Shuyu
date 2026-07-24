@@ -32,7 +32,7 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new CalculationBaseVar(0),
             new CalculationExtraVar(1),
-            new CalculatedVar("CalculatedEnergy").WithMultiplier((c, _) => PileType.Hand.GetPile(c.Owner).Cards.Count(c => c.Keywords.Contains(CardKeyword.Retain)))
+            new CalculatedVar("CalculatedEnergy").WithMultiplier((card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count(c => (c != card && c.Keywords.Contains(CardKeyword.Retain))))
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

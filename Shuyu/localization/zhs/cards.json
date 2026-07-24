@@ -71,7 +71,7 @@
     "SHUYU_CARD_YONG_HENG_SHU_SHI.title":  "永恒术式",
     "SHUYU_CARD_YONG_HENG_SHU_SHI.description":  "抽{Cards:diff()}张牌。\n[gold]封冻[/gold]抽到的牌。",
     "SHUYU_CARD_XIANG_TAI_NING_JU.title":  "相态凝聚",
-    "SHUYU_CARD_XIANG_TAI_NING_JU.description":  "手中每有1张[gold]保留牌[/gold]获得{energyPrefix:energyIcons(1)}。\n然后选择1张[gold]保留牌[/gold]丢弃。{InCombat:\n（获得{CalculatedEnergy:energyIcons()}）|}",
+    "SHUYU_CARD_XIANG_TAI_NING_JU.description":  "手中每有1张其他[gold]保留牌[/gold]获得{energyPrefix:energyIcons(1)}。\n然后选择1张[gold]保留牌[/gold]丢弃。{InCombat:\n（获得{CalculatedEnergy:energyIcons()}）|}",
     "SHUYU_CARD_LIU_ZHUAN.title":  "流转",
     "SHUYU_CARD_LIU_ZHUAN.description":  "每当丢弃1张[gold]封冻牌[/gold]，抽1张牌。",
     "SHUYU_CARD_JING_DAI_LIANG_JI.title":  "静待良机",
