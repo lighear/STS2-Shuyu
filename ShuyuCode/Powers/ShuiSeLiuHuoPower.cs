@@ -9,13 +9,14 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Interfaces;
+using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted
+public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted, IPowerExtraIconAmountLabelSpecsProvider
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -27,18 +28,21 @@ public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.FromPower<FragilePower>(),
-        HoverTipFactory.FromPower<StrengthPower>(),
+        HoverTipFactory.Static(StaticHoverTip.Block),
+        //HoverTipFactory.FromPower<StrengthPower>(),
         HoverTipFactory.FromPower<DexterityPower>()
     ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new PowerVar<StrengthPower>(0),
+        //new PowerVar<StrengthPower>(0),
+        new BlockVar(0,ValueProp.Unpowered),
         new PowerVar<DexterityPower>(0)
     ];
-
-    public void AddStrength(decimal amount)
+    
+    public void AddBlock(decimal amount)
     {
-        DynamicVars.Strength.BaseValue += amount;
+        DynamicVars.Block.BaseValue += amount;
+        InvokeDisplayAmountChanged();
     }
 
     public void AddDexterity(decimal amount)
@@ -80,9 +84,9 @@ public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted
     {
         if (amount > 0 && applier == Owner && power is FragilePower && !TriggeredThisTurn)
         {
-            Flash();
-            TriggeredThisTurn = true;
-            await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, DynamicVars.Strength.BaseValue, Owner, null);
+            //Flash();
+            //TriggeredThisTurn = true;
+            //await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, DynamicVars.Strength.BaseValue, Owner, null);
         }
     }
     
@@ -90,7 +94,15 @@ public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted
     {
         Flash();
         await PowerCmd.Apply<DexterityPower>(choiceContext, Owner, DynamicVars.Dexterity.BaseValue, Owner, null);
+        await CreatureCmd.GainBlock(Owner, DynamicVars.Block.BaseValue, ValueProp.Unpowered, null);
     }
-    
-    
+
+
+    public IReadOnlyList<ExtraIconAmountLabelSpec> GetPowerExtraIconAmountLabelSpecs()
+    {
+        return
+        [
+            ExtraIconAmountLabelSpec.Plain(ExtraIconAmountLabelCorner.TopRight, DynamicVars.Block.BaseValue.ToString())
+        ];
+    }
 }

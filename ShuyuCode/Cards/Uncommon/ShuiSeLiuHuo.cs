@@ -27,25 +27,28 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<FragilePower>(),
-            HoverTipFactory.FromPower<StrengthPower>(),
+            HoverTipFactory.Static(StaticHoverTip.Block),
+            //HoverTipFactory.FromPower<StrengthPower>(),
             HoverTipFactory.FromPower<DexterityPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<StrengthPower>(1),
-            new PowerVar<DexterityPower>(1)
+            //new PowerVar<StrengthPower>(1),
+            new PowerVar<DexterityPower>(1),
+            new BlockVar(6,ValueProp.Unpowered)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            ShuiSeLiuHuoPower? power = await PowerCmd.Apply<ShuiSeLiuHuoPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue, Owner.Creature, this);
-            power?.AddStrength(DynamicVars.Strength.BaseValue);
+            ShuiSeLiuHuoPower? power = await PowerCmd.Apply<ShuiSeLiuHuoPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue, Owner.Creature, this);
+            //power?.AddStrength(DynamicVars.Strength.BaseValue);
+            power?.AddBlock(DynamicVars.Block.BaseValue);
             power?.AddDexterity(DynamicVars.Dexterity.BaseValue);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Strength.UpgradeValueBy(1);
+            DynamicVars.Block.UpgradeValueBy(3);
             DynamicVars.Dexterity.UpgradeValueBy(1);
         }
     }
