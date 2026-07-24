@@ -33,7 +33,8 @@ public class FragilePower : ModPowerTemplate
     ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DynamicVar("DamageIncrease", 1.25m)
+        new DynamicVar("DamageIncrease", 1.25m),
+        new DamageVar(4, ValueProp.Unpowered)
     ];
 
     private class Data
@@ -100,7 +101,12 @@ public class FragilePower : ModPowerTemplate
 
                 if (Owner.CombatState != null && Owner.IsAlive)
                 {
-                    await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier, null);
+                    VulnerablePower? power = await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier ?? Owner, null);
+                    if (power != null && Owner.IsAlive)
+                    {
+                        await CreatureCmd.Damage(choiceContext, Owner, power.Amount *  DynamicVars.Damage.BaseValue, ValueProp.Unpowered, applier ?? Owner);
+                    }
+                    
                 }
             }
         }
