@@ -31,7 +31,7 @@ public sealed class ZhaRenSuiPian : ModRelicTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(4, ValueProp.Unpowered),
+        new BlockVar(5, ValueProp.Unpowered),
         new PowerVar<IceThornsPower>(1)
     ];
     
@@ -40,7 +40,10 @@ public sealed class ZhaRenSuiPian : ModRelicTemplate
         if (participants.Contains(base.Owner.Creature))
         {
             decimal num = Owner.Creature.Block / DynamicVars.Block.BaseValue * DynamicVars["IceThornsPower"].BaseValue;
-            await PowerCmd.Apply<IceThornsPower>(choiceContext, base.Owner.Creature, num, base.Owner.Creature, null);
+            if (num > 0)
+            {
+                await PowerCmd.Apply<IceThornsPower>(choiceContext, base.Owner.Creature, num, base.Owner.Creature, null);
+            }
         }
     }
 }
