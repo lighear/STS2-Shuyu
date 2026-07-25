@@ -35,7 +35,7 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             //new PowerVar<StrengthPower>(1),
             new PowerVar<DexterityPower>(1),
-            new BlockVar(6,ValueProp.Unpowered)
+            new BlockVar(8,ValueProp.Unpowered)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -48,8 +48,8 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(3);
-            DynamicVars.Dexterity.UpgradeValueBy(1);
+            DynamicVars.Block.UpgradeValueBy(4);
+            //DynamicVars.Dexterity.UpgradeValueBy(1);
         }
     }
 }

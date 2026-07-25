@@ -1,19 +1,24 @@
-﻿using MegaCrit.Sts2.Core.Models.Powers;
+﻿using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
 using Shuyu.Cards;
-using STS2RitsuLib.Combat.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
+using STS2RitsuLib.Scaffolding.Content.Patches;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class LinZhiTongStrengthDownPower : ModTemporaryAppliedPowerTemplate<LinZhiTong, StrengthPower>
+public class LinZhiTongStrengthDownPower : TemporaryStrengthPower, IModPowerAssetOverrides
 {
-    protected override bool IsPositive => false;
-    protected override bool UntilEndOfOtherSideTurn => false;
+    public override AbstractModel OriginModel => ModelDb.Card<LinZhiTong>();
 
-    public override PowerAssetProfile AssetProfile => new(
+    protected override bool IsPositive => false;
+
+    public PowerAssetProfile AssetProfile => new(
         IconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png",
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
+
+    public string? CustomIconPath => AssetProfile.IconPath;
+    public string? CustomBigIconPath => AssetProfile.BigIconPath;
 }

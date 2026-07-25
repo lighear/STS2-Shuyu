@@ -33,6 +33,7 @@ public sealed class FrozenCardModel : ModCardTemplate
         AssertMutable();
         _visualCardModel = original;
         _energyCost = null;
+        _energyCost = original.EnergyCost.Clone(this);
         targets.Clear();
         count = 1;
         Owner ??= original.Owner;
