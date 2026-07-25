@@ -41,7 +41,7 @@ namespace Shuyu.Cards
         ];
 
         private bool firstTurnAutoPlay;
-        private int _currentPowerAmount = 5;
+        private int _currentPowerAmount = 4;
         private int _increasedPowerAmount;
 
         [SavedProperty]
@@ -135,7 +135,7 @@ namespace Shuyu.Cards
 
         private void UpdateAmount()
         {
-            CurrentPowerAmount = 5 + IncreasedPowerAmount;
+            CurrentPowerAmount = 4 + IncreasedPowerAmount;
         }
     }
 }

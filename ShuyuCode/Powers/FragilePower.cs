@@ -34,7 +34,7 @@ public class FragilePower : ModPowerTemplate
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar("DamageIncrease", 1.25m),
-        new DamageVar(4, ValueProp.Unpowered)
+        new DamageVar(3, ValueProp.Unpowered)
     ];
 
     private class Data
