@@ -9,7 +9,7 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Powers;
 
 [RegisterPower]
-public class PoPianPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProvider
+public class ZhaMaoPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProvider
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;

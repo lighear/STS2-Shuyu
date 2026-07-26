@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Shuyu.Cards;
 using Shuyu.Characters;
+using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -28,7 +29,10 @@ public class PingZhuangBingZhen : ModPotionTemplate
     protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(2)];
 
     // 添加提示关键词
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromCard<BingZhen>(true)];
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromCard<BingZhen>(true),
+        HoverTipFactory.FromPower<ChillPower>()
+    ];
 
     // 药水图片。不一定非得是png，只要最终能被Godot当成Texture读取即可。
     public override PotionAssetProfile AssetProfile => new(
