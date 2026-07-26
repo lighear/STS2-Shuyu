@@ -80,4 +80,22 @@ public class LinZhiTongPower : ModPowerTemplate
         }
         */
     }
+    
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    {
+        if (!participants.Contains(Owner))
+        {
+            return;
+        }
+        
+        if (Owner.IsAlive && Owner.Monster != null && !Owner.Monster.IntendsToAttack)
+        {
+            LinZhiTongStrengthDownPower? power = Owner.GetPower<LinZhiTongStrengthDownPower>();
+            if (power != null)
+            {
+                await PowerCmd.Apply<StrengthPower>(null, Owner, power.Amount, Owner, null);
+                await PowerCmd.Remove(power);
+            }
+        }
+    }
 }
