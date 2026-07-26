@@ -30,7 +30,7 @@ public class ChillPower : ModPowerTemplate
     );
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(6, ValueProp.Unblockable | ValueProp.Unpowered)
+        new DamageVar(5, ValueProp.Unblockable | ValueProp.Unpowered)
     ];
 
     private class Data
@@ -59,7 +59,7 @@ public class ChillPower : ModPowerTemplate
     {
         get
         {
-            decimal damage = 6;
+            decimal damage = 5;
             foreach (IModifyChillDamage ip in CombatState.IterateHookListeners().OfType<IModifyChillDamage>())
             {
                 damage = ip.ModifyChillDamage(damage);
