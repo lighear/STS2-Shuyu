@@ -41,13 +41,22 @@ public partial class NJinShuJieJieShieldVfx : Node2D
             return;
         }
 
+        NIceShieldPowerVfx.ResolveVisualLayout(
+            owner,
+            creatureNode,
+            out _,
+            out Vector2 shieldCenter);
+        shieldCenter =
+            creatureNode.Visuals.Bounds.GetGlobalTransform()
+            * shieldCenter;
+
         Vector2 creatureSize = creatureNode.Visuals.Bounds.Size;
         NJinShuJieJieShieldVfx vfx = VFXUtil.GenVFXNode<NJinShuJieJieShieldVfx>(ScenePath);
         vfx._effectSize = new Vector2(
             Mathf.Clamp(creatureSize.X * 1.92f, 560f, 880f),
             Mathf.Clamp(creatureSize.Y * 1.72f, 620f, 920f));
         NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(vfx);
-        vfx.GlobalPosition = creatureNode.VfxSpawnPosition;
+        vfx.GlobalPosition = shieldCenter;
 
         await Cmd.Wait(ResolveDelay);
     }

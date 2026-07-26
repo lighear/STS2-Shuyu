@@ -1,4 +1,7 @@
 using Godot;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using Shuyu.Characters;
 
 namespace Shuyu.Vfx;
 
@@ -50,6 +53,28 @@ public partial class NIceShieldPowerVfx : Node2D
     public override void _Ready()
     {
         EnsureParticleMaterialsLocalized();
+    }
+
+    public static void ResolveVisualLayout(
+        Creature creature,
+        NCreature creatureNode,
+        out Vector2 visualSize,
+        out Vector2 localCenter)
+    {
+        var creatureVisuals = creatureNode.Visuals;
+        var creatureBounds = creatureVisuals.Bounds;
+        visualSize = creatureBounds.Size;
+        localCenter = creatureBounds.Size * 0.5f;
+
+        if (creature.Player?.Character is ShuyuCharacter
+            && creatureVisuals.GetCurrentBody() is Sprite2D sprite
+            && sprite.Texture != null)
+        {
+            visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
+            localCenter =
+                creatureBounds.GetGlobalTransform().AffineInverse()
+                * sprite.GlobalPosition;
+        }
     }
 
     public override void _Process(double delta)

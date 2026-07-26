@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NCuiHuaGuangShuLaserVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/cui_hua_guang_shu_laser.png" id="2_laser"]
+
+[sub_resource type="Shader" id="Shader_laser"]
+code = "shader_type canvas_item;
+render_mode blend_add;
+
+uniform vec4 beam_color : source_color = vec4(0.0, 0.633333, 1.0, 1.0);
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV);
+	COLOR = vec4(beam_color.rgb + tex.rgb, tex.a * beam_color.a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_laser"]
+shader = SubResource("Shader_laser")
+shader_parameter/beam_color = Color(0, 0.633333, 1, 1)
+
+[node name="CuiHuaGuangShuLaserVfx" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Beam" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_laser")
+texture_filter = 2
+texture = ExtResource("2_laser")
+region_enabled = true
+region_rect = Rect2(2, 2, 120, 7)

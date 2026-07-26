@@ -55,11 +55,10 @@ namespace Shuyu.Cards
                     .FromCard(this, cardPlay)
                     .TargetingAllOpponents(CombatState);
 
-                if (i == 0)
-                {
-                    attack.AfterAttackerAnim(async () =>
-                        await NBingChaDaPaoVfx.PlayVolley(Owner.Creature, CombatState.HittableEnemies));
-                }
+                attack.AfterAttackerAnim(async () =>
+                    await NBingChaDaPaoVfx.PlayVolley(
+                        Owner.Creature,
+                        CombatState.HittableEnemies));
 
                 await attack.Execute(choiceContext);
 

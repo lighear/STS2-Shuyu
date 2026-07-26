@@ -46,19 +46,42 @@ namespace Shuyu.Cards
             {
                 hitCount++;
             }
-            for (int i = 0; i < hitCount; i++)
+
+            NCuiHuaGuangShuLaserVfx? laser = hitCount > 0
+                ? NCuiHuaGuangShuLaserVfx.Create(Owner.Creature, cardPlay.Target)
+                : null;
+
+            try
             {
-                Node2D? vfxNode = VFXUtil.PlaySimple(SceneHelper.GetScenePath("vfx/vfx_attack_blunt"), NCombatRoom.Instance?.GetCreatureNode(cardPlay.Target)?.VfxSpawnPosition ?? Vector2.Zero, 2f);
-                if (vfxNode != null)
+                for (int i = 0; i < hitCount; i++)
                 {
-                    vfxNode.Modulate = new Color("#00d7d7");
+                    Node2D? vfxNode = VFXUtil.PlaySimple(
+                        SceneHelper.GetScenePath("vfx/vfx_attack_blunt"),
+                        NCombatRoom.Instance?.GetCreatureNode(cardPlay.Target)?.VfxSpawnPosition ?? Vector2.Zero,
+                        2f);
+                    if (vfxNode != null)
+                    {
+                        vfxNode.Modulate = new Color("#00d7d7");
+                    }
+
+                    await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+                        .FromCard(this, cardPlay)
+                        .Targeting(cardPlay.Target!)
+                        .Execute(choiceContext);
+                    await PowerCmd.Apply<FragilePower>(
+                        choiceContext,
+                        cardPlay.Target!,
+                        DynamicVars["FragilePower"].BaseValue,
+                        Owner.Creature,
+                        this);
                 }
-                
-                await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                    .FromCard(this, cardPlay)
-                    .Targeting(cardPlay.Target!)
-                    .Execute(choiceContext);
-                await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
+            }
+            finally
+            {
+                if (laser != null)
+                {
+                    await laser.FinishAsync();
+                }
             }
         }
     }

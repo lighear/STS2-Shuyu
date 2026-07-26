@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Characters;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -52,23 +51,19 @@ public class IceShieldPower : ModPowerTemplate
 
     private void UpdateVfx()
     {
-        var creatureVisuals = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureNode = NCombatRoom.Instance?.GetCreatureNode(Owner);
+        var creatureVisuals = creatureNode?.Visuals;
         var creatureBounds = creatureVisuals?.Bounds;
-        if (creatureVisuals == null || creatureBounds == null)
+        if (creatureNode == null || creatureVisuals == null || creatureBounds == null)
         {
             return;
         }
 
-        Vector2 visualSize = creatureBounds.Size;
-        Vector2 visualCenter = creatureBounds.Size * 0.5f;
-
-        if (Owner.Player?.Character is ShuyuCharacter &&
-            creatureVisuals.GetCurrentBody() is Sprite2D sprite &&
-            sprite.Texture != null)
-        {
-            visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
-            visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
-        }
+        NIceShieldPowerVfx.ResolveVisualLayout(
+            Owner,
+            creatureNode,
+            out Vector2 visualSize,
+            out Vector2 visualCenter);
 
         NIceShieldPowerVfx? vfx = creatureBounds.GetNodeOrNull<NIceShieldPowerVfx>(VfxNodeName);
         if (vfx == null)
