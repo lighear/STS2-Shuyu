@@ -80,8 +80,8 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     // 如果你的人物不需要时间线小故事，加上这句。
     public override bool RequiresEpochAndTimeline => false;
     // 攻击和施法动画延迟，以对齐动画。静态占位资源不需要延迟。
-    public override float AttackAnimDelay => 0.7f;
-    public override float CastAnimDelay => 0.7f;
+    public override float AttackAnimDelay => 0.5f;
+    public override float CastAnimDelay => 0.5f;
 
     public override CreatureAnimator GenerateAnimator(MegaSprite controller)
     {
