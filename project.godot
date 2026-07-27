@@ -17,13 +17,13 @@ config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 
 project/assembly_name="Shuyu"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/particle_scene_compositor/editor/plugin.cfg")
-
 [editor]
 
 export/convert_text_resources_to_binary=false
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/particle_scene_compositor/editor/plugin.cfg")
 
 [rendering]
 

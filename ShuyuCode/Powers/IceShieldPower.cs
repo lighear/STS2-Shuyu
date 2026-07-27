@@ -59,7 +59,7 @@ public class IceShieldPower : ModPowerTemplate
             return;
         }
 
-        NIceShieldPowerVfx.ResolveVisualLayout(
+        NPowerVfxLayout.Resolve(
             Owner,
             creatureNode,
             out Vector2 visualSize,

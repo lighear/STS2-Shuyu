@@ -133,15 +133,15 @@ public class WanBiBuPoPower : ModPowerTemplate, IModifyDamageFinal
             }
             else
             {
-                vfxWanBiBuPoPowerRing.AnchorLeft = 0;
-                vfxWanBiBuPoPowerRing.AnchorTop = 0;
-                vfxWanBiBuPoPowerRing.AnchorRight = 1;
-                vfxWanBiBuPoPowerRing.AnchorBottom = 1;
-                Vector2 expandSize = creatureBounds.Size * 0.2f;
-                vfxWanBiBuPoPowerRing.OffsetLeft = -expandSize.X;
-                vfxWanBiBuPoPowerRing.OffsetTop = -expandSize.Y;
-                vfxWanBiBuPoPowerRing.OffsetRight = expandSize.X;
-                vfxWanBiBuPoPowerRing.OffsetBottom = expandSize.Y;
+                float ringDiameter = Mathf.Max(creatureBounds.Size.X, creatureBounds.Size.Y);
+                Vector2 visualCenter = creatureBounds.Size * 0.5f;
+
+                vfxWanBiBuPoPowerRing.AnchorLeft = 0f;
+                vfxWanBiBuPoPowerRing.AnchorTop = 0f;
+                vfxWanBiBuPoPowerRing.AnchorRight = 0f;
+                vfxWanBiBuPoPowerRing.AnchorBottom = 0f;
+                vfxWanBiBuPoPowerRing.Size = Vector2.One * ringDiameter;
+                vfxWanBiBuPoPowerRing.Position = visualCenter - vfxWanBiBuPoPowerRing.Size * 0.5f;
             }
         }
     }

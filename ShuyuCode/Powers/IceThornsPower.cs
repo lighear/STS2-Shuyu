@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
-using Shuyu.Characters;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -51,25 +50,19 @@ public class IceThornsPower : ModPowerTemplate
 
     private void UpdateVfx()
     {
-        var creatureVisuals = NCombatRoom.Instance?.GetCreatureNode(Owner)?.Visuals;
+        var creatureNode = NCombatRoom.Instance?.GetCreatureNode(Owner);
+        var creatureVisuals = creatureNode?.Visuals;
         var creatureBounds = creatureVisuals?.Bounds;
-        if (creatureVisuals == null || creatureBounds == null)
+        if (creatureNode == null || creatureVisuals == null || creatureBounds == null)
         {
             return;
         }
 
-        Vector2 visualSize = creatureBounds.Size;
-        Vector2 visualCenter = creatureBounds.Size * 0.5f;
-
-        // Shuyu's portrait is much taller than her gameplay hitbox. Use the
-        // actual sprite rectangle so the thorn ring follows the full artwork.
-        if (Owner.Player?.Character is ShuyuCharacter &&
-            creatureVisuals.GetCurrentBody() is Sprite2D sprite &&
-            sprite.Texture != null)
-        {
-            visualSize = sprite.Texture.GetSize() * sprite.Scale.Abs();
-            visualCenter = creatureBounds.GetGlobalTransform().AffineInverse() * sprite.GlobalPosition;
-        }
+        NPowerVfxLayout.Resolve(
+            Owner,
+            creatureNode,
+            out Vector2 visualSize,
+            out Vector2 visualCenter);
 
         NIceThornsPowerVfx? vfx = creatureBounds.GetNodeOrNull<NIceThornsPowerVfx>(VfxNodeName);
         if (vfx == null)

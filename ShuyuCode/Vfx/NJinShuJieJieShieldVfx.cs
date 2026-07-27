@@ -41,7 +41,7 @@ public partial class NJinShuJieJieShieldVfx : Node2D
             return;
         }
 
-        NIceShieldPowerVfx.ResolveVisualLayout(
+        NPowerVfxLayout.Resolve(
             owner,
             creatureNode,
             out _,
