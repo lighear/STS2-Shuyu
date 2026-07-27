@@ -51,6 +51,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             ChongYingZhenPower? power = await PowerCmd.Apply<ChongYingZhenPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
             if (IsUpgraded)
             {

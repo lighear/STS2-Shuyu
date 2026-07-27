@@ -40,10 +40,15 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Attack",
+                Owner.Character.CastAnimDelay);
             await NLingShiYiZhiVfx.PlayOpening();
 
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
+                .WithAttackerAnim(null, 0f)
                 .TargetingAllOpponents(CombatState!)
                 .WithHitFx("vfx/vfx_attack_blunt", null, "heavy_attack.mp3")
                 .Execute(choiceContext);

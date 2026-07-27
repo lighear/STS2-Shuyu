@@ -48,6 +48,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this, cardPlay)
                     .Targeting(cardPlay.Target!)
+                    .WithAttackerAnim("Cast", Owner.Character.CastAnimDelay)
                     .Execute(choiceContext);
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<BingQiMengJiPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);

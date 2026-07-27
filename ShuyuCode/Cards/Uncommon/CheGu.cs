@@ -39,6 +39,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Attack",
+                Owner.Character.CastAnimDelay);
             if (cardPlay.Target!.HasPower<ArtifactPower>())
             {
                 await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);

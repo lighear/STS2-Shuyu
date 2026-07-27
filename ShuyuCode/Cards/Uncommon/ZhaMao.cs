@@ -13,9 +13,9 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class PoPian : ModCardTemplate
+    public class ZhaMao : ModCardTemplate
     {
-        public PoPian() : base(
+        public ZhaMao() : base(
             baseCost: 1,
             CardType.Power,
             CardRarity.Uncommon,
@@ -32,18 +32,22 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new PowerVar<FragilePower>(1),
-            new PowerVar<PoPianPower>(25)
+            new PowerVar<ZhaMaoPower>(25)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            PoPianPower? power = await PowerCmd.Apply<PoPianPower>(choiceContext, Owner.Creature, DynamicVars["PoPianPower"].BaseValue, Owner.Creature, this);
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
+            ZhaMaoPower? power = await PowerCmd.Apply<ZhaMaoPower>(choiceContext, Owner.Creature, DynamicVars["ZhaMaoPower"].BaseValue, Owner.Creature, this);
             power?.AddFragilePowerAmount(DynamicVars["FragilePower"].BaseValue);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["PoPianPower"].UpgradeValueBy(25);
+            DynamicVars["ZhaMaoPower"].UpgradeValueBy(25);
         }
     }
 }

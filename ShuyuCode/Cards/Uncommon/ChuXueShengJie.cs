@@ -38,6 +38,10 @@ namespace Shuyu.Cards
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             IEnumerable<Creature> enumerable = CombatState!.GetTeammatesOf(Owner.Creature).Where(c => c.IsAlive && c.IsPlayer);
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             foreach (Creature creature in enumerable)
             {
                 await PowerCmd.Apply<IceShieldPower>(choiceContext, creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);

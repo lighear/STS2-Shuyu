@@ -21,6 +21,10 @@ project/assembly_name="Shuyu"
 
 enabled=PackedStringArray("res://addons/particle_scene_compositor/editor/plugin.cfg")
 
+[editor]
+
+export/convert_text_resources_to_binary=false
+
 [rendering]
 
 renderer/rendering_method="mobile"

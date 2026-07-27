@@ -42,6 +42,7 @@ namespace Shuyu.Cards
 
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
+                .WithAttackerAnim("Cast", Owner.Character.CastAnimDelay)
                 .TargetingAllOpponents(CombatState!)
                 .Execute(choiceContext);
             if (IsUpgraded)

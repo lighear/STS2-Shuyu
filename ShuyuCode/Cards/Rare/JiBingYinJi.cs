@@ -36,6 +36,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             await PowerCmd.Remove<ArtifactPower>(cardPlay.Target!);
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
             await PowerCmd.Apply<JiBingYinJiPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);

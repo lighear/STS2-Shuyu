@@ -100,7 +100,7 @@ public class IceThornsPower : ModPowerTemplate
 
     public async Task ReflectionEffect(PlayerChoiceContext choiceContext, Creature target)
     {
-        PoPianPower? power = Owner.GetPower<PoPianPower>();
+        ZhaMaoPower? power = Owner.GetPower<ZhaMaoPower>();
         int damage = await CalculateReflectionDamage(power, target);
         IEnumerable<DamageResult> results = await CreatureCmd.Damage(choiceContext, target, damage, ValueProp.Unpowered | ValueProp.SkipHurtAnim, Owner);
 
@@ -117,7 +117,7 @@ public class IceThornsPower : ModPowerTemplate
         }
     }
 
-    public async Task<int> CalculateReflectionDamage(PoPianPower? power, Creature target)
+    public async Task<int> CalculateReflectionDamage(ZhaMaoPower? power, Creature target)
     {
         if (power != null && (target.HasPower<FragilePower>() || target.HasPower<VulnerablePower>()))
         {

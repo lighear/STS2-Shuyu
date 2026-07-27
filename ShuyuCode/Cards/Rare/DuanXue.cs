@@ -51,6 +51,7 @@ namespace Shuyu.Cards
                     NDuanXueVfx.GetImpactTime(hitCount) + NDuanXueVfx.ImpactToDamageDelay))
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .OnlyPlayAnimOnce()
                 .Execute(choiceContext);
 
             int remainHitCount = hitCount - attackCommand.Results.Count();

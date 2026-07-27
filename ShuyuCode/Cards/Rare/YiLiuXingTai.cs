@@ -30,6 +30,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             await PowerCmd.Apply<YiLiuXingTaiPower>(choiceContext, Owner.Creature, DynamicVars.Damage.BaseValue, Owner.Creature, this);
             await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
         }

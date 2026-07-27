@@ -43,6 +43,7 @@ namespace Shuyu.Cards
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
+                .WithAttackerAnim(null, 0f)
                 .Targeting(cardPlay.Target!)
                 .WithHitVfxNode((Creature target) => NBingZhenVfx.Create(Owner.Creature, target))
                 .Execute(choiceContext);

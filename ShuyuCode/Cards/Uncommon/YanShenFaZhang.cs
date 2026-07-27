@@ -54,6 +54,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .WithHitCount(ShouldDouble()?2:1)
                 .FromCard(this, cardPlay)
+                .WithAttackerAnim("Cast", Owner.Character.CastAnimDelay)
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
         }

@@ -40,6 +40,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             await BingZhen.CreateInHand(Owner, DynamicVars.Cards.IntValue, CombatState!, false);
         }
 

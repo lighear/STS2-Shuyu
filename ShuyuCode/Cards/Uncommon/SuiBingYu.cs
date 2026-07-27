@@ -50,6 +50,7 @@ namespace Shuyu.Cards
                 .FromCard(this, cardPlay)
                 .TargetingRandomOpponents(CombatState!)
                 .WithHitFx("vfx/vfx_attack_slash")
+                .OnlyPlayAnimOnce()
                 .Execute(choiceContext);
         }
 

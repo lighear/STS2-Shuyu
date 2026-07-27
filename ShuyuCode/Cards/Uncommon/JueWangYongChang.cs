@@ -46,6 +46,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.CalculatedDamage)
                 .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
+                .WithAttackerAnim("Cast", Owner.Character.CastAnimDelay)
                 .Execute(choiceContext);
             await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
 
