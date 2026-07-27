@@ -17,6 +17,10 @@ config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 
 project/assembly_name="Shuyu"
 
+[editor]
+
+export/convert_text_resources_to_binary=false
+
 [rendering]
 
 renderer/rendering_method="mobile"

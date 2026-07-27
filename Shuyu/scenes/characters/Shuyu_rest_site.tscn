@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqrjdgn7rm8ab"]
+[gd_scene load_steps=2 format=3 uid="uid://bqrjdgn7rm8ab"]
 
-[ext_resource type="Texture2D" uid="uid://djdmenj6wgybf" path="res://Shuyu/images/characters/Shuyu_character_select.png" id="1_character"]
 [ext_resource type="Texture2D" uid="uid://b5h8xcc73cluf" path="res://Shuyu/images/characters/Shuyu_character.png" id="1_k4ka0"]
 
 [node name="ShuyuCharacterRestSite" type="Node2D"]
@@ -14,7 +13,6 @@ texture = ExtResource("1_k4ka0")
 modulate = Color(0.25, 0.25, 0.25, 0.45)
 position = Vector2(75, -58)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("1_character")
 
 [node name="ControlRoot" type="Control" parent="."]
 unique_name_in_owner = true
