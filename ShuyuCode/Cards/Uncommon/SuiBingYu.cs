@@ -49,6 +49,7 @@ namespace Shuyu.Cards
                 .WithHitCount(DynamicVars.Repeat.IntValue)
                 .FromCard(this, cardPlay)
                 .TargetingRandomOpponents(CombatState!)
+                .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
         }
 

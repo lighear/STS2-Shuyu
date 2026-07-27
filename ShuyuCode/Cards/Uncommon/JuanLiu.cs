@@ -45,6 +45,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .WithHitFx("vfx/vfx_starry_impact")
                 .Execute(choiceContext);
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
 

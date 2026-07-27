@@ -45,6 +45,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState!)
+                .WithHitFx("vfx/vfx_attack_blunt", null, "heavy_attack.mp3")
                 .Execute(choiceContext);
 
             await CardCmd.Discard(choiceContext, PileType.Hand.GetPile(Owner).Cards);
