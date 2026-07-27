@@ -41,6 +41,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             foreach (Creature enemy in CombatState!.HittableEnemies)
             {
                 await PowerCmd.Apply<StrengthPower>(choiceContext,enemy, -DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);

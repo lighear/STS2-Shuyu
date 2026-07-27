@@ -42,6 +42,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .WithAttackerAnim("Cast", Owner.Character.CastAnimDelay)
                 .Execute(choiceContext);
             await PowerCmd.Apply<LinZhiTongPower>(choiceContext, cardPlay.Target!, DynamicVars["EnemyStrengthLoss"].BaseValue, Owner.Creature, this);
         }

@@ -61,6 +61,10 @@ namespace Shuyu.Cards
         {
             int hp = Owner.Creature.CurrentHp;
             int hpBeforeCombatStart = HpBeforeCombatStart;
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             if (hp < hpBeforeCombatStart)
             {
                 await CreatureCmd.Heal(Owner.Creature, hpBeforeCombatStart - hp);

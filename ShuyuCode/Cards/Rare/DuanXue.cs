@@ -45,6 +45,7 @@ namespace Shuyu.Cards
                 .WithHitCount(hitCount)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .OnlyPlayAnimOnce()
                 .Execute(choiceContext);
 
             int remainHitCount = hitCount - attackCommand.Results.Count();

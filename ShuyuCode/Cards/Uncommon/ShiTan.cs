@@ -37,6 +37,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             ShiTanPower? power = await PowerCmd.Apply<ShiTanPower>(choiceContext, Owner.Creature, DynamicVars.Block.BaseValue, Owner.Creature, this);
             power?.AddStrenthPowerAmount(DynamicVars.Strength.BaseValue);
         }

@@ -37,6 +37,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             ZhaMaoPower? power = await PowerCmd.Apply<ZhaMaoPower>(choiceContext, Owner.Creature, DynamicVars["ZhaMaoPower"].BaseValue, Owner.Creature, this);
             power?.AddFragilePowerAmount(DynamicVars["FragilePower"].BaseValue);
         }

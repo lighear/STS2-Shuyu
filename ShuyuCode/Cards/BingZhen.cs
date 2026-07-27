@@ -44,8 +44,10 @@ namespace Shuyu.Cards
         {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
+                .WithAttackerAnim(null, 0f)
                 .Targeting(cardPlay.Target!)
-                .Execute(choiceContext);
+                .Execute(choiceContext)
+                ;
 
             await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
         }

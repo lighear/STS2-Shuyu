@@ -47,6 +47,7 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
                 .FromCard(this, cardPlay)
+                .OnlyPlayAnimOnce()
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);
         }

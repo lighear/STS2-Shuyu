@@ -1,4 +1,6 @@
 using Godot;
+using MegaCrit.Sts2.Core.Animation;
+using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -78,8 +80,28 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     // 如果你的人物不需要时间线小故事，加上这句。
     public override bool RequiresEpochAndTimeline => false;
     // 攻击和施法动画延迟，以对齐动画。静态占位资源不需要延迟。
-    public override float AttackAnimDelay => 0f;
-    public override float CastAnimDelay => 0f;
+    public override float AttackAnimDelay => 0.7f;
+    public override float CastAnimDelay => 0.7f;
+
+    public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+    {
+        CreatureAnimator animator = base.GenerateAnimator(controller);
+        controller.ConnectAnimationStarted(
+            Callable.From<GodotObject, GodotObject, GodotObject>(OnSpineAnimationStarted));
+        return animator;
+    }
+
+    private static void OnSpineAnimationStarted(
+        GodotObject spineSprite,
+        GodotObject animationState,
+        GodotObject trackEntry)
+    {
+        using MegaTrackEntry entry = new(trackEntry);
+        if (entry.GetAnimationName() is "attack" or "cast")
+        {
+            entry.SetTimeScale(1.5f);
+        }
+    }
 
     // 让 RitsuLib 把普通 Godot 场景转换成游戏需要的 NCreatureVisuals。
     // 自动转换人物场景，让你不需要手动挂脚本。复制即可。

@@ -40,6 +40,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             ShuiSeLiuHuoPower? power = await PowerCmd.Apply<ShuiSeLiuHuoPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue, Owner.Creature, this);
             //power?.AddStrength(DynamicVars.Strength.BaseValue);
             power?.AddBlock(DynamicVars.Block.BaseValue);

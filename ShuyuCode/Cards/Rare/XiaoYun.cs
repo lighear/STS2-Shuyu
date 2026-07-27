@@ -55,6 +55,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
             List<CardModel> cards = PileType.Hand.GetPile(Owner).Cards.Where(c => c.Keywords.Contains(CardKeyword.Retain)).ToList();
             int count = cards.Count;
             await PowerCmd.Apply<StrengthPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue * count, Owner.Creature, this);
