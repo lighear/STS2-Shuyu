@@ -11,6 +11,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Afflictions;
 using Shuyu.Cards;
 using Shuyu.Interfaces;
+using Shuyu.Vfx;
 using Shuyu.Powers;
 using Shuyu.Characters;
 
@@ -162,11 +163,20 @@ namespace Shuyu.Commands
             }
         }
 
-        public static async Task IcyDamage(PlayerChoiceContext choiceContext, decimal damage, List<Creature> targets, CardModel cardSource)
+        public static async Task IcyDamage(
+            PlayerChoiceContext choiceContext,
+            decimal damage,
+            List<Creature> targets,
+            CardModel cardSource,
+            int effectiveEnergyCost)
         {
             await ConfirmIcyDamageTargets(targets, cardSource);
             if (targets.Count > 0)
             {
+                NBingShuangChongJiVfx.SpawnFrozenCardProjectiles(
+                    cardSource.Owner.Creature,
+                    targets,
+                    effectiveEnergyCost);
                 await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource, null);
             }
         }

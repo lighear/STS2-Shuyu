@@ -33,7 +33,9 @@ float fbm(vec2 p) {
 
 void fragment() {
 	vec2 p = (UV - vec2(0.5)) * 2.0;
-	p.y += 0.035;
+	// Match the persistent IceShieldPower arcs, whose center settles slightly
+	// below the Bounds-relative effect origin.
+	p.y -= 0.017;
 
 	float gather = 1.0 - pow(1.0 - clamp(progress / 0.68, 0.0, 1.0), 2.2);
 	float fade_in = smoothstep(0.0, 0.10, progress);

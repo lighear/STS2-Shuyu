@@ -1,0 +1,18 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NBingShuangChongJiVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/common_ice_crystal_01.png" id="2_crystal_01"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/common_ice_crystal_02.png" id="3_crystal_02"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/common_ice_crystal_03.png" id="4_crystal_03"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/common_ice_crystal_04.png" id="5_crystal_04"]
+
+[node name="BingShuangChongJiVfx" type="Node2D" node_paths=PackedStringArray("_projectile")]
+z_index = 25
+script = ExtResource("1_script")
+_projectile = NodePath("Projectile")
+_crystalTextures = Array[Texture2D]([ExtResource("2_crystal_01"), ExtResource("3_crystal_02"), ExtResource("4_crystal_03"), ExtResource("5_crystal_04")])
+
+[node name="Projectile" type="Sprite2D" parent="."]
+visible = false
+z_index = 2
+texture_filter = 1

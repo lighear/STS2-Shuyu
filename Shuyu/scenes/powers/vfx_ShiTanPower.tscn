@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://ShuyuCode/Vfx/NShiTanPowerVfx.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Shuyu/assets/images/shi_tan_dialogue.png" id="2_texture"]
+
+[node name="ShiTanPowerVfx" type="Node2D" node_paths=PackedStringArray("_visual", "_dialogue")]
+visible = false
+z_index = 3
+script = ExtResource("1_script")
+_visual = NodePath("Visual")
+_dialogue = NodePath("Visual/Dialogue")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Dialogue" type="Sprite2D" parent="Visual"]
+position = Vector2(73, -83)
+texture_filter = 1
+texture = ExtResource("2_texture")

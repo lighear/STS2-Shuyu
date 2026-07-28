@@ -18,6 +18,8 @@ public partial class NJinShuJieJieShieldVfx : Node2D
 
     private const float Duration = 1.50f;
     private const float ResolveDelay = 0.45f;
+    private const float FogCanvasWidthFactor = 1.45f;
+    private const float FogCanvasHeightFactor = 1.18f;
 
     [Export]
     private ColorRect? _fogShield;
@@ -44,19 +46,16 @@ public partial class NJinShuJieJieShieldVfx : Node2D
         NPowerVfxLayout.Resolve(
             owner,
             creatureNode,
-            out _,
+            out Vector2 visualSize,
             out Vector2 shieldCenter);
-        shieldCenter =
-            creatureNode.Visuals.Bounds.GetGlobalTransform()
-            * shieldCenter;
 
-        Vector2 creatureSize = creatureNode.Visuals.Bounds.Size;
+        Control creatureBounds = creatureNode.Visuals.Bounds;
         NJinShuJieJieShieldVfx vfx = VFXUtil.GenVFXNode<NJinShuJieJieShieldVfx>(ScenePath);
         vfx._effectSize = new Vector2(
-            Mathf.Clamp(creatureSize.X * 1.92f, 560f, 880f),
-            Mathf.Clamp(creatureSize.Y * 1.72f, 620f, 920f));
-        NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(vfx);
-        vfx.GlobalPosition = shieldCenter;
+            Mathf.Clamp(visualSize.X * FogCanvasWidthFactor, 420f, 880f),
+            Mathf.Clamp(visualSize.Y * FogCanvasHeightFactor, 520f, 920f));
+        creatureBounds.AddChildSafely(vfx);
+        vfx.Position = shieldCenter;
 
         await Cmd.Wait(ResolveDelay);
     }

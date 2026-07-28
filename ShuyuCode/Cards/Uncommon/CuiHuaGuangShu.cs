@@ -50,7 +50,7 @@ namespace Shuyu.Cards
             await CreatureCmd.TriggerAnim(
                 Owner.Creature,
                 "Cast",
-                Owner.Character.CastAnimDelay);
+                0f);
 
             NCuiHuaGuangShuLaserVfx? laser = hitCount > 0
                 ? NCuiHuaGuangShuLaserVfx.Create(Owner.Creature, cardPlay.Target)

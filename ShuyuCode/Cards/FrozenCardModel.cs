@@ -101,9 +101,17 @@ public sealed class FrozenCardModel : ModCardTemplate
                 await ip.OnFrozenCardDiscarded(choiceContext, this, Owner);
             }
 
+            int effectiveEnergyCost =
+                Math.Max(EnergyCost.GetAmountToSpend(), 0);
+            decimal icyDamage = 3 + 5 * effectiveEnergyCost;
             for (int i = 0; i < this.count; i++)
             {
-                await ShuyuMechanismCmd.IcyDamage(choiceContext, 3 + 5 * Math.Max(EnergyCost.GetAmountToSpend(), 0), targets, this);
+                await ShuyuMechanismCmd.IcyDamage(
+                    choiceContext,
+                    icyDamage,
+                    targets,
+                    this,
+                    effectiveEnergyCost);
             }
             await ShuyuMechanismCmd.UnfreezeCard(this);
         }

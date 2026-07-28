@@ -12,12 +12,19 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
+using Godot;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Rooms;
+using Shuyu.Vfx;
 
 namespace Shuyu.Powers;
 
 [RegisterPower]
 public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProvider
 {
+    private const string VfxNodeName = "VfxShiTanPower";
+
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
@@ -56,13 +63,33 @@ public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
         return new Data() { triggeredThisTurn = false };
     }
 
+    public override Task AfterApplied(Creature? applier, CardModel? cardSource)
+    {
+        RefreshVfx(animateAppearance: true);
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterRemoved(Creature oldOwner)
+    {
+        RemoveVfx(oldOwner);
+        return Task.CompletedTask;
+    }
+
+    public override Task AfterCombatEnd(CombatRoom room)
+    {
+        RemoveVfx(Owner);
+        return Task.CompletedTask;
+    }
+
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult _, ValueProp props, Creature? dealer, CardModel? __)
     {
         if (target == Owner && !TriggeredThisTurn)
         {
             Flash();
             TriggeredThisTurn = true;
+            Task consumeVfx = GetVfx()?.ConsumeAsync() ?? Task.CompletedTask;
             await CreatureCmd.GainBlock(Owner, Amount, ValueProp.Unpowered, null);
+            await consumeVfx;
         }
     }
 
@@ -76,6 +103,7 @@ public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
                 await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), Owner, DynamicVars.Strength.BaseValue, Owner, null);
             }
             TriggeredThisTurn = false;
+            RefreshVfx(animateAppearance: true);
         }
     }
 
@@ -83,6 +111,52 @@ public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
     {
         DynamicVars.Strength.BaseValue += amount;
         InvokeDisplayAmountChanged();
+        RefreshVfx();
+    }
+
+    private NShiTanPowerVfx? GetVfx()
+    {
+        return NCombatRoom.Instance?
+            .GetCreatureNode(Owner)?
+            .Visuals.Bounds
+            .GetNodeOrNull<NShiTanPowerVfx>(VfxNodeName);
+    }
+
+    private void RefreshVfx(bool animateAppearance = false)
+    {
+        var creatureNode = NCombatRoom.Instance?.GetCreatureNode(Owner);
+        var creatureVisuals = creatureNode?.Visuals;
+        var creatureBounds = creatureVisuals?.Bounds;
+        if (creatureNode == null || creatureVisuals == null || creatureBounds == null)
+        {
+            return;
+        }
+
+        NShiTanPowerVfx? vfx =
+            creatureBounds.GetNodeOrNull<NShiTanPowerVfx>(VfxNodeName);
+        if (vfx == null && !TriggeredThisTurn)
+        {
+            vfx = VFXUtil.GenVFXNode<NShiTanPowerVfx>(NShiTanPowerVfx.ScenePath);
+            vfx.Name = VfxNodeName;
+            creatureBounds.AddChildSafely(vfx);
+        }
+
+        if (vfx == null)
+        {
+            return;
+        }
+
+        Node2D? idleFollowAnchor = creatureVisuals
+            .GetCurrentBody()
+            .GetNodeOrNull<Node2D>("ShiTanIdleFollowAnchor");
+        vfx.Configure(creatureBounds.Size, creatureNode, idleFollowAnchor);
+        vfx.SetAvailable(!TriggeredThisTurn, animateAppearance);
+    }
+
+    private static void RemoveVfx(Creature owner)
+    {
+        var creatureBounds = NCombatRoom.Instance?.GetCreatureNode(owner)?.Visuals.Bounds;
+        creatureBounds?.GetNodeOrNull<NShiTanPowerVfx>(VfxNodeName)?.QueueFreeSafely();
     }
 
     public IReadOnlyList<ExtraIconAmountLabelSpec> GetPowerExtraIconAmountLabelSpecs()
