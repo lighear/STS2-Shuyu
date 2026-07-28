@@ -11,7 +11,7 @@ shader_parameter/opacity = 0.48
 shader_parameter/breath_speed = 1.15
 shader_parameter/ray_count = 56.0
 shader_parameter/ellipse_width_ratio = 0.94
-shader_parameter/ground_curve_ratio = 0.115
+shader_parameter/ground_curve_ratio = 0.1625
 shader_parameter/max_length_multiplier = 3.0
 shader_parameter/max_brightness_multiplier = 1.3
 

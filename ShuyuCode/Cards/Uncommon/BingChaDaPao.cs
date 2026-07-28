@@ -53,7 +53,8 @@ namespace Shuyu.Cards
             {
                 var attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                     .FromCard(this, cardPlay)
-                    .TargetingAllOpponents(CombatState);
+                    .TargetingAllOpponents(CombatState)
+                    .WithAttackerAnim("Attack", 0f);
 
                 attack.AfterAttackerAnim(async () =>
                     await NBingChaDaPaoVfx.PlayVolley(

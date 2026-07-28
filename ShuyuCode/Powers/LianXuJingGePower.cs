@@ -21,13 +21,20 @@ namespace Shuyu.Powers;
 [RegisterPower]
 public class LianXuJingGePower : ModPowerTemplate
 {
-    private const float GroundWidthFactor = 0.967f;
-    private const float GroundHeightFactor = 0.213f;
+    private const float GroundBaseWidthFactor = 0.967f;
+    private const float GroundBaseHeightFactor = 0.213f;
+    private const float GroundRadiusScale = 1.5f;
+    private const float GroundWidthFactor = GroundBaseWidthFactor * GroundRadiusScale;
+    private const float GroundHeightFactor = GroundBaseHeightFactor * GroundRadiusScale;
     private const float FootOffsetFactor = 0.39f;
     private const float RisingLightWidthFactor = 0.94f;
     private const float RisingLightBaseHeightFactor = 0.31f;
     private const float RisingLightMaxLengthMultiplier = 3f;
-    private const float RisingLightHeightFactor = RisingLightBaseHeightFactor * RisingLightMaxLengthMultiplier;
+    // Preserve the old top edge after the enlarged ground ellipse pushes the
+    // shared lower edge down into the health bar.
+    private const float RisingLightHeightFactor =
+        RisingLightBaseHeightFactor * RisingLightMaxLengthMultiplier
+        + GroundBaseHeightFactor * (GroundRadiusScale - 1f) * 0.5f;
     private const int MaxBingZhenVfxCount = 5;
 
     public override PowerType Type => PowerType.Debuff;

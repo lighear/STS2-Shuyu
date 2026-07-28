@@ -47,8 +47,10 @@ namespace Shuyu.Cards
             Node obj = ((Node)vfxNode).FindChild("StartPos", true, true);
             Node2D startNode = (Node2D)(object)((obj is Node2D) ? obj : null);
             
-            Vector2 startPos = NCombatRoom.Instance?.GetCreatureNode(Owner.Creature)?.VfxSpawnPosition ?? Vector2.Zero;
-            startPos.X += 128;
+            var ownerNode = NCombatRoom.Instance?.GetCreatureNode(Owner.Creature);
+            Vector2 startPos = ownerNode == null
+                ? Vector2.Zero
+                : VFXUtil.GetShuyuStaffHeadPosition(ownerNode);
             Vector2 targetPos = NCombatRoom.Instance?.GetCreatureNode(cardPlay.Target)?.VfxSpawnPosition ?? Vector2.Zero;
             vfxNode.FitVFX(startNode.GlobalPosition, Vector2.Zero, startPos, targetPos);
             vfxNode.GlobalPosition = targetPos;

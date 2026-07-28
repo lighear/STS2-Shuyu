@@ -10,15 +10,15 @@ _gunshots = [NodePath("Gunshot1"), NodePath("Gunshot2"), NodePath("Gunshot3")]
 
 [node name="Gunshot1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_gunshot")
-volume_db = -8.0
+volume_db = -4.0
 bus = &"SFX"
 
 [node name="Gunshot2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_gunshot")
-volume_db = -8.0
+volume_db = -4.0
 bus = &"SFX"
 
 [node name="Gunshot3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_gunshot")
-volume_db = -8.0
+volume_db = -4.0
 bus = &"SFX"

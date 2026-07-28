@@ -47,7 +47,7 @@ public partial class NCuiHuaGuangShuLaserVfx : Node2D
             VFXUtil.GenVFXNode<NCuiHuaGuangShuLaserVfx>(ScenePath);
         vfx._ownerNode = ownerNode;
         vfx._targetNode = targetNode;
-        vfx._lastStartPosition = ownerNode.VfxSpawnPosition;
+        vfx._lastStartPosition = VFXUtil.GetShuyuStaffHeadPosition(ownerNode);
         vfx._lastEndPosition = targetNode.VfxSpawnPosition;
 
         NCombatRoom.Instance.CombatVfxContainer.AddChildSafely(vfx);
@@ -103,7 +103,7 @@ public partial class NCuiHuaGuangShuLaserVfx : Node2D
             && GodotObject.IsInstanceValid(_ownerNode)
             && _ownerNode.IsInsideTree())
         {
-            _lastStartPosition = _ownerNode.VfxSpawnPosition;
+            _lastStartPosition = VFXUtil.GetShuyuStaffHeadPosition(_ownerNode);
         }
 
         if (_targetNode != null

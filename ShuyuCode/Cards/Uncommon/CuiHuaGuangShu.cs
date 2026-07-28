@@ -47,6 +47,11 @@ namespace Shuyu.Cards
                 hitCount++;
             }
 
+            await CreatureCmd.TriggerAnim(
+                Owner.Creature,
+                "Cast",
+                Owner.Character.CastAnimDelay);
+
             NCuiHuaGuangShuLaserVfx? laser = hitCount > 0
                 ? NCuiHuaGuangShuLaserVfx.Create(Owner.Creature, cardPlay.Target)
                 : null;
@@ -67,6 +72,7 @@ namespace Shuyu.Cards
                     await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                         .FromCard(this, cardPlay)
                         .Targeting(cardPlay.Target!)
+                        .WithAttackerAnim(null, 0f)
                         .Execute(choiceContext);
                     await PowerCmd.Apply<FragilePower>(
                         choiceContext,

@@ -2,6 +2,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.TestSupport;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
@@ -13,6 +14,10 @@ public static class VFXUtil
 {
     public static readonly string PowerVfxPath = "res://Shuyu/scenes/powers";
     public static readonly string CardVfxPath = "res://Shuyu/scenes/cards";
+
+    // 梳雨 idle_loop 中法杖头雪花中心相对人物 Bounds 左上角的位置。
+    // X 大于 1 是因为杖头位于碰撞箱右侧；始终按 Bounds 尺寸换算，避免像素偏移随缩放失准。
+    private static readonly Vector2 ShuyuStaffHeadBoundsRatio = new(1.11f, 0.175f);
 
     // Mod 独立的场景缓存（避免被 PreloadManager 清理）
     public static readonly ConcurrentDictionary<string, PackedScene> ModSceneCache = new();
@@ -72,6 +77,13 @@ public static class VFXUtil
             return modScene.Instantiate<T>();
         }
         return PreloadManager.Cache.GetScene(scenePath).Instantiate<T>();
+    }
+
+    public static Vector2 GetShuyuStaffHeadPosition(NCreature creatureNode)
+    {
+        Control bounds = creatureNode.Visuals.Bounds;
+        Vector2 localPosition = bounds.Size * ShuyuStaffHeadBoundsRatio;
+        return bounds.GetGlobalTransform() * localPosition;
     }
 
     public static Node2D? PlaySimple(string scenePath, Vector2 position, float lifetime = 2f) {

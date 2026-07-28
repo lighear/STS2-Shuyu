@@ -28,7 +28,8 @@ void fragment() {
     soft_height += sin(UV.x * 11.0 + 0.8) * 0.035;
     soft_height += sin(UV.x * 23.0 + 2.1) * 0.025;
     soft_height += dynamic_length * 0.065;
-    float length_scale = mix(1.0 / max_length_multiplier, 1.0, growth);
+    float minimum_length_scale = min(2.0 / max_length_multiplier, 1.0);
+    float length_scale = mix(minimum_length_scale, 1.0, growth);
     soft_height *= length_scale;
     float top = 1.0 - soft_height;
     float vertical_fade = smoothstep(top, top + 0.36 * length_scale, UV.y);
