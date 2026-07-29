@@ -4,7 +4,7 @@
   "pck_name": "Shuyu",
   "author": "Author",
   "description": "A starter Slay the Spire 2 mod template built on RitsuLib.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,
