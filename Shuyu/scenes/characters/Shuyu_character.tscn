@@ -15,6 +15,10 @@ scale = Vector2(0.55, 0.55)
 
 [node name="ShiTanIdleFollowAnchor" type="SpineBoneNode" parent="Visuals"]
 bone_name = "all2"
+show_behind_parent = true
+position = Vector2(22.810213, -389.3982)
+rotation = 0.0015659389
+scale = Vector2(0.16332057, 0.16332057)
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true

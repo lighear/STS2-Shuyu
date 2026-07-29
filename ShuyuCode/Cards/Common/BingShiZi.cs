@@ -1,10 +1,13 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+using MegaCrit.Sts2.Core.Commands.Builders;
 using Shuyu.Characters;
 using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -47,6 +50,9 @@ namespace Shuyu.Cards
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target!)
+                .WithHitFx(null, null, "heavy_attack.mp3")
+                .WithHitVfxNode((Creature t) => NBigSlashVfx.Create(t))
+                .WithHitVfxNode((Creature t) => NBigSlashImpactVfx.Create(t))
                 .Execute(choiceContext);
             await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target!, DynamicVars.Weak.BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, DynamicVars["FragilePower"].BaseValue, Owner.Creature, this);
