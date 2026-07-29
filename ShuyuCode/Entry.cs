@@ -53,6 +53,7 @@ public partial class Entry
         // 初始卡牌、初始遗物升级注册。
         RitsuLibFramework.RegisterArchaicToothTranscendenceMapping<BingShuangChongJi, JiBingFengBao>();
         RitsuLibFramework.RegisterTouchOfOrobasRefinementMapping<BingLengZhiHui, JiHanZhiHui>();
+        JinShuNiShang.InitializeCombatStartHpTracking();
 
         // 预加载 VFX 场景。
         VFXUtil.PreloadScenes();
