@@ -126,7 +126,7 @@ public partial class NShiTanPowerVfx : Node2D
         UpdateIdleVisibility();
     }
 
-    public async Task ConsumeAsync()
+    public void Consume()
     {
         if (!_available || _visual == null || _consuming)
         {
@@ -157,12 +157,18 @@ public partial class NShiTanPowerVfx : Node2D
             .SetEase(Tween.EaseType.In);
 
         Tween consumeTween = _motionTween;
-        await ToSignal(consumeTween, Tween.SignalName.Finished);
+        consumeTween.Finished += () =>
+        {
+            if (_motionTween != consumeTween)
+            {
+                return;
+            }
 
-        _motionTween = null;
-        _consuming = false;
-        Visible = false;
-        ResetVisual();
+            _motionTween = null;
+            _consuming = false;
+            Visible = false;
+            ResetVisual();
+        };
     }
 
     private void UpdateIdleVisibility()

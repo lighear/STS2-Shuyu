@@ -87,9 +87,8 @@ public class ShiTanPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
         {
             Flash();
             TriggeredThisTurn = true;
-            Task consumeVfx = GetVfx()?.ConsumeAsync() ?? Task.CompletedTask;
+            GetVfx()?.Consume();
             await CreatureCmd.GainBlock(Owner, Amount, ValueProp.Unpowered, null);
-            await consumeVfx;
         }
     }
 
