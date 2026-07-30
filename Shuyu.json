@@ -1,9 +1,9 @@
 {
   "id": "Shuyu",
-  "name": "Shuyu",
+  "name": "梳雨",
   "pck_name": "Shuyu",
-  "author": "Author",
-  "description": "A starter Slay the Spire 2 mod template built on RitsuLib.",
+  "author": "梳雨、lighear",
+  "description": "这是见习冰魔法师梳雨的人物Mod！",
   "version": "0.1.1",
   "has_pck": true,
   "has_dll": true,
