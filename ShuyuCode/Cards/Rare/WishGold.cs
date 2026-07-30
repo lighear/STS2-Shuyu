@@ -54,8 +54,9 @@ namespace Shuyu.Cards
                     item.UpgradeGold();
                 }
             }
-            //source.UpgradeGold();
-            await PowerCmd.Apply<RoyaltiesPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, DynamicVars.Gold.BaseValue, Owner.Creature, this);
+            
+            //await PowerCmd.Apply<RoyaltiesPower>(new ThrowingPlayerChoiceContext(), Owner.Creature, DynamicVars.Gold.BaseValue, Owner.Creature, this);
+            await PlayerCmd.GainGold(DynamicVars.Gold.BaseValue, Owner);
         }
 
         protected override void OnUpgrade()
