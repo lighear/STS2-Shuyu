@@ -24,8 +24,23 @@ namespace Shuyu.Patches
         {
             if (__instance is FrozenCardModel frozenCard)
             {
-                __result = $"{__result}\n[color=gray]{frozenCard._visualCardModel?.GetDescriptionForPile(PileType.Deck)}[/color]";
+                string originalDescription = frozenCard._visualCardModel?.GetDescriptionForPile(PileType.Deck) ?? string.Empty;
+                originalDescription = RemoveColorTags(originalDescription);
+                __result = $"{__result}\n[color=gray]{originalDescription}[/color]";
             }
+        }
+
+        private static string RemoveColorTags(string description)
+        {
+            string[] colorTags = ["gold", "green", "purple"];
+            foreach (string colorTag in colorTags)
+            {
+                description = description
+                    .Replace($"[{colorTag}]", string.Empty)
+                    .Replace($"[/{colorTag}]", string.Empty);
+            }
+
+            return description;
         }
     }
 }
