@@ -5,6 +5,6 @@
 [node name="ShuyuIconChar" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(27.5, 27.5)
-scale = Vector2(0.60227275, 0.60227275)
+position = Vector2(30.000002, 28.000002)
+scale = Vector2(0.020647919, 0.020647919)
 texture = ExtResource("1_p4umk")
