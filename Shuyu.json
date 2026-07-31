@@ -4,15 +4,15 @@
   "pck_name": "Shuyu",
   "author": "梳雨、lighear",
   "description": "这是见习冰魔法师梳雨的人物Mod！",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,
-  "min_game_version": "0.109.0",
+  "min_game_version": "0.110.0",
   "dependencies": [
     {
       "id": "STS2-RitsuLib",
-      "version": "0.4.58"
+      "version": "0.5.1"
     }
   ]
 }
