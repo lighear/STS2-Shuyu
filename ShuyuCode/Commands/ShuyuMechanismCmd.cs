@@ -78,7 +78,10 @@ namespace Shuyu.Commands
             }
             frozenCard.InitFrom(card);
 
-            await ReplaceCardModelInPile(card, frozenCard);
+            await ReplaceCardModelInPile(
+                card,
+                frozenCard,
+                keepPosition: card.Pile?.Type == PileType.Draw);
             await CardCmd.Afflict<Frozen>(frozenCard, 1);
         }
 
@@ -181,7 +184,7 @@ namespace Shuyu.Commands
             }
         }
 
-        private static async Task ReplaceCardModelInPile(CardModel oldCard, CardModel newCard)
+        private static async Task ReplaceCardModelInPile(CardModel oldCard, CardModel newCard, bool keepPosition = false)
         {
             CardPile? pile = oldCard.Pile;
             if (pile == null)
@@ -198,17 +201,9 @@ namespace Shuyu.Commands
             }
 
             // 从当前牌堆移除原牌，加入 frozen
-            //int index = pile.Cards.IndexOf(oldCard);
+            int index = keepPosition ? pile.Cards.ToList().IndexOf(oldCard) : -1;
             oldCard.RemoveFromCurrentPile();
-            pile.AddInternal(newCard);
-            /*if (keepPosition && index >= 0)
-            {
-                pile.AddInternal(newCard, index);
-            }
-            else
-            {
-                pile.AddInternal(newCard);
-            }*/
+            pile.AddInternal(newCard, index);
         }
 
         private static async Task ConfirmIcyDamageTargets(List<Creature> targets, CardModel cardSource)
