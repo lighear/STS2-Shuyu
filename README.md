@@ -60,7 +60,8 @@ Copy-Item .\local.props.template .\local.props
 | `Sts2Dir` | Slay the Spire 2 安装目录 |
 | `Sts2DataDir` | 游戏 dll 目录，通常是 `$(Sts2Dir)/data_sts2_windows_x86_64` |
 | `GodotExe` | 用于导出 pck 的 MegaDot/Godot 可执行文件 |
-| `RitsuLibDeployDir` | RitsuLib 本机部署目录，默认 `$(Sts2Dir)/mods/STS2-RitsuLib`。这是 RitsuLib 包/构建逻辑把 RitsuLib 复制到游戏 mods 目录的位置，**不是当前 Mod 自身的输出目录** |
+| `RitsuLibAutoCopy` | 是否在构建后自动安装 RitsuLib，梳雨项目默认 `false`；仅需临时安装时使用 `/p:RitsuLibAutoCopy=true` |
+| `RitsuLibDeployDir` | 开启 `RitsuLibAutoCopy` 后使用的部署目录，默认 `$(Sts2Dir)/mods/STS2-RitsuLib`。这是 RitsuLib 自身的位置，**不是当前 Mod 的输出目录** |
 
 ## RitsuLib 版本兼容性
 
@@ -150,6 +151,7 @@ Copy-Item .\local.props.template .\local.props
 | `dotnet build .\Shuyu.csproj` | 完整构建：编译 + `CopyMod` + `ExportPCK` |
 | `... /p:RunPckExport=false` | 跳过 PCK 导出（不需要 `GodotExe`） |
 | `... /p:CopyModOnBuild=false` | 跳过复制到游戏 mods 目录（产物只留在 `bin/`） |
+| `... /p:RitsuLibAutoCopy=true` | 仅本次构建把 NuGet 中的 RitsuLib 安装到 `mods/STS2-RitsuLib` |
 | `... /p:RunPckExport=false /p:CopyModOnBuild=false` | 仅验证 C# 编译 |
 
 完整构建会在 `Build` 之后运行两个 MSBuild target：
@@ -157,7 +159,7 @@ Copy-Item .\local.props.template .\local.props
 - **`CopyMod`**：复制 dll 和 manifest 到游戏的 `mods/Shuyu` 目录。
 - **`ExportPCK`**：调用 `GodotExe` 导出 pck 到同一个 Mod 目录。
 
-> `RitsuLibDeployDir` 只控制 RitsuLib 框架自身的部署位置；当前 Mod 的 dll、manifest 和 pck 由 `ModOutputDir` 控制（默认 `$(Sts2Dir)/mods/$(MSBuildProjectName)`）。
+> 梳雨默认设置了 `RitsuLibAutoCopy=false`，所以普通构建不会改动 `mods/STS2-RitsuLib`。`RitsuLibDeployDir` 只在显式开启自动复制时控制框架自身的部署位置；当前 Mod 的 dll、manifest 和 pck 仍由 `ModOutputDir` 控制（默认 `$(Sts2Dir)/mods/$(MSBuildProjectName)`）。
 
 ## 目录结构
 
