@@ -60,7 +60,8 @@ Set these values in `local.props` (the file is in `.gitignore`; do not commit it
 | `Sts2Dir` | Slay the Spire 2 install directory |
 | `Sts2DataDir` | Game DLL directory, usually `$(Sts2Dir)/data_sts2_windows_x86_64` |
 | `GodotExe` | MegaDot/Godot executable used to export the PCK |
-| `RitsuLibDeployDir` | Local RitsuLib deployment directory, defaulting to `$(Sts2Dir)/mods/STS2-RitsuLib`. Used by RitsuLib package/build logic to copy RitsuLib into the game's mods directory — **not** this mod's output directory |
+| `RitsuLibAutoCopy` | Whether a build automatically installs RitsuLib. This project defaults to `false`; opt in for one build with `/p:RitsuLibAutoCopy=true` |
+| `RitsuLibDeployDir` | Deployment directory used when `RitsuLibAutoCopy` is enabled, defaulting to `$(Sts2Dir)/mods/STS2-RitsuLib`. This is **not** the current mod's output directory |
 
 ## RitsuLib Version Compatibility
 
@@ -150,6 +151,7 @@ When migrating from an earlier branch (`v0.2.0` ~ `v0.2.26` / STS2 `0.104.0`), c
 | `dotnet build .\Shuyu.csproj` | Full build: compile + `CopyMod` + `ExportPCK` |
 | `... /p:RunPckExport=false` | Skip PCK export (no `GodotExe` needed) |
 | `... /p:CopyModOnBuild=false` | Skip copying to the game's mods directory (output stays in `bin/`) |
+| `... /p:RitsuLibAutoCopy=true` | Install the NuGet-packaged RitsuLib into `mods/STS2-RitsuLib` for this build only |
 | `... /p:RunPckExport=false /p:CopyModOnBuild=false` | C# compile validation only |
 
 A full build runs two MSBuild targets after `Build`:
@@ -157,7 +159,7 @@ A full build runs two MSBuild targets after `Build`:
 - **`CopyMod`**: copies the DLL and manifest to the game's `mods/Shuyu` directory.
 - **`ExportPCK`**: calls `GodotExe` and exports the PCK to the same mod directory.
 
-> `RitsuLibDeployDir` only controls where the RitsuLib framework itself is deployed locally. This mod's DLL, manifest, and PCK are controlled by `ModOutputDir` (default `$(Sts2Dir)/mods/$(MSBuildProjectName)`).
+> This project defaults to `RitsuLibAutoCopy=false`, so normal builds do not modify `mods/STS2-RitsuLib`. `RitsuLibDeployDir` only controls where the framework is deployed when auto-copy is explicitly enabled. This mod's DLL, manifest, and PCK are still controlled by `ModOutputDir` (default `$(Sts2Dir)/mods/$(MSBuildProjectName)`).
 
 ## Directory Layout
 

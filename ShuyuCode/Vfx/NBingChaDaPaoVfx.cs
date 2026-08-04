@@ -135,9 +135,11 @@ public partial class NBingChaDaPaoVfx : Node2D
             float spread = Mathf.Lerp(-0.58f, 0.58f, i / 6f);
             Vector2 rayDirection = fireDirection.Rotated(spread);
             float rayLength = Mathf.Lerp(72f, 42f, Mathf.Abs(spread) / 0.58f) * expansion;
-            DrawLine(rayDirection * 5f, rayDirection * rayLength,
-                new Color(0.58f, 0.90f, 1f, 0.72f * flashFade),
-                Mathf.Lerp(5.5f, 2.4f, Mathf.Abs(spread) / 0.58f), true);
+            DrawNeedle(
+                rayDirection * 5f,
+                rayDirection * rayLength,
+                Mathf.Lerp(5.5f, 2.4f, Mathf.Abs(spread) / 0.58f),
+                new Color(0.58f, 0.90f, 1f, 0.72f * flashFade));
         }
     }
 
@@ -155,9 +157,12 @@ public partial class NBingChaDaPaoVfx : Node2D
         Vector2 tail = targetOffset * tailProgress;
         float fade = 1f - Mathf.SmoothStep(0.76f, 1f, travelProgress);
 
-        DrawLine(tail, head, new Color(0.18f, 0.64f, 1f, 0.17f * fade), 12f, true);
-        DrawLine(tail, head, new Color(0.48f, 0.87f, 1f, 0.66f * fade), 5f, true);
-        DrawLine(tail, head, new Color(0.94f, 0.99f, 1f, 0.92f * fade), 2.1f, true);
+        DrawNeedle(tail, head, 12f,
+            new Color(0.18f, 0.64f, 1f, 0.17f * fade));
+        DrawNeedle(tail, head, 5f,
+            new Color(0.48f, 0.87f, 1f, 0.66f * fade));
+        DrawNeedle(tail, head, 2.1f,
+            new Color(0.94f, 0.99f, 1f, 0.92f * fade));
         DrawCircle(head, 6f, new Color(0.72f, 0.95f, 1f, 0.68f * fade));
     }
 
@@ -172,29 +177,82 @@ public partial class NBingChaDaPaoVfx : Node2D
         float eased = 1f - Mathf.Pow(1f - impactProgress, 2.7f);
         float fade = 1f - Mathf.SmoothStep(0.38f, 1f, impactProgress);
         float flashFade = 1f - Mathf.SmoothStep(0.0f, 0.52f, impactProgress);
-        float ringRadius = Mathf.Lerp(9f, 58f, eased);
+        Vector2 incoming = targetOffset.LengthSquared() > 0.001f
+            ? targetOffset.Normalized()
+            : Vector2.Right;
+        Vector2 impactNormal = incoming.Orthogonal();
 
-        DrawCircle(targetOffset, Mathf.Lerp(16f, 38f, eased),
-            new Color(0.43f, 0.84f, 1f, 0.18f * flashFade));
-        DrawCircle(targetOffset, Mathf.Lerp(7f, 18f, eased),
-            new Color(0.88f, 0.98f, 1f, 0.68f * flashFade));
-        DrawArc(targetOffset, ringRadius, 0f, Mathf.Tau, 40,
-            new Color(0.56f, 0.90f, 1f, 0.64f * fade), Mathf.Lerp(3.6f, 1f, eased), true);
+        Vector2[] outerBloom =
+        [
+            targetOffset + incoming * Mathf.Lerp(14f, 52f, eased),
+            targetOffset + impactNormal * Mathf.Lerp(9f, 27f, eased),
+            targetOffset - incoming * Mathf.Lerp(8f, 24f, eased),
+            targetOffset - impactNormal * Mathf.Lerp(7f, 20f, eased)
+        ];
+        DrawColoredPolygon(
+            outerBloom,
+            new Color(0.35f, 0.79f, 1f, 0.20f * flashFade));
+
+        Vector2[] innerBloom =
+        [
+            targetOffset + incoming * Mathf.Lerp(7f, 25f, eased),
+            targetOffset + impactNormal * Mathf.Lerp(4f, 12f, eased),
+            targetOffset - incoming * Mathf.Lerp(3f, 10f, eased),
+            targetOffset - impactNormal * Mathf.Lerp(4f, 11f, eased)
+        ];
+        DrawColoredPolygon(
+            innerBloom,
+            new Color(0.86f, 0.98f, 1f, 0.72f * flashFade));
 
         for (int i = 0; i < ImpactShardCount; i++)
         {
-            float noise = Fraction(Mathf.Sin(
-                (targetIndex + 1) * 31.73f + (pelletIndex + 1) * 19.19f + (i + 1) * 12.9898f) * 43758.547f);
-            float angle = Mathf.Tau * i / ImpactShardCount + Mathf.Lerp(-0.17f, 0.17f, noise);
+            float noiseA = ImpactNoise(targetIndex, pelletIndex, i, 3.17f);
+            float noiseB = ImpactNoise(targetIndex, pelletIndex, i, 11.83f);
+            float noiseC = ImpactNoise(targetIndex, pelletIndex, i, 29.41f);
+            bool backScatter = i >= ImpactShardCount - 2;
+            float angle = incoming.Angle() +
+                (backScatter
+                    ? Mathf.Pi + Mathf.Lerp(-0.72f, 0.72f, noiseA)
+                    : Mathf.Lerp(-1.34f, 1.34f, noiseA));
             Vector2 direction = Vector2.FromAngle(angle);
-            float reach = Mathf.Lerp(36f, 78f, noise) * eased;
-            Vector2 tip = targetOffset + direction * reach;
-            float shardLength = Mathf.Lerp(9f, 21f, 1f - noise);
+            float reach = Mathf.Lerp(34f, 80f, noiseB) * eased;
+            Vector2 center = targetOffset + direction * reach;
+            float shardLength = Mathf.Lerp(10f, 22f, noiseC);
+            float shardHalfWidth = Mathf.Lerp(1.6f, 4.6f, noiseB) *
+                Mathf.Lerp(1f, 0.54f, impactProgress);
+            Vector2 shardNormal = direction.Orthogonal();
+            Vector2[] shardPoints =
+            [
+                center + direction * shardLength * 0.62f,
+                center - direction * shardLength * 0.38f + shardNormal * shardHalfWidth,
+                center - direction * shardLength * 0.38f - shardNormal * shardHalfWidth
+            ];
 
-            DrawLine(tip - direction * shardLength, tip,
-                new Color(0.31f, 0.76f, 1f, 0.15f * fade), 6f, true);
-            DrawLine(tip - direction * shardLength * 0.82f, tip,
-                new Color(0.76f, 0.95f, 1f, 0.76f * fade), Mathf.Lerp(1.1f, 2.5f, noise), true);
+            DrawColoredPolygon(
+                shardPoints,
+                new Color(0.39f, 0.80f, 1f, 0.56f * fade));
+            DrawNeedle(
+                center - direction * shardLength * 0.30f,
+                center + direction * shardLength * 0.56f,
+                Mathf.Lerp(0.8f, 1.8f, noiseA),
+                new Color(0.82f, 0.97f, 1f, 0.76f * fade));
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            float noiseA = ImpactNoise(targetIndex, pelletIndex, i, 43.61f);
+            float noiseB = ImpactNoise(targetIndex, pelletIndex, i, 71.27f);
+            Vector2 direction = incoming.Rotated(
+                Mathf.Lerp(-1.55f, 1.55f, noiseA));
+            float reach = Mathf.Lerp(48f, 92f, noiseB) * eased;
+            Vector2 tip = targetOffset + direction * reach;
+            float streakLength = Mathf.Lerp(12f, 30f, noiseA) *
+                Mathf.Lerp(1f, 0.45f, impactProgress);
+            DrawNeedle(
+                tip - direction * streakLength,
+                tip,
+                Mathf.Lerp(0.8f, 1.7f, noiseB),
+                new Color(0.67f, 0.93f, 1f, 0.46f * fade));
         }
     }
 
@@ -240,6 +298,53 @@ public partial class NBingChaDaPaoVfx : Node2D
     private static float Fraction(float value)
     {
         return value - Mathf.Floor(value);
+    }
+
+    private static float ImpactNoise(
+        int targetIndex,
+        int pelletIndex,
+        int fragmentIndex,
+        float salt)
+    {
+        float value = Mathf.Sin(
+            (targetIndex + 1) * 31.73f +
+            (pelletIndex + 1) * 19.19f +
+            (fragmentIndex + 1) * 12.9898f +
+            salt * 7.13f) * 43758.547f;
+        return Fraction(value);
+    }
+
+    private void DrawNeedle(
+        Vector2 start,
+        Vector2 end,
+        float width,
+        Color color)
+    {
+        Vector2 delta = end - start;
+        float length = delta.Length();
+        if (length <= 0.001f || width <= 0f)
+        {
+            return;
+        }
+
+        Vector2 direction = delta / length;
+        Vector2 normal = direction.Orthogonal();
+        float halfWidth = width * 0.5f;
+        float taperLength = Mathf.Min(
+            length * 0.24f,
+            Mathf.Max(halfWidth * 1.8f, 1f));
+        Vector2 tailShoulder = start + direction * taperLength;
+        Vector2 tipShoulder = end - direction * taperLength;
+        Vector2[] points =
+        [
+            start,
+            tailShoulder + normal * halfWidth * 0.70f,
+            tipShoulder + normal * halfWidth,
+            end,
+            tipShoulder - normal * halfWidth,
+            tailShoulder - normal * halfWidth * 0.70f
+        ];
+        DrawColoredPolygon(points, color);
     }
 
     private static Vector2 GetPelletTarget(Vector2 targetOffset, int targetIndex, int pelletIndex)

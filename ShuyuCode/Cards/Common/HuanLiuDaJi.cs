@@ -15,9 +15,9 @@ using System.Linq.Expressions;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class HuanRaoDaJi : ModCardTemplate
+    public class HuanLiuDaJi : ModCardTemplate
     {
-        public HuanRaoDaJi() : base(
+        public HuanLiuDaJi() : base(
             baseCost: 1,
             CardType.Attack,
             CardRarity.Common,
@@ -45,11 +45,10 @@ namespace Shuyu.Cards
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await NHuanRaoDaJiVfx.Play(cardPlay.Target);
-
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
                 .FromCard(this, cardPlay)
+                .WithHitFx("vfx/vfx_starry_impact")
                 .OnlyPlayAnimOnce()
                 .Targeting(cardPlay.Target!)
                 .Execute(choiceContext);

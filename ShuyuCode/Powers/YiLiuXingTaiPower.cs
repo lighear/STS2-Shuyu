@@ -36,7 +36,7 @@ public class YiLiuXingTaiPower : ModPowerTemplate, ICantDrawForHandFull
 
                 foreach (Creature target in targets)
                 {
-                    NYiLiuXingTaiImpactVfx.Play(target);
+                    NYiLiuXingTaiImpactVfx.Play(Owner, target);
                 }
 
                 await CreatureCmd.Damage(choiceContext, targets, Amount, ValueProp.Unpowered, Owner);
