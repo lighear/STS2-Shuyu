@@ -27,6 +27,12 @@ public partial class NJiBingFengBaoVfx : Node2D
 
     private readonly List<StormStreak> _streaks = [];
     private readonly List<SnowSpeck> _specks = [];
+    private readonly List<GustBand> _gustBands = [];
+    private MultiMesh? _outerStreakBatch;
+    private MultiMesh? _innerStreakBatch;
+    private MultiMesh? _frontCoreBatch;
+    private MultiMesh? _speckTrailBatch;
+    private MultiMesh? _speckCircleBatch;
     private Vector2 _viewportSize = new(1920f, 1080f);
     private float _time;
 
@@ -80,8 +86,9 @@ public partial class NJiBingFengBaoVfx : Node2D
             0.50f,
             2);
         BuildSpecks();
+        BuildRenderBatches();
+        UpdateRenderBatches();
         SetProcess(true);
-        QueueRedraw();
     }
 
     public override void _Process(double delta)
@@ -94,24 +101,9 @@ public partial class NJiBingFengBaoVfx : Node2D
             return;
         }
 
-        QueueRedraw();
-    }
-
-    public override void _Draw()
-    {
         float strength = GetStrength();
-        if (strength <= 0f)
-        {
-            return;
-        }
-
-        Vector2 topLeft = _viewportSize * -0.5f;
-        DrawRect(
-            new Rect2(topLeft, _viewportSize),
-            new Color(0.39f, 0.53f, 0.70f, 0.24f * strength));
-        DrawGustBands(strength);
-        DrawSpecks(strength);
-        DrawStreaks(strength);
+        Modulate = new Color(1f, 1f, 1f, strength);
+        UpdateRenderBatches();
     }
 
     private void BuildStreakLayer(
@@ -160,14 +152,207 @@ public partial class NJiBingFengBaoVfx : Node2D
         }
     }
 
-    private void DrawStreaks(float strength)
+    private void BuildRenderBatches()
     {
+        ColorRect fog = new()
+        {
+            Name = "FogWash",
+            Position = _viewportSize * -0.5f,
+            Size = _viewportSize,
+            Color = new Color(0.39f, 0.53f, 0.70f, 0.24f),
+            MouseFilter = Control.MouseFilterEnum.Ignore,
+            ZIndex = -3
+        };
+        AddChild(fog);
+
+        BuildGustBands();
+
+        ArrayMesh needleMesh = CreateNeedleMesh();
+        ArrayMesh circleMesh = CreateCircleMesh(12);
+        _outerStreakBatch = CreateBatch(
+            "OuterStreaks",
+            needleMesh,
+            _streaks.Count,
+            0);
+        _innerStreakBatch = CreateBatch(
+            "InnerStreaks",
+            needleMesh,
+            _streaks.Count,
+            1);
+        _frontCoreBatch = CreateBatch(
+            "FrontStreakCores",
+            needleMesh,
+            FrontStreakCount,
+            2);
+        _speckTrailBatch = CreateBatch(
+            "SnowSpeckTrails",
+            needleMesh,
+            _specks.Count,
+            -1);
+        _speckCircleBatch = CreateBatch(
+            "SnowSpecks",
+            circleMesh,
+            _specks.Count,
+            -1);
+
+        int coreIndex = 0;
+        for (int i = 0; i < _streaks.Count; i++)
+        {
+            StormStreak streak = _streaks[i];
+            float depthBoost = 0.82f + streak.Depth * 0.15f;
+            float alpha = streak.Alpha * depthBoost;
+            _outerStreakBatch.SetInstanceColor(
+                i,
+                new Color(0.47f, 0.76f, 1f, alpha * 0.16f));
+            _innerStreakBatch.SetInstanceColor(
+                i,
+                new Color(0.82f, 0.96f, 1.16f, alpha));
+
+            if (streak.Depth == 2)
+            {
+                _frontCoreBatch.SetInstanceColor(
+                    coreIndex,
+                    new Color(1.08f, 1.16f, 1.28f, alpha * 0.72f));
+                coreIndex++;
+            }
+        }
+    }
+
+    private void BuildGustBands()
+    {
+        for (int gust = 0; gust < GustBandCount; gust++)
+        {
+            Vector2[] points = new Vector2[GustSamples];
+            Line2D broad = CreateGustLine(
+                $"GustBroad{gust + 1:00}",
+                18f + (gust % 2) * 10f,
+                new Color(0.45f, 0.67f, 0.88f, 0.016f),
+                -2);
+            Line2D core = CreateGustLine(
+                $"GustCore{gust + 1:00}",
+                2f + (gust % 2),
+                new Color(0.78f, 0.91f, 1.08f, 0.045f),
+                -1);
+            _gustBands.Add(new GustBand(points, broad, core));
+        }
+    }
+
+    private Line2D CreateGustLine(
+        string name,
+        float width,
+        Color color,
+        int zIndex)
+    {
+        Line2D line = new()
+        {
+            Name = name,
+            Width = width,
+            DefaultColor = color,
+            Antialiased = true,
+            ZIndex = zIndex
+        };
+        AddChild(line);
+        return line;
+    }
+
+    private MultiMesh CreateBatch(
+        string name,
+        Mesh mesh,
+        int instanceCount,
+        int zIndex)
+    {
+        MultiMesh batch = new()
+        {
+            TransformFormat = MultiMesh.TransformFormatEnum.Transform2D,
+            UseColors = true,
+            Mesh = mesh,
+            CustomAabb = new Aabb(
+                new Vector3(
+                    _viewportSize.X * -0.5f - 300f,
+                    _viewportSize.Y * -0.5f - 300f,
+                    -1f),
+                new Vector3(
+                    _viewportSize.X + 600f,
+                    _viewportSize.Y + 600f,
+                    2f)),
+            InstanceCount = instanceCount
+        };
+        MultiMeshInstance2D renderer = new()
+        {
+            Name = name,
+            Multimesh = batch,
+            ZIndex = zIndex
+        };
+        AddChild(renderer);
+        return batch;
+    }
+
+    private static ArrayMesh CreateNeedleMesh()
+    {
+        Vector3[] vertices =
+        [
+            new(-0.5f, 0f, 0f),
+            new(0.5f, 0.5f, 0f),
+            new(0.5f, -0.5f, 0f)
+        ];
+        return CreateMesh(vertices);
+    }
+
+    private static ArrayMesh CreateCircleMesh(int segments)
+    {
+        Vector3[] vertices = new Vector3[segments * 3];
+        for (int segment = 0; segment < segments; segment++)
+        {
+            float angleA = Mathf.Tau * segment / segments;
+            float angleB = Mathf.Tau * (segment + 1) / segments;
+            int vertex = segment * 3;
+            vertices[vertex] = Vector3.Zero;
+            vertices[vertex + 1] = new Vector3(
+                Mathf.Cos(angleA) * 0.5f,
+                Mathf.Sin(angleA) * 0.5f,
+                0f);
+            vertices[vertex + 2] = new Vector3(
+                Mathf.Cos(angleB) * 0.5f,
+                Mathf.Sin(angleB) * 0.5f,
+                0f);
+        }
+        return CreateMesh(vertices);
+    }
+
+    private static ArrayMesh CreateMesh(Vector3[] vertices)
+    {
+        Godot.Collections.Array arrays = [];
+        arrays.Resize((int)Mesh.ArrayType.Max);
+        arrays[(int)Mesh.ArrayType.Vertex] = vertices;
+        ArrayMesh mesh = new();
+        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+        return mesh;
+    }
+
+    private void UpdateRenderBatches()
+    {
+        UpdateStreakBatches();
+        UpdateSpeckBatches();
+        UpdateGustBands();
+    }
+
+    private void UpdateStreakBatches()
+    {
+        if (_outerStreakBatch == null ||
+            _innerStreakBatch == null ||
+            _frontCoreBatch == null)
+        {
+            return;
+        }
+
         float margin = 300f;
         float travelWidth = _viewportSize.X + margin * 2f;
         Vector2 topLeft = _viewportSize * -0.5f;
 
-        foreach (StormStreak streak in _streaks)
+        int coreIndex = 0;
+        for (int i = 0; i < _streaks.Count; i++)
         {
+            StormStreak streak = _streaks[i];
             float wrappedX = Wrap(
                 streak.Start.X * travelWidth + _time * streak.Speed,
                 travelWidth);
@@ -189,39 +374,46 @@ public partial class NJiBingFengBaoVfx : Node2D
                     streak.Slope + flutter + flowField).Normalized();
             Vector2 head = new(x, y);
             Vector2 tail = head - direction * streak.Length;
-            float depthBoost = 0.82f + streak.Depth * 0.15f;
-            float alpha = streak.Alpha * strength * depthBoost;
-
-            DrawTaperedStreak(
-                tail,
-                head,
-                streak.Width * 3f,
-                new Color(0.47f, 0.76f, 1f, alpha * 0.16f));
-            DrawTaperedStreak(
-                tail + direction * streak.Length * 0.10f,
-                head,
-                streak.Width,
-                new Color(0.82f, 0.96f, 1.16f, alpha));
+            _outerStreakBatch.SetInstanceTransform2D(
+                i,
+                CreateNeedleTransform(
+                    tail,
+                    head,
+                    streak.Width * 3f));
+            _innerStreakBatch.SetInstanceTransform2D(
+                i,
+                CreateNeedleTransform(
+                    tail + direction * streak.Length * 0.10f,
+                    head,
+                    streak.Width));
 
             if (streak.Depth == 2)
             {
-                DrawTaperedStreak(
-                    tail + direction * streak.Length * 0.38f,
-                    head,
-                    Mathf.Max(0.8f, streak.Width * 0.30f),
-                    new Color(1.08f, 1.16f, 1.28f, alpha * 0.72f));
+                _frontCoreBatch.SetInstanceTransform2D(
+                    coreIndex,
+                    CreateNeedleTransform(
+                        tail + direction * streak.Length * 0.38f,
+                        head,
+                        Mathf.Max(0.8f, streak.Width * 0.30f)));
+                coreIndex++;
             }
         }
     }
 
-    private void DrawSpecks(float strength)
+    private void UpdateSpeckBatches()
     {
+        if (_speckTrailBatch == null || _speckCircleBatch == null)
+        {
+            return;
+        }
+
         float margin = 40f;
         float travelWidth = _viewportSize.X + margin * 2f;
         Vector2 topLeft = _viewportSize * -0.5f;
 
-        foreach (SnowSpeck speck in _specks)
+        for (int i = 0; i < _specks.Count; i++)
         {
+            SnowSpeck speck = _specks[i];
             float wrappedX = Wrap(
                 speck.Start.X * travelWidth + _time * speck.Speed,
                 travelWidth);
@@ -231,35 +423,44 @@ public partial class NJiBingFengBaoVfx : Node2D
                 Mathf.Sin(_time * 2.6f + speck.Phase) * speck.Sway);
             float pulse =
                 0.72f + Mathf.Sin(_time * 5.2f + speck.Phase) * 0.28f;
-
             Vector2 direction = new Vector2(
                 1f,
                 Mathf.Sin(speck.Phase + _time * 2.1f) * 0.16f)
                 .Normalized();
             float length = 4f + speck.Radius * 6f;
-            DrawTaperedStreak(
-                position - direction * length,
-                position,
-                speck.Radius * 2.6f,
+
+            _speckTrailBatch.SetInstanceTransform2D(
+                i,
+                CreateNeedleTransform(
+                    position - direction * length,
+                    position,
+                    speck.Radius * 2.6f));
+            _speckTrailBatch.SetInstanceColor(
+                i,
+                new Color(0.54f, 0.82f, 1.08f, 0.13f * pulse));
+            float diameter = speck.Radius * 1.44f;
+            _speckCircleBatch.SetInstanceTransform2D(
+                i,
+                new Transform2D(
+                    Vector2.Right * diameter,
+                    Vector2.Down * diameter,
+                    position));
+            _speckCircleBatch.SetInstanceColor(
+                i,
                 new Color(
-                    0.54f,
-                    0.82f,
-                    1.08f,
-                    0.13f * strength * pulse));
-            DrawCircle(
-                position,
-                speck.Radius * 0.72f,
-                new Color(0.92f, 0.98f, 1.15f,
-                    speck.Alpha * strength * pulse));
+                    0.92f,
+                    0.98f,
+                    1.15f,
+                    speck.Alpha * pulse));
         }
     }
 
-    private void DrawGustBands(float strength)
+    private void UpdateGustBands()
     {
         Vector2 topLeft = _viewportSize * -0.5f;
-        for (int gust = 0; gust < GustBandCount; gust++)
+        for (int gust = 0; gust < _gustBands.Count; gust++)
         {
-            Vector2[] points = new Vector2[GustSamples];
+            GustBand band = _gustBands[gust];
             float verticalRatio = (gust + 0.55f) / GustBandCount;
             float phase = gust * 1.73f + _time * (2.4f + gust * 0.08f);
             float amplitude = 22f + (gust % 3) * 14f;
@@ -267,42 +468,50 @@ public partial class NJiBingFengBaoVfx : Node2D
             for (int sample = 0; sample < GustSamples; sample++)
             {
                 float ratio = sample / (GustSamples - 1f);
-                float x = topLeft.X - 90f + ratio * (_viewportSize.X + 180f);
+                float x = topLeft.X - 90f +
+                    ratio * (_viewportSize.X + 180f);
                 float y =
                     topLeft.Y + verticalRatio * _viewportSize.Y +
                     Mathf.Sin(ratio * 8.2f + phase) * amplitude +
                     Mathf.Sin(ratio * 19f - phase * 0.65f) * 7f;
-                points[sample] = new Vector2(x, y);
+                band.Points[sample] = new Vector2(x, y);
             }
 
-            DrawPolyline(
-                points,
-                new Color(0.45f, 0.67f, 0.88f, 0.016f * strength),
-                18f + (gust % 2) * 10f,
-                true);
-            DrawPolyline(
-                points,
-                new Color(0.78f, 0.91f, 1.08f, 0.045f * strength),
-                2f + (gust % 2),
-                true);
+            band.Broad.Points = band.Points;
+            band.Core.Points = band.Points;
         }
     }
 
-    private void DrawTaperedStreak(
+    private static Transform2D CreateNeedleTransform(
         Vector2 tail,
         Vector2 head,
-        float width,
-        Color color)
+        float width)
     {
-        Vector2 direction = (head - tail).Normalized();
-        Vector2 normal = direction.Orthogonal() * width * 0.5f;
-        Vector2[] points =
-        [
-            tail,
-            head + normal,
-            head - normal
-        ];
-        DrawColoredPolygon(points, color);
+        Vector2 delta = head - tail;
+        float length = delta.Length();
+        if (length <= 0.001f)
+        {
+            return new Transform2D(
+                Vector2.Zero,
+                Vector2.Zero,
+                tail);
+        }
+
+        Vector2 direction = delta / length;
+        return new Transform2D(
+            direction * length,
+            direction.Orthogonal() * width,
+            (tail + head) * 0.5f);
+    }
+
+    private sealed class GustBand(
+        Vector2[] points,
+        Line2D broad,
+        Line2D core)
+    {
+        public Vector2[] Points { get; } = points;
+        public Line2D Broad { get; } = broad;
+        public Line2D Core { get; } = core;
     }
 
     private float GetStrength()
