@@ -102,7 +102,11 @@ public class IceShieldPower : ModPowerTemplate
     {
         if (target == Owner && props.IsPoweredAttack() && amount >= 1)
         {
-            await PowerCmd.Decrement(this);
+            int decrementAmount = (int)Math.Ceiling(Amount / 10m);
+            for (int i = 0; i < decrementAmount; i++)
+            {
+                await PowerCmd.Decrement(this);
+            }
         }
     }
 }

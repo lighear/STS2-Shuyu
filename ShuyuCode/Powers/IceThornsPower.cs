@@ -86,7 +86,11 @@ public class IceThornsPower : ModPowerTemplate
             }
             if (amount >= 1)
             {
-                await PowerCmd.Decrement(this);
+                int decrementAmount = (int)Math.Ceiling(Amount / 10m);
+                for (int i = 0; i < decrementAmount; i++)
+                {
+                    await PowerCmd.Decrement(this);
+                }
             }
         }
     }
