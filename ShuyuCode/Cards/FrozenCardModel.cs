@@ -23,7 +23,7 @@ public sealed class FrozenCardModel : ModCardTemplate
     public FrozenCardModel() : base(
         baseCost: 0,
         CardType.None,
-        CardRarity.None,
+        CardRarity.Token,
         TargetType.None,
         showInCardLibrary: false)
     { }
