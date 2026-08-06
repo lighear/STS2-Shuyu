@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.DynamicVars;
 using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -33,7 +34,7 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new CalculationBaseVar(0),
             new CalculationExtraVar(4),
-            new CalculatedBlockVar(ValueProp.Move).WithMultiplier((card, _) => card.ResolveEnergyXValue()),
+            new CurrentEnergyXBlockVar(ValueProp.Move),
             new PowerVar<IceShieldPower>(2)
         ];
 

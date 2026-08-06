@@ -113,7 +113,7 @@
     "SHUYU_CARD_SUI_JIA_QIANG_HUA.title":  "碎甲强化",
     "SHUYU_CARD_SUI_JIA_QIANG_HUA.description":  "敌人被[gold]击破[/gold]时额外转化3层[gold]虚弱[/gold]并令其受到{Damage:diff()}点伤害。",
     "SHUYU_CARD_JI_HAN_LI_CHANG.title":  "极寒力场",
-    "SHUYU_CARD_JI_HAN_LI_CHANG.description":  "获得{CalculationExtra:diff()}X[gold]格挡[/gold]。\n获得{IceShieldPower:diff()}X[gold]寒冰护盾[/gold]。",
+    "SHUYU_CARD_JI_HAN_LI_CHANG.description":  "获得{CalculationExtra:diff()}X[gold]格挡[/gold]。\n{InCombat:（获得{CalculatedBlock:diff()}点[gold]格挡[/gold]）\n|}获得{IceShieldPower:diff()}X[gold]寒冰护盾[/gold]。",
     "SHUYU_CARD_BING_WU.title":  "冰雾",
     "SHUYU_CARD_BING_WU.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n本回合受到的前{Repeat:diff()}次攻击伤害变为0。",
     "SHUYU_CARD_SHI_TAN.title":  "试探",
