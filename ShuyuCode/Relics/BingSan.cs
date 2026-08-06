@@ -20,7 +20,8 @@ public sealed class BingSan : ModRelicTemplate
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
     [
-        HoverTipFactory.FromPower<FragilePower>()
+        HoverTipFactory.FromPower<FragilePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break)
     ];
 
     public override RelicAssetProfile AssetProfile => new(

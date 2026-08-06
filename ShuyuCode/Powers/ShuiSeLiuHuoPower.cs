@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -28,6 +29,7 @@ public class ShuiSeLiuHuoPower : ModPowerTemplate, IOnFragileConverted, IPowerEx
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.FromPower<FragilePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break),
         HoverTipFactory.Static(StaticHoverTip.Block),
         //HoverTipFactory.FromPower<StrengthPower>(),
         HoverTipFactory.FromPower<DexterityPower>()

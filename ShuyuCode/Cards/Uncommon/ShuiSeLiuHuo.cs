@@ -27,6 +27,7 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<FragilePower>(),
+            HoverTipFactory.FromKeyword(ShuyuKeywords.Break),
             HoverTipFactory.Static(StaticHoverTip.Block),
             //HoverTipFactory.FromPower<StrengthPower>(),
             HoverTipFactory.FromPower<DexterityPower>()

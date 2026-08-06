@@ -34,7 +34,8 @@ namespace Shuyu.Cards
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromKeyword(ShuyuKeywords.Targeted),
             ..HoverTipFactory.FromAffliction<Frozen>(),
-            HoverTipFactory.FromPower<FragilePower>()
+            HoverTipFactory.FromPower<FragilePower>(),
+            HoverTipFactory.FromKeyword(ShuyuKeywords.Break)
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [

@@ -2,6 +2,7 @@
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
+using Shuyu.Characters;
 using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -22,6 +23,7 @@ public class ZhaMaoPower : ModPowerTemplate, IPowerExtraIconAmountLabelSpecsProv
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.FromPower<IceThornsPower>(),
         HoverTipFactory.FromPower<FragilePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break),
         HoverTipFactory.FromPower<VulnerablePower>()
     ];
 

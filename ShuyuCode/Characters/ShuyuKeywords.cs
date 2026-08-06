@@ -8,8 +8,10 @@ namespace Shuyu.Characters;
 
 [RegisterOwnedCardKeyword(nameof(Frostforged))]
 [RegisterOwnedCardKeyword(nameof(Targeted))]
+[RegisterOwnedCardKeyword(nameof(Break))]
 public class ShuyuKeywords
 {
     public static readonly CardKeyword Frostforged = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Frostforged)).GetModCardKeyword();
     public static readonly CardKeyword Targeted = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Targeted)).GetModCardKeyword();
+    public static readonly CardKeyword Break = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Break)).GetModCardKeyword();
 }

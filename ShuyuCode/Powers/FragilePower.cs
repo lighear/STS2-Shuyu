@@ -11,7 +11,9 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
 using Shuyu.Interfaces;
+using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -29,7 +31,8 @@ public class FragilePower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<VulnerablePower>()
+        HoverTipFactory.FromPower<VulnerablePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break)
     ];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
@@ -89,6 +92,7 @@ public class FragilePower : ModPowerTemplate
             while (Amount >= 5 && Owner.CombatState != null)
             {
                 Flash();
+                FragileBreakTextVfx.Play(Owner);
                 IOnFragileConverted[] listeners =
                     CombatState?.IterateHookListeners().OfType<IOnFragileConverted>().ToArray() ?? [];
 
@@ -104,7 +108,12 @@ public class FragilePower : ModPowerTemplate
                     VulnerablePower? power = await PowerCmd.Apply<VulnerablePower>(choiceContext, Owner, 3, applier ?? Owner, null);
                     if (power != null && Owner.IsAlive)
                     {
-                        await CreatureCmd.Damage(choiceContext, Owner, power.Amount *  DynamicVars.Damage.BaseValue, ValueProp.Unpowered, applier ?? Owner);
+                        decimal breakDamage = power.Amount * DynamicVars.Damage.BaseValue;
+                        await CreatureCmd.LoseBlock(choiceContext, Owner, Owner.Block, applier);
+                        if (Owner.IsAlive)
+                        {
+                            await CreatureCmd.Damage(choiceContext, Owner, breakDamage, ValueProp.Unpowered, applier ?? Owner);
+                        }
                     }
                     
                 }

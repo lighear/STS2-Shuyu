@@ -2,5 +2,7 @@
   "SHUYU_KEYWORD_FROSTFORGED.description": "拥有[gold]冰器[/gold]的牌被[gold]封冻[/gold]时，解除其[gold]封冻[/gold]并触发[gold]冰器[/gold]效果。",
   "SHUYU_KEYWORD_FROSTFORGED.title": "冰器",
   "SHUYU_KEYWORD_TARGETED.description": "若丢弃的牌是[gold]封冻牌[/gold]，其[gold]掷冰伤害[/gold]优先作用于目标。",
-  "SHUYU_KEYWORD_TARGETED.title": "锚定"
+  "SHUYU_KEYWORD_TARGETED.title": "锚定",
+  "SHUYU_KEYWORD_BREAK.description": "将5层[gold]易碎[/gold]转化为3层[gold]易伤[/gold]，移除所有[gold]格挡[/gold]，然后受到相当于[gold]易伤[/gold]层数3倍的伤害。",
+  "SHUYU_KEYWORD_BREAK.title": "击破"
 }

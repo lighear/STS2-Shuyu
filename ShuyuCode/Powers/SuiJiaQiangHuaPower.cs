@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Characters;
 using Shuyu.Interfaces;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -24,6 +25,7 @@ public class SuiJiaQiangHuaPower : ModPowerTemplate, IOnFragileConverted
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
         HoverTipFactory.FromPower<FragilePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break),
         HoverTipFactory.FromPower<WeakPower>()
     ];
 

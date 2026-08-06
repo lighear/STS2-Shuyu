@@ -1,4 +1,6 @@
 ﻿{
   "SHUYU_KEYWORD_FROSTFORGED.description": "",
-  "SHUYU_KEYWORD_FROSTFORGED.title": ""
+  "SHUYU_KEYWORD_FROSTFORGED.title": "",
+  "SHUYU_KEYWORD_BREAK.description": "Convert 5 [gold]Fragile[/gold] into 3 [gold]Vulnerable[/gold], remove all [gold]Block[/gold], then take damage equal to 3 times the current [gold]Vulnerable[/gold] amount.",
+  "SHUYU_KEYWORD_BREAK.title": "Break"
 }
