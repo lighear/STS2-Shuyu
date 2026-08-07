@@ -4,5 +4,20 @@
   "NEOW.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-1.ancient": "[sine]Go... build your character from this template...[/sine]",
   "DARV.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-0.char": "This place is still empty.",
   "DARV.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-0.next": "Continue",
-  "DARV.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-1.ancient": "Empty is useful! Take something and fill it in!"
+  "DARV.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-1.ancient": "Empty is useful! Take something and fill it in!",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-0r.ancient": "What are you doing here?",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-0r.next": "Reply",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-1r.char": "<random jumble of words>",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-1r.next": "Continue",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.0-2r.ancient": "Fix you? Why should I?",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.1-0r.ancient": "You're back? Didn't I dismantle you?",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.1-0r.next": "Explain",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.1-1r.char": "<random jumble of words>",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.1-1r.next": "Continue",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.1-2r.ancient": "Fix you? And your friends too? Nonsense.",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.2-0r.ancient": "How do you keep coming back? Is this Neow's doing?",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.2-0r.next": "Answer",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.2-1r.char": "<random jumble of words>",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.2-1r.next": "Continue",
+  "THE_ARCHITECT.talk.SHUYU_CHARACTER_SHUYU_CHARACTER.2-2r.ancient": "Foolish."
 }

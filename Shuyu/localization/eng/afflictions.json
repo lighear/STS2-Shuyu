@@ -1,4 +1,4 @@
-﻿{
-  "SHUYU_AFFLICTION_FROZEN.description": "",
-  "SHUYU_AFFLICTION_FROZEN.title": ""
+{
+  "SHUYU_AFFLICTION_FROZEN.description": "[gold]Frozen[/gold] cards cannot be played and lose their card text and effects. They gain [gold]Retain[/gold]. When discarded, they deal attack damage equal to (3 + 5 × cost) to a random enemy. This is called [gold]Thrown Ice damage[/gold]. Then, remove [gold]Frozen[/gold] from them.",
+  "SHUYU_AFFLICTION_FROZEN.title": "Frozen"
 }
