@@ -1,0 +1,7 @@
+{
+  "TO_FREEZE": "Choose [blue]{Amount}[/blue] cards to apply [gold]Frozen[/gold] to.",
+  "TO_UNFREEZE": "Choose [blue]{Amount}[/blue] cards to remove [gold]Frozen[/gold] from.",
+  "TO_FREEZE_OPTIONAL": "Choose up to [blue]{MaxCount}[/blue] cards to apply [gold]Frozen[/gold] to.",
+  "TO_UNFREEZE_OPTIONAL": "Choose up to [blue]{MaxCount}[/blue] cards to remove [gold]Frozen[/gold] from.",
+  "CHANGE_FROZEN_STATE": "Choose [blue]{Amount}[/blue] cards to apply or remove [gold]Frozen[/gold]."
+}

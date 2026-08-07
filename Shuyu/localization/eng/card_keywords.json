@@ -1,6 +1,8 @@
-﻿{
-  "SHUYU_KEYWORD_FROSTFORGED.description": "",
-  "SHUYU_KEYWORD_FROSTFORGED.title": "",
+{
+  "SHUYU_KEYWORD_FROSTFORGED.description": "When a card with [gold]Frostforged[/gold] becomes [gold]Frozen[/gold], remove [gold]Frozen[/gold] from it and trigger its [gold]Frostforged[/gold] effect.",
+  "SHUYU_KEYWORD_FROSTFORGED.title": "Frostforged",
+  "SHUYU_KEYWORD_TARGETED.description": "When a discarded card is [gold]Frozen[/gold], its [gold]Thrown Ice damage[/gold] targets the selected enemy first.",
+  "SHUYU_KEYWORD_TARGETED.title": "Targeted",
   "SHUYU_KEYWORD_BREAK.description": "Convert 5 [gold]Fragile[/gold] into 3 [gold]Vulnerable[/gold], remove all [gold]Block[/gold], then take damage equal to 3 times the current [gold]Vulnerable[/gold] amount.",
   "SHUYU_KEYWORD_BREAK.title": "Break"
 }
