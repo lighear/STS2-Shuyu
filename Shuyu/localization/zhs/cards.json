@@ -143,7 +143,7 @@
     "SHUYU_CARD_YI_LIU_XING_TAI.title":  "溢流形态",
     "SHUYU_CARD_YI_LIU_XING_TAI.description":  "你每因[gold]手牌[/gold]数已满少抽1张牌，对所有敌人造成{Damage:diff()}点伤害。\n立即抽{Cards:diff()}张牌。",
     "SHUYU_CARD_WU_XIA.title":  "无瑕",
-    "SHUYU_CARD_WU_XIA.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n[gold]封冻[/gold][gold]抽牌堆[/gold]和[gold]手牌[/gold]中所有状态和诅咒牌。\n每[gold]封冻[/gold]1张牌，抽{Cards:diff()}张牌。",
+    "SHUYU_CARD_WU_XIA.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]。\n[gold]封冻[/gold][gold]抽牌堆[/gold]和[gold]手牌[/gold]中所有状态和诅咒牌。\n每有1张符合条件的牌，抽{Cards:diff()}张牌。",
     "SHUYU_CARD_HUI_XIANG_YONG_CHANG.title":  "回响咏唱",
     "SHUYU_CARD_HUI_XIANG_YONG_CHANG.description":  "卡牌的[gold]冰器[/gold]效果额外触发{Repeat:diff()}次。",
     "SHUYU_CARD_QI_SHOU_SHI.title":  "起手式",
