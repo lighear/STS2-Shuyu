@@ -43,11 +43,11 @@ namespace Shuyu.Cards
             EnergyCost.UpgradeBy(1);
         }
 
-        public async Task<bool> OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             if (card == this)
             {
-                await CardPileCmd.Draw(new ThrowingPlayerChoiceContext(), DynamicVars.Cards.IntValue, Owner);
+                await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
             }
             return true;
         }

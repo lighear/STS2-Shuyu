@@ -61,12 +61,12 @@ namespace Shuyu.Cards
             {
                 if (card is FrozenCardModel frozenCard)
                 {
-                    await ShuyuMechanismCmd.UnfreezeCard(frozenCard);
+                    await ShuyuMechanismCmd.UnfreezeCard(choiceContext, frozenCard);
                     await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
                 }
                 else
                 {
-                    await ShuyuMechanismCmd.FreezeCard(card);
+                    await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
                     await PowerCmd.Apply<ChillPower>(choiceContext, cardPlay.Target!, 1, Owner.Creature, this);
                 }
             }

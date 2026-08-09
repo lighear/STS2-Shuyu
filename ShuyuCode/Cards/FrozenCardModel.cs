@@ -113,7 +113,7 @@ public sealed class FrozenCardModel : ModCardTemplate
                     this,
                     effectiveEnergyCost);
             }
-            await ShuyuMechanismCmd.UnfreezeCard(this);
+            await ShuyuMechanismCmd.UnfreezeCard(choiceContext, this);
         }
     }
 }

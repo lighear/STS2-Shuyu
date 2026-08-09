@@ -34,7 +34,7 @@ public class JingDaiLiangJiPower : ModPowerTemplate
             Flash();
             foreach (FrozenCardModel card in PileType.Hand.GetPile(Owner.Player).Cards.OfType<FrozenCardModel>().ToList())
             {
-                await ShuyuMechanismCmd.UnfreezeCard(card);
+                await ShuyuMechanismCmd.UnfreezeCard(choiceContext, card);
             }
             await PlayerCmd.GainEnergy(Amount, Owner.Player);
             await PowerCmd.Remove(this);

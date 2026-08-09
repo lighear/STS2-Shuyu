@@ -47,12 +47,12 @@ namespace Shuyu.Cards
             
             foreach (CardModel card in handcards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
             
             foreach (CardModel card in cards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
             
             await CardPileCmd.Draw(choiceContext, (cards.Count + handcards.Count) * DynamicVars.Cards.IntValue, Owner);

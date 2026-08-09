@@ -52,7 +52,7 @@ namespace Shuyu.Cards
                 await CardPileCmd.Add(cardModel, PileType.Hand);
                 if (cardModel.EnergyCost.GetWithModifiers(CostModifiers.All) > Owner.PlayerCombatState!.Energy)
                 {
-                    await ShuyuMechanismCmd.FreezeCard(cardModel);
+                    await ShuyuMechanismCmd.FreezeCard(choiceContext, cardModel);
                 }
             }
         }

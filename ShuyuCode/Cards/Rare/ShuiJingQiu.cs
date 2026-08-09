@@ -45,7 +45,7 @@ namespace Shuyu.Cards
             await CardPileCmd.Add(cards, PileType.Hand);
             foreach (CardModel card in cards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
             await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
         }

@@ -53,7 +53,7 @@ namespace Shuyu.Cards
             List<CardModel> cards = PileType.Hand.GetPile(Owner).Cards.Where(c => !c.IsFrozen()).ToList();
             foreach (CardModel card in cards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
         }
 

@@ -31,7 +31,7 @@ public sealed class BingJian : ModRelicTemplate
         if (card.Owner == Owner && card.IsFrostforged())
         {
             Flash();
-            await ShuyuMechanismCmd.FreezeCard(card);
+            await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
         }
     }
 }
