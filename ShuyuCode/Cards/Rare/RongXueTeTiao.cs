@@ -60,7 +60,7 @@ namespace Shuyu.Cards
                     .FirstOrDefault();
                 if (card is FrozenCardModel frozenCard)
                 {
-                    await ShuyuMechanismCmd.UnfreezeCard(frozenCard);
+                    await ShuyuMechanismCmd.UnfreezeCard(choiceContext, frozenCard);
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace Shuyu.Cards
             DynamicVars.Dexterity.UpgradeValueBy(1);
         }
 
-        public async Task<bool> OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             if (card.Owner == Owner && this.Pile?.Type == PileType.Discard)
             {

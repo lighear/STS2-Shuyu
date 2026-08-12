@@ -50,7 +50,7 @@ namespace Shuyu.Cards
             return Task.CompletedTask;
         }
 
-        public async Task<bool> OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             return !(card == this);
         }

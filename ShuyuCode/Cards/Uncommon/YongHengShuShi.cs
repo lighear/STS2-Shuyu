@@ -37,7 +37,7 @@ namespace Shuyu.Cards
             var cards = await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.IntValue, Owner);
             foreach (var card in cards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
         }
 

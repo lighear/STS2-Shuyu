@@ -44,7 +44,7 @@ public class CantFreeze : ModEnchantmentTemplate, IOnFreezingCard
         return false;
     }
 
-    public async Task<bool> OnFreezingCard(CardModel card)
+    public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
     {
         return !(card == Card);
     }

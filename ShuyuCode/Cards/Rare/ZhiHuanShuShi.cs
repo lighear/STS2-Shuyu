@@ -62,7 +62,7 @@ namespace Shuyu.Cards
             
             foreach (CardModel card in cards)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
             
             await PowerCmd.Apply<FragilePower>(choiceContext, cardPlay.Target!, cardCount, Owner.Creature, this);

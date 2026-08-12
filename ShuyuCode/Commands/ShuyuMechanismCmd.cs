@@ -23,7 +23,7 @@ namespace Shuyu.Commands
 
         public static bool IsFrostforged(this CardModel card) => card is IFrostforged;
 
-        public static async Task FreezeCard(CardModel card)
+        public static async Task FreezeCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             if (card == null || card.IsFrozen())
             {
@@ -54,7 +54,7 @@ namespace Shuyu.Commands
             {
                 foreach (IOnFreezingCard ip in ips)
                 {
-                    unfreeze = !(await ip.OnFreezingCard(card)) || unfreeze;
+                    unfreeze = !(await ip.OnFreezingCard(choiceContext, card)) || unfreeze;
                 }
             }
 
@@ -65,7 +65,7 @@ namespace Shuyu.Commands
                 {
                     foreach (IAfterUnfreezingCard ip in ips2)
                     {
-                        await ip.AfterUnfreezingCard(card);
+                        await ip.AfterUnfreezingCard(choiceContext, card);
                     }
                 }
                 return;
@@ -85,7 +85,7 @@ namespace Shuyu.Commands
             await CardCmd.Afflict<Frozen>(frozenCard, 1);
         }
 
-        public static async Task UnfreezeCard(FrozenCardModel frozenCard)
+        public static async Task UnfreezeCard(PlayerChoiceContext choiceContext, FrozenCardModel frozenCard)
         {
             CardModel? original = frozenCard._visualCardModel;
             if (original == null)
@@ -101,7 +101,7 @@ namespace Shuyu.Commands
             {
                 foreach (IAfterUnfreezingCard ip in ips)
                 {
-                    await ip.AfterUnfreezingCard(original);
+                    await ip.AfterUnfreezingCard(choiceContext, original);
                 }
             }
         }
@@ -120,7 +120,7 @@ namespace Shuyu.Commands
                     source: source);
             foreach (CardModel card in cards)
             {
-                await FreezeCard(card);
+                await FreezeCard(choiceContext, card);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Shuyu.Commands
                     source: source);
             foreach (FrozenCardModel card in cards.OfType<FrozenCardModel>())
             {
-                await UnfreezeCard(card);
+                await UnfreezeCard(choiceContext, card);
             }
         }
 
@@ -157,11 +157,11 @@ namespace Shuyu.Commands
             {
                 if (card is FrozenCardModel frozenCard)
                 {
-                    await UnfreezeCard(frozenCard);
+                    await UnfreezeCard(choiceContext, frozenCard);
                 }
                 else
                 {
-                    await FreezeCard(card);
+                    await FreezeCard(choiceContext, card);
                 }
             }
         }

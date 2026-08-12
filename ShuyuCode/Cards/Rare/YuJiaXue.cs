@@ -54,20 +54,20 @@ namespace Shuyu.Cards
             DynamicVars["IceShieldPower"].UpgradeValueBy(2);
         }
 
-        public async Task<bool> OnFreezingCard(CardModel card)
+        public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             if (card == this)
             {
-                await FreezingEffect(new ThrowingPlayerChoiceContext());
+                await FreezingEffect(choiceContext);
             }
             return true;
         }
 
-        public async Task AfterUnfreezingCard(CardModel card)
+        public async Task AfterUnfreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             if (card == this)
             {
-                await FreezingEffect(new ThrowingPlayerChoiceContext());
+                await FreezingEffect(choiceContext);
             }
         }
 

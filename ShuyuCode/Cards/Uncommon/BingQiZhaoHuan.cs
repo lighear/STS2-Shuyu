@@ -50,7 +50,7 @@ namespace Shuyu.Cards
             List<CardModel> cardsfrost = PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrostforged()).ToList();
             foreach (CardModel card in cardsfrost)
             {
-                await ShuyuMechanismCmd.FreezeCard(card);
+                await ShuyuMechanismCmd.FreezeCard(choiceContext, card);
             }
             await PowerCmd.Apply<NextTurnEnergyPower>(choiceContext, Owner.Creature, DynamicVars.Energy.BaseValue, Owner.Creature, this);
         }
