@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
 using Shuyu.Commands;
@@ -13,7 +14,7 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards;
 
-[RegisterCard(typeof(ShuyuCardPool))]
+[RegisterCard(typeof(TokenCardPool))]
 public sealed class FrozenCardModel : ModCardTemplate
 {
     public CardModel? _visualCardModel;
