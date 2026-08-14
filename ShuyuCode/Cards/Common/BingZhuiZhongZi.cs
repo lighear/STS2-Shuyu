@@ -35,7 +35,7 @@ namespace Shuyu.Cards
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new CardsVar(1)
+            new CardsVar(2)
         ];
 
         protected override void OnUpgrade()
