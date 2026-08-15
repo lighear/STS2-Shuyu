@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://b1invr8n2jowe"]
 
 [ext_resource type="Material" uid="uid://bjknaae5mm83r" path="res://Shuyu/assets/materials/common/vfx_speck_glow_white.tres" id="1_53e6a"]
-[ext_resource type="Texture2D" uid="uid://cya3hrd4k0rhn" path="res://Shuyu/assets/images/common_glow_speck.png" id="2_38o4g"]
+[ext_resource type="Texture2D" uid="uid://bsi51wsg7hx0o" path="res://Shuyu/assets/images/common_glow_speck.png" id="2_38o4g"]
 
 [sub_resource type="Curve" id="Curve_ufhts"]
 _data = [Vector2(0, 0), 0.0, 4.30388, 0, 0, Vector2(0.501292, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.93081, 0.0, 0, 0]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b48wtkhta5hyi"]
 
 [ext_resource type="Material" path="res://Shuyu/assets/materials/common/vfx_small_impact.tres" id="1_snf6i"]
-[ext_resource type="Texture2D" uid="uid://d0jwncjpj730w" path="res://Shuyu/assets/images/common_impact_flare_flipbook.png" id="2_q4a4p"]
+[ext_resource type="Texture2D" uid="uid://kwsv4frt2cx2" path="res://Shuyu/assets/images/common_impact_flare_flipbook.png" id="2_q4a4p"]
 
 [sub_resource type="Curve" id="Curve_up02c"]
 _limits = [0.0, 3.0, 0.0, 1.0]

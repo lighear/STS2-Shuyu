@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://d2g2jup57s1q"]
 
 [ext_resource type="Material" uid="uid://dyfx7j3yrcr" path="res://Shuyu/assets/materials/common/vfx_poof.tres" id="1_fdyfm"]
-[ext_resource type="Texture2D" uid="uid://kiaqjges62qy" path="res://Shuyu/assets/images/common_poof.png" id="2_62oo3"]
+[ext_resource type="Texture2D" uid="uid://cwk3e4rh8aegy" path="res://Shuyu/assets/images/common_poof.png" id="2_62oo3"]
 
 [sub_resource type="Curve" id="Curve_on65t"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.99978, 0.0, 0, 0]

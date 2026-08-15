@@ -1,6 +1,6 @@
 [gd_scene load_steps=101 format=3 uid="uid://cghr5yuw8rpmp"]
 
-[ext_resource type="Script" uid="uid://cd54b7yk5055d" path="res://ShuyuCode/Vfx/NMoLiXianDanVfx.cs" id="1_4gwn3"]
+[ext_resource type="Script" uid="uid://d4jc23qfs4dme" path="res://ShuyuCode/Vfx/NMoLiXianDanVfx.cs" id="1_4gwn3"]
 [ext_resource type="PackedScene" uid="uid://cq0m6037hbecy" path="res://Shuyu/scenes/common/vfx_common_glow.tscn" id="5_2tb3u"]
 [ext_resource type="PackedScene" uid="uid://4efw4mkqs4fi" path="res://Shuyu/scenes/common/vfx_dagger_spray_dagger.tscn" id="6_7whay"]
 [ext_resource type="Shader" uid="uid://ckh1vfdb3ppm5" path="res://Shuyu/assets/shaders/common/vfx_dagger_spray_single_shader.gdshader" id="7_3k1da"]
@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://wt5ycmi5c6wi" path="res://Shuyu/scenes/common/vfx_dagger_impact_core.tscn" id="7_xkqkn"]
 [ext_resource type="PackedScene" uid="uid://b1rtk1ak8gs8q" path="res://Shuyu/scenes/common/vfx_common_ring_polar_b.tscn" id="8_7whay"]
 [ext_resource type="PackedScene" uid="uid://b1invr8n2jowe" path="res://Shuyu/scenes/common/vfx_common_specks.tscn" id="8_0882c"]
-[ext_resource type="Shader" uid="uid://b5yaqwjlvh1ws" path="res://Shuyu/assets/shaders/vfx_MoLiXianDan.gdshader" id="8_s4g0c"]
-[ext_resource type="Texture2D" uid="uid://budy77nnak70g" path="res://Shuyu/assets/images/molixiandan.png" id="9_7prr2"]
+[ext_resource type="Shader" uid="uid://cq6lymhc0kshx" path="res://Shuyu/assets/shaders/vfx_MoLiXianDan.gdshader" id="8_s4g0c"]
+[ext_resource type="Texture2D" uid="uid://dy3undns4v8jt" path="res://Shuyu/assets/images/molixiandan.png" id="9_7prr2"]
 [ext_resource type="Texture2D" uid="uid://dbvsskvsg6v3a" path="res://Shuyu/assets/images/long_rice_no__glow_particle.png" id="9_wr6qj"]
 [ext_resource type="PackedScene" uid="uid://b48wtkhta5hyi" path="res://Shuyu/scenes/common/vfx_common_hit_flare.tscn" id="10_7whay"]
 [ext_resource type="PackedScene" uid="uid://d2g2jup57s1q" path="res://Shuyu/scenes/common/vfx_poof.tscn" id="11_3k1da"]

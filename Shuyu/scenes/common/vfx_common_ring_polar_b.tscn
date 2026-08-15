@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b1rtk1ak8gs8q"]
 
 [ext_resource type="Material" uid="uid://dbil4ew3i4v3x" path="res://Shuyu/assets/materials/common/vfx_ring_polar.tres" id="1_8vsni"]
-[ext_resource type="Texture2D" uid="uid://bhajs7bum57op" path="res://Shuyu/assets/images/common_ring_polar_b.png" id="2_ofkh4"]
+[ext_resource type="Texture2D" uid="uid://dmavmtkpdvo6o" path="res://Shuyu/assets/images/common_ring_polar_b.png" id="2_ofkh4"]
 
 [sub_resource type="Curve" id="Curve_qani6"]
 _limits = [0.0, 3.0, 0.0, 1.0]

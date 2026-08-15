@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://bb1eqqro7o6l1"]
 
 [ext_resource type="Texture2D" uid="uid://cmp6uhabldshr" path="res://Shuyu/assets/ui_card_mask.png" id="1_w8yx7"]
-[ext_resource type="Texture2D" uid="uid://bfx01mhnfaxm5" path="res://Shuyu/assets/afflictions/frozen.png" id="2_dcd4j"]
+[ext_resource type="Texture2D" uid="uid://dp02a8rrqrpm8" path="res://Shuyu/assets/afflictions/frozen.png" id="2_dcd4j"]
 [ext_resource type="Shader" uid="uid://5wtarmcdc0p5" path="res://Shuyu/assets/shaders/frozen.tres" id="2_sttq3"]
 [ext_resource type="Texture2D" uid="uid://dc7uj1txrtbqg" path="res://Shuyu/assets/ui_card_border_glow.png" id="4_tj6s1"]
-[ext_resource type="Texture2D" uid="uid://bfc2djimv6fae" path="res://Shuyu/assets/images/common_glow.png" id="5_sttq3"]
+[ext_resource type="Texture2D" uid="uid://d18475yoes2kv" path="res://Shuyu/assets/images/common_glow.png" id="5_sttq3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qos8m"]
 shader = ExtResource("2_sttq3")
