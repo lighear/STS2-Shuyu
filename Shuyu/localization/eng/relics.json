@@ -9,7 +9,7 @@
   "SHUYU_RELIC_BING_ZHI_LIN.description": "At the start of each combat, gain [blue]{IceShieldPower}[/blue] [gold]Ice Shield[/gold].",
   "SHUYU_RELIC_BING_ZHI_LIN.flavor": "A special magical material—and lesson one in material gathering for any apprentice ice mage.",
   "SHUYU_RELIC_SHUI_JING_SHAO_PING.title": "Crystal Flask",
-  "SHUYU_RELIC_SHUI_JING_SHAO_PING.description": "At the start of each combat, apply [gold]Chill[/gold] to ALL enemies.",
+  "SHUYU_RELIC_SHUI_JING_SHAO_PING.description": "At the start of each combat, apply [gold]Chill[/gold] and [blue]{FragilePower}[/blue] [gold]Fragile[/gold] to ALL enemies.",
   "SHUYU_RELIC_SHUI_JING_SHAO_PING.flavor": "Equipment for ice magic experiments.",
   "SHUYU_RELIC_BING_SAN.title": "Ice Parasol",
   "SHUYU_RELIC_BING_SAN.description": "Whenever you apply 1 [gold]Fragile[/gold], gain [blue]{Block}[/blue] [gold]Block[/gold].",

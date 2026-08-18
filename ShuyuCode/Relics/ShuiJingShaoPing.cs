@@ -3,6 +3,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Shuyu.Characters;
 using Shuyu.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -17,7 +18,13 @@ public sealed class ShuiJingShaoPing : ModRelicTemplate
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips =>
     [
-        HoverTipFactory.FromPower<ChillPower>()
+        HoverTipFactory.FromPower<ChillPower>(),
+        HoverTipFactory.FromPower<FragilePower>(),
+        HoverTipFactory.FromKeyword(ShuyuKeywords.Break)
+    ];
+    
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new PowerVar<FragilePower>(1)
     ];
 
     public override RelicAssetProfile AssetProfile => new(
@@ -31,6 +38,7 @@ public sealed class ShuiJingShaoPing : ModRelicTemplate
         {
             Flash();
             await PowerCmd.Apply<ChillPower>(choiceContext, Owner.Creature.CombatState!.HittableEnemies, 1, Owner.Creature, null);
+            await PowerCmd.Apply<FragilePower>(choiceContext, Owner.Creature.CombatState!.HittableEnemies, 1, Owner.Creature, null);
         }
     }
 }
