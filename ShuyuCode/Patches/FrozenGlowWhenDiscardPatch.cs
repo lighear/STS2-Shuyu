@@ -21,17 +21,28 @@ namespace Shuyu.Patches
                 MethodType.Async)
             ];
 
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            MethodBase original)
         {
-            Type? asyncMethod = typeof(CardSelectCmd).GetNestedType("<FromHandForDiscard>d__29", BindingFlags.NonPublic);
+            Type? asyncMethod = AsyncMethodCompat.GetStateMachineType(original);
             if (asyncMethod == null)
             {
                 Entry.Logger.Error("[Shuyu][FrozenGlowWhenDiscardPatch] Failed to get async method CardSelectCmd.FromHandForDiscard.");
                 return instructions;
             }
-            FieldInfo prefsField = AccessTools.Field(asyncMethod, "prefs");
-            MethodInfo setShouldGlow = AccessTools.Method(typeof(CardSelectorPrefs), "set_ShouldGlowGold");
-            MethodInfo addCondition = AccessTools.Method(typeof(FrozenGlowWhenDiscardPatch), "AddFrozenGlowCondition");
+            FieldInfo? prefsField = AccessTools.Field(asyncMethod, "prefs");
+            MethodInfo? setShouldGlow = AccessTools.PropertySetter(
+                typeof(CardSelectorPrefs),
+                nameof(CardSelectorPrefs.ShouldGlowGold));
+            MethodInfo? addCondition = AccessTools.Method(
+                typeof(FrozenGlowWhenDiscardPatch),
+                nameof(AddFrozenGlowCondition));
+            if (prefsField == null || setShouldGlow == null || addCondition == null)
+            {
+                Entry.Logger.Error("[Shuyu][FrozenGlowWhenDiscardPatch] Failed to resolve transpiler members.");
+                return instructions;
+            }
 
             CodeMatcher matcher = new CodeMatcher(instructions).MatchEndForward(new CodeMatch(OpCodes.Call, setShouldGlow));
             if (matcher.IsInvalid)

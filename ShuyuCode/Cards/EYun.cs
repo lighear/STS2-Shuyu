@@ -36,7 +36,7 @@ namespace Shuyu.Cards
 
         protected override async Task OnTurnEndInHand(PlayerChoiceContext choiceContext)
         {
-            await CreatureCmd.Damage(choiceContext, Owner.Creature, DynamicVars.HpLoss.BaseValue, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this, null);
+            await CreatureCmdCompat.Damage(choiceContext, Owner.Creature, DynamicVars.HpLoss.BaseValue, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this, null);
         }
 
         public override void AfterCreated()

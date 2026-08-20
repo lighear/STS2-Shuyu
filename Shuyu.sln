@@ -4,6 +4,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuyu", "Shuyu.csproj", "{58B98F1D-2809-4D59-A937-93181E6FF3EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuyu.Loader", "Shuyu.Loader\Shuyu.Loader.csproj", "{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,10 @@ Global
 		{58B98F1D-2809-4D59-A937-93181E6FF3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58B98F1D-2809-4D59-A937-93181E6FF3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58B98F1D-2809-4D59-A937-93181E6FF3EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,10 +13,20 @@
         <PathMap>$(AppOutputBase)=.\</PathMap>
         <NoWarn>$(NoWarn);MSB3270;CS0436</NoWarn>
 
+        <Sts2CompatVersion Condition="'$(Sts2CompatVersion)' == ''">111</Sts2CompatVersion>
+        <RitsuLibRuntimeVersion>0.5.13</RitsuLibRuntimeVersion>
+        <ContentVariantFolder Condition="'$(Sts2CompatVersion)' == '107'">0.107.1</ContentVariantFolder>
+        <ContentVariantFolder Condition="'$(Sts2CompatVersion)' == '111'">0.111.0</ContentVariantFolder>
+        <DefineConstants Condition="'$(Sts2CompatVersion)' == '107'">$(DefineConstants);STS2_107</DefineConstants>
+        <DefineConstants Condition="'$(Sts2CompatVersion)' == '111'">$(DefineConstants);STS2_111</DefineConstants>
+        <IntermediateOutputPath>$(GodotProjectDir).godot\mono\temp\obj\$(Sts2CompatVersion)\$(Configuration)\</IntermediateOutputPath>
+        <OutputPath>$(GodotProjectDir).godot\mono\temp\bin\$(Sts2CompatVersion)\$(Configuration)\</OutputPath>
+
         <GodotExportPreset>Windows Desktop</GodotExportPreset>
         <Sts2Dir Condition="'$(Sts2Dir)' == ''">$(MSBuildProgramFiles32)\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
         <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
         <ModOutputDir>$(Sts2Dir)\mods\$(MSBuildProjectName)\</ModOutputDir>
+        <ModVariantOutputDir>$(ModOutputDir)lib\$(ContentVariantFolder)\</ModVariantOutputDir>
         <ModPckPath>$(ModOutputDir)$(MSBuildProjectName).pck</ModPckPath>
         <!-- 普通构建不自动安装 RitsuLib；需要时可用 /p:RitsuLibAutoCopy=true 临时开启。 -->
         <!-- Normal builds do not install RitsuLib; opt in with /p:RitsuLibAutoCopy=true when needed. -->
@@ -30,8 +40,8 @@
     <ItemGroup>
         <PackageReference Include="Krafs.Publicizer" Version="2.2.1" PrivateAssets="all" />
         <PackageReference Include="Nothing.STS2RitsuLib.ModAnalyzers" Version="*" PrivateAssets="all" />
-        <!-- 主线 RitsuLib（STS2 0.105.0+），跟踪 NuGet 最新版本。兼容分支和 manifest 版本对齐规则见 README。 -->
-        <PackageReference Include="STS2.RitsuLib" Version="0.5.12" GeneratePathProperty="true" />
+        <PackageReference Include="STS2.RitsuLib.Compat.0.107.1" Version="$(RitsuLibRuntimeVersion)" Condition="'$(Sts2CompatVersion)' == '107'" />
+        <PackageReference Include="STS2.RitsuLib" Version="$(RitsuLibRuntimeVersion)" Condition="'$(Sts2CompatVersion)' == '111'" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,16 +52,16 @@
         <Reference Include="0Harmony" HintPath="$(Sts2DataDir)\0Harmony.dll" Private="True" />
         <Reference Include="Steamworks.NET" HintPath="$(Sts2DataDir)\Steamworks.NET.dll" Private="True" />
         <Reference Include="sts2">
-          <HintPath>..\..\Steam\steamapps\common\Slay the Spire 2\data_sts2_windows_x86_64\sts2.dll</HintPath>
+          <HintPath>$(Sts2DataDir)\sts2.dll</HintPath>
         </Reference>
     </ItemGroup>
 
     <ItemGroup>
         <!-- 中文：排除 Godot、IDE 和构建输出目录，避免本地生成文件参与编译。 -->
         <!-- English: Exclude Godot, IDE, and build output directories so local generated files are not compiled. -->
-        <Compile Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**" />
-        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**" />
-        <None Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**" />
+        <Compile Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**;Shuyu.Loader/**" />
+        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**;Shuyu.Loader/**" />
+        <None Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**;Shuyu.Loader/**" />
 
         <AdditionalFiles Include="Shuyu/localization/**/*.json" />
 
@@ -76,12 +86,13 @@
     </ItemGroup>
 
     <Target Name="ValidateSts2GameInstall" BeforeTargets="ResolveAssemblyReferences">
+        <Error Condition="'$(Sts2CompatVersion)' != '107' and '$(Sts2CompatVersion)' != '111'" Text="Sts2CompatVersion must be either '107' or '111', but was '$(Sts2CompatVersion)'." />
         <Error Condition="!Exists('$(Sts2DataDir)\sts2.dll')" Text="Could not find sts2.dll under '$(Sts2DataDir)'. Copy local.props.template to local.props and set Sts2Dir/Sts2DataDir for your local game install." />
     </Target>
 
     <Target Name="CopyMod" AfterTargets="Build" Condition="'$(CopyModOnBuild)' != 'false'">
-        <MakeDir Directories="$(ModOutputDir)" />
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModOutputDir)" />
+        <MakeDir Directories="$(ModOutputDir);$(ModVariantOutputDir)" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModVariantOutputDir)" />
         <Copy SourceFiles="$(MSBuildProjectDirectory)\$(MSBuildProjectName).json" DestinationFolder="$(ModOutputDir)" />
     </Target>
 
@@ -91,9 +102,9 @@
         <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="&quot;$(GodotExe)&quot; --headless --path &quot;$(MSBuildProjectDirectory)&quot; --export-pack &quot;$(GodotExportPreset)&quot; &quot;$(ModPckPath)&quot;" EnvironmentVariables="STS2_SKIP_PCK_EXPORT=1" />
     </Target>
 
-    <Target Name="SyncManifestDependencies" AfterTargets="Build" BeforeTargets="CopyMod" Condition="'$(DesignTimeBuild)' != 'true' and '$(PkgSTS2_RitsuLib)' != ''">
+    <Target Name="SyncManifestDependencies" AfterTargets="Build" BeforeTargets="CopyMod" Condition="'$(DesignTimeBuild)' != 'true'">
         <PropertyGroup>
-            <RitsuLibVersion>$([System.IO.Path]::GetFileName('$(PkgSTS2_RitsuLib)'))</RitsuLibVersion>
+            <RitsuLibVersion>$(RitsuLibRuntimeVersion)</RitsuLibVersion>
             <ManifestFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).json</ManifestFile>
         </PropertyGroup>
         <PropertyGroup>

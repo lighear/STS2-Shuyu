@@ -84,12 +84,26 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     public override float AttackAnimDelay => 0.4f;
     public override float CastAnimDelay => 0.8f;
 
+#if STS2_107
+    public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+    {
+        CreatureAnimator animator = base.GenerateAnimator(controller);
+        ConnectAnimationEvents(controller);
+        return animator;
+    }
+#else
     public override CreatureAnimator GenerateAnimator(MegaSprite controller, Creature creature)
     {
         CreatureAnimator animator = base.GenerateAnimator(controller, creature);
+        ConnectAnimationEvents(controller);
+        return animator;
+    }
+#endif
+
+    private static void ConnectAnimationEvents(MegaSprite controller)
+    {
         controller.ConnectAnimationStarted(
             Callable.From<GodotObject, GodotObject, GodotObject>(OnSpineAnimationStarted));
-        return animator;
     }
 
     private static void OnSpineAnimationStarted(
@@ -97,7 +111,17 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
         GodotObject animationState,
         GodotObject trackEntry)
     {
+#if STS2_107
+        MegaTrackEntry entry = new(trackEntry);
+        SpeedUpAttackAnimation(entry);
+#else
         using MegaTrackEntry entry = new(trackEntry);
+        SpeedUpAttackAnimation(entry);
+#endif
+    }
+
+    private static void SpeedUpAttackAnimation(MegaTrackEntry entry)
+    {
         if (entry.GetAnimationName() is "attack" or "cast")
         {
             entry.SetTimeScale(1.5f);

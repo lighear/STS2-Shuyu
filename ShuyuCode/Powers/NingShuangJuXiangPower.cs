@@ -55,7 +55,11 @@ public class NingShuangJuXiangPower : ModPowerTemplate
         return new Data();
     }
 
+#if STS2_107
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+#else
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, MegaCrit.Sts2.Core.Entities.Cards.CardPlay? cardPlay)
+#endif
     {
         if (target == Owner && props.IsPoweredAttack() && dealer != null && (dealer.HasPower<ChillPower>() || CreatureList.Contains(dealer)))
         {

@@ -59,7 +59,7 @@ namespace Shuyu.Cards
                 decimal damage = cardPlay.Target!.Powers.Count(p => p.TypeForCurrentAmount == PowerType.Debuff) * DynamicVars["Multiple"].BaseValue;
                 await Cmd.Wait(0.15f);
                 await NNingYuDebuffImpactVfx.Play(cardPlay.Target);
-                await CreatureCmd.Damage(choiceContext, cardPlay.Target, damage, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this, cardPlay);
+                await CreatureCmdCompat.Damage(choiceContext, cardPlay.Target, damage, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this, cardPlay);
             }
         }
 

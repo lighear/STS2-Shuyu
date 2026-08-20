@@ -26,7 +26,11 @@ public class BingWuPower : ModPowerTemplate
         BigIconPath: $"{Entry.ResPath}/images/powers/{GetType().Name}.png"
     );
 
+#if STS2_107
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+#else
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, MegaCrit.Sts2.Core.Entities.Cards.CardPlay? cardPlay)
+#endif
     {
         if (CombatState.CurrentSide == Owner.Side)
         {

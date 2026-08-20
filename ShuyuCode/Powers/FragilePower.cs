@@ -62,7 +62,11 @@ public class FragilePower : ModPowerTemplate
         return new Data() { isConverting = false };
     }
 
+#if STS2_107
+    public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
+#else
     public override decimal ModifyDamageMultiplicative(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, MegaCrit.Sts2.Core.Entities.Cards.CardPlay? cardPlay)
+#endif
     {
         if (target != Owner || !props.IsPoweredAttack() || target.GetPower<VulnerablePower>() != null)
         {
@@ -109,7 +113,7 @@ public class FragilePower : ModPowerTemplate
                     if (power != null && Owner.IsAlive)
                     {
                         decimal breakDamage = power.Amount * DynamicVars.Damage.BaseValue;
-                        await CreatureCmd.LoseBlock(choiceContext, Owner, Owner.Block, applier);
+                        await CreatureCmdCompat.LoseBlock(choiceContext, Owner, Owner.Block, applier);
                         if (Owner.IsAlive)
                         {
                             await CreatureCmd.Damage(choiceContext, Owner, breakDamage, ValueProp.Unpowered, applier ?? Owner);

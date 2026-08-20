@@ -180,7 +180,7 @@ namespace Shuyu.Commands
                     cardSource.Owner.Creature,
                     targets,
                     effectiveEnergyCost);
-                await CreatureCmd.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource, null);
+                await CreatureCmdCompat.Damage(choiceContext, targets, damage, ValueProp.Move, cardSource.Owner.Creature, cardSource, null);
             }
         }
 

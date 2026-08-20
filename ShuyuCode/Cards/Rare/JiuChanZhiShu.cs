@@ -45,7 +45,7 @@ namespace Shuyu.Cards
                 foreach (Creature ally in CombatState!.GetTeammatesOf(Owner.Creature)
                     .Where(c => c != null && c.IsAlive && c.IsPlayer && c != Owner.Creature))
                 {
-                    CardModel card = CreateCloneForPlayer(ally.Player!);
+                    CardModel card = this.CreateCloneForPlayer(ally.Player!);
                     await CardPileCmd.AddGeneratedCardToCombat(card, PileType.Hand, Owner);
                 }
             }

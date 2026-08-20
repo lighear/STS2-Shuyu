@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\local.props" Condition="Exists('..\local.props')" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Shuyu.Loader</AssemblyName>
+    <RootNamespace>Shuyu.Loader</RootNamespace>
+    <Sts2Dir Condition="'$(Sts2Dir)' == ''">$(MSBuildProgramFiles32)\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
+    <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    <IntermediateOutputPath>..\.godot\mono\temp\obj\loader\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath>..\.godot\mono\temp\bin\loader\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="sts2" HintPath="$(Sts2DataDir)\sts2.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(Sts2DataDir)\0Harmony.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="ValidateSts2GameInstall" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(Sts2DataDir)\sts2.dll')" Text="Could not find sts2.dll under '$(Sts2DataDir)'." />
+    <Error Condition="!Exists('$(Sts2DataDir)\0Harmony.dll')" Text="Could not find 0Harmony.dll under '$(Sts2DataDir)'." />
+  </Target>
+</Project>
