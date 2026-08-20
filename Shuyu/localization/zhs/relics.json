@@ -3,7 +3,7 @@
   "SHUYU_RELIC_BING_LENG_ZHI_HUI.description": "第一个回合额外抽[blue]{Cards}[/blue]张牌，然后[gold]封冻[/gold][blue]{FrozenAmount}[/blue]张手牌。",
   "SHUYU_RELIC_BING_LENG_ZHI_HUI.flavor": "冰冷魔法的教科书。记录了很多冷藏食物的好办法！",
   "SHUYU_RELIC_JI_HAN_ZHI_HUI.title": "极寒智慧",
-  "SHUYU_RELIC_JI_HAN_ZHI_HUI.description": "第一个回合额外抽[blue]{Cards}[/blue]张牌，然后封冻[blue]{FrozenAmount}[/blue]张手牌。",
+  "SHUYU_RELIC_JI_HAN_ZHI_HUI.description": "第一个回合额外抽[blue]{Cards}[/blue]张牌，然后封冻至多[blue]{FrozenAmount}[/blue]张手牌。",
   "SHUYU_RELIC_JI_HAN_ZHI_HUI.flavor": "大魔法师写的冰冷魔法的笔记原版。能读懂它的见习魔法师屈指可数。",
   "SHUYU_RELIC_BING_ZHI_LIN.title": "冰之鳞",
   "SHUYU_RELIC_BING_ZHI_LIN.description": "战斗开始时获得[blue]{IceShieldPower}[/blue]层[gold]寒冰护盾[/gold]。",

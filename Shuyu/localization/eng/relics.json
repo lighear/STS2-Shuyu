@@ -3,7 +3,7 @@
   "SHUYU_RELIC_BING_LENG_ZHI_HUI.description": "On the first turn, draw [blue]{Cards}[/blue] additional {Cards:plural:card|cards}, then apply [gold]Frozen[/gold] to [blue]{FrozenAmount}[/blue] cards in your [gold]Hand[/gold].",
   "SHUYU_RELIC_BING_LENG_ZHI_HUI.flavor": "A textbook on ice magic. It contains many excellent ways to keep food cold!",
   "SHUYU_RELIC_JI_HAN_ZHI_HUI.title": "Glacial Wisdom",
-  "SHUYU_RELIC_JI_HAN_ZHI_HUI.description": "On the first turn, draw [blue]{Cards}[/blue] additional {Cards:plural:card|cards}, then apply [gold]Frozen[/gold] to [blue]{FrozenAmount}[/blue] cards in your [gold]Hand[/gold].",
+  "SHUYU_RELIC_JI_HAN_ZHI_HUI.description": "On the first turn, draw [blue]{Cards}[/blue] additional {Cards:plural:card|cards}, then apply [gold]Frozen[/gold] to up to [blue]{FrozenAmount}[/blue] cards in your [gold]Hand[/gold].",
   "SHUYU_RELIC_JI_HAN_ZHI_HUI.flavor": "The original notes on ice magic written by a grand mage. Few apprentices can make sense of them.",
   "SHUYU_RELIC_BING_ZHI_LIN.title": "Ice Scale",
   "SHUYU_RELIC_BING_ZHI_LIN.description": "At the start of each combat, gain [blue]{IceShieldPower}[/blue] [gold]Ice Shield[/gold].",

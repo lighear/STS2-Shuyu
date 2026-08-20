@@ -44,7 +44,7 @@ public sealed class JiHanZhiHui : ModRelicTemplate
     {
         if (player == Owner && Owner.PlayerCombatState!.TurnNumber <= 1)
         {
-            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars["FrozenAmount"].IntValue, this);
+            await ShuyuMechanismCmd.ChooseFromHandAndFreeze(choiceContext, Owner, DynamicVars["FrozenAmount"].IntValue, this, true);
         }
     }
 }
