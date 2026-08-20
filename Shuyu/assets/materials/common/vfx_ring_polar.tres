@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dbil4ew3i4v3x"]
 
-[ext_resource type="Shader" uid="uid://cxmxpiw62fywy" path="res://Shuyu/assets/shaders/common/vfx_ring_polar_shader.gdshader" id="1_gq4bx"]
+[ext_resource type="Shader" uid="uid://ba0ecqu4fncp4" path="res://Shuyu/assets/shaders/common/vfx_ring_polar_shader.gdshader" id="1_gq4bx"]
 
 [sub_resource type="Curve" id="Curve_8q0jc"]
 _data = [Vector2(0, 0.499536), 0.0, 1.15666, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]

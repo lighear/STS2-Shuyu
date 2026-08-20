@@ -4,15 +4,15 @@
   "pck_name": "Shuyu",
   "author": "梳雨、lighear",
   "description": "",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "has_pck": true,
   "has_dll": true,
   "affects_gameplay": true,
-  "min_game_version": "0.110.0",
+  "min_game_version": "0.111.0",
   "dependencies": [
     {
       "id": "STS2-RitsuLib",
-      "version": "0.5.1"
+      "version": "0.5.12"
     }
   ]
 }

@@ -9,7 +9,7 @@
   "SHUYU_RELIC_BING_ZHI_LIN.description": "战斗开始时获得[blue]{IceShieldPower}[/blue]层[gold]寒冰护盾[/gold]。",
   "SHUYU_RELIC_BING_ZHI_LIN.flavor": "特殊的魔法素材，冰魔法学徒素材收集的第一课。",
   "SHUYU_RELIC_SHUI_JING_SHAO_PING.title": "水晶烧瓶",
-  "SHUYU_RELIC_SHUI_JING_SHAO_PING.description": "战斗开始时对所有敌人施加[gold]寒冷[/gold]。",
+  "SHUYU_RELIC_SHUI_JING_SHAO_PING.description": "战斗开始时对所有敌人施加[gold]寒冷[/gold]和[blue]{FragilePower}[/blue]层[gold]易碎[/gold]。",
   "SHUYU_RELIC_SHUI_JING_SHAO_PING.flavor": "冰魔法实验用器材。",
   "SHUYU_RELIC_BING_SAN.title": "冰伞",
   "SHUYU_RELIC_BING_SAN.description": "每施加1层[gold]易碎[/gold]，获得[blue]{Block}[/blue]点[gold]格挡[/gold]。",

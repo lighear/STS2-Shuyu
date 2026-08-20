@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp73eyy1t8vok"]
 
-[ext_resource type="Shader" uid="uid://bsuwikdxr6yo" path="res://Shuyu/assets/shaders/vfx_BingWuPower.gdshader" id="1_jiwbe"]
+[ext_resource type="Shader" uid="uid://e1tbgfusfl5c" path="res://Shuyu/assets/shaders/vfx_BingWuPower.gdshader" id="1_jiwbe"]
 
 [sub_resource type="Gradient" id="Gradient_y8c68"]
 offsets = PackedFloat32Array(0.18181819, 1)

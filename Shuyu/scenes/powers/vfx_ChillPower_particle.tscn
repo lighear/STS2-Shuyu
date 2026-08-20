@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://b85p7wsxbe2uu"]
 
-[ext_resource type="Shader" uid="uid://cllhtpmms6qch" path="res://Shuyu/assets/shaders/vfx_ChillPower_particle.gdshader" id="1_ahbda"]
+[ext_resource type="Shader" uid="uid://drim620rh5tjy" path="res://Shuyu/assets/shaders/vfx_ChillPower_particle.gdshader" id="1_ahbda"]
 [ext_resource type="Texture2D" uid="uid://vvutw2uyyaeu" path="res://Shuyu/assets/images/snowflake.png" id="2_r6xdo"]
 [ext_resource type="Texture2D" uid="uid://d18475yoes2kv" path="res://Shuyu/assets/images/common_glow.png" id="3_1bvyv"]
 

@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://cdoy2wx37qvbv"]
 
-[ext_resource type="Shader" uid="uid://5uhq7os13wfu" path="res://Shuyu/assets/shaders/common/vfx_row_flipbook_shader.gdshader" id="1_8oo48"]
+[ext_resource type="Shader" uid="uid://cooc3ulf1rqjy" path="res://Shuyu/assets/shaders/common/vfx_row_flipbook_shader.gdshader" id="1_8oo48"]
 
 [sub_resource type="Curve" id="Curve_aceov"]
 _data = [Vector2(0, 0), 0.0, 1.578006, 0, 0, Vector2(1, 1), 0.09634201, 0.0, 0, 0]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://t38x0wrlhhfc"]
 
-[ext_resource type="Shader" uid="uid://c6qljyahypegh" path="res://Shuyu/assets/shaders/vfx_WanBiBuPoPower_ring.gdshader" id="1_283ab"]
+[ext_resource type="Shader" uid="uid://bgmwcnkbo3him" path="res://Shuyu/assets/shaders/vfx_WanBiBuPoPower_ring.gdshader" id="1_283ab"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_283ab"]
 shader = ExtResource("1_283ab")

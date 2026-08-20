@@ -38,12 +38,23 @@ public sealed class BaiShouTao : ModRelicTemplate
     ];
 
     private int triggeredCount;
+    
+    public override bool ShowCounter => CombatManager.Instance.IsInProgress;
+
+    public override int DisplayAmount
+    {
+        get
+        {
+            return triggeredCount;
+        }
+    }
 
     public override async Task AfterCardDiscarded(PlayerChoiceContext choiceContext, CardModel card)
     {
         if (card.Owner == Owner)
         {
             triggeredCount++;
+            InvokeDisplayAmountChanged();
             switch (triggeredCount)
             {
                 case 1:
@@ -69,6 +80,7 @@ public sealed class BaiShouTao : ModRelicTemplate
         if (participants.Contains(Owner.Creature))
         {
             triggeredCount = 0;
+            InvokeDisplayAmountChanged();
         }
     }
 }

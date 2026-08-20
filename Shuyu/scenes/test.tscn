@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b5h8xcc73cluf" path="res://Shuyu/images/characters/Shuyu_character.png" id="2_coe4j"]
 [ext_resource type="PackedScene" uid="uid://dwlkqs2g314dn" path="res://Shuyu/scenes/powers/vfx_LianXuJingGePower.tscn" id="2_ii6a0"]
-[ext_resource type="Shader" uid="uid://bn7o4fx0g5v34" path="res://Shuyu/assets/shaders/vfx_LianXuJingGePower.gdshader" id="3_wu7t6"]
+[ext_resource type="Shader" uid="uid://buv21mju33gtv" path="res://Shuyu/assets/shaders/vfx_LianXuJingGePower.gdshader" id="3_wu7t6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_coe4j"]
 

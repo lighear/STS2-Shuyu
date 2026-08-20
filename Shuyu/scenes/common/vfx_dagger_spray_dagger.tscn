@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://4efw4mkqs4fi"]
 
 [ext_resource type="Material" uid="uid://c8eh2aj3mo4dv" path="res://Shuyu/assets/materials/common/vfx_dagger_spray_single.tres" id="1_0rql3"]
-[ext_resource type="Texture2D" uid="uid://bv4pjr3e8qvfn" path="res://Shuyu/assets/images/dagger_spray_single.png" id="2_padwl"]
+[ext_resource type="Texture2D" uid="uid://7udf8vft0hbu" path="res://Shuyu/assets/images/dagger_spray_single.png" id="2_padwl"]
 
 [sub_resource type="Curve" id="Curve_w5ytc"]
 _data = [Vector2(0.0493827, 0), 0.0, 22.1023, 0, 0, Vector2(0.0691358, 1), 0.0, 0.0, 0, 0]

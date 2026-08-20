@@ -2,6 +2,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Entities.Characters;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Characters;
@@ -83,9 +84,9 @@ public sealed class ShuyuCharacter : ModCharacterTemplate<ShuyuCardPool, ShuyuRe
     public override float AttackAnimDelay => 0.4f;
     public override float CastAnimDelay => 0.8f;
 
-    public override CreatureAnimator GenerateAnimator(MegaSprite controller)
+    public override CreatureAnimator GenerateAnimator(MegaSprite controller, Creature creature)
     {
-        CreatureAnimator animator = base.GenerateAnimator(controller);
+        CreatureAnimator animator = base.GenerateAnimator(controller, creature);
         controller.ConnectAnimationStarted(
             Callable.From<GodotObject, GodotObject, GodotObject>(OnSpineAnimationStarted));
         return animator;

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cfohylfclmjf7"]
 
-[ext_resource type="Shader" uid="uid://dn8haslvonvtc" path="res://Shuyu/assets/shaders/vfx_ChillPower_background.gdshader" id="1_jh1si"]
+[ext_resource type="Shader" uid="uid://c1ku3p7m3m6hj" path="res://Shuyu/assets/shaders/vfx_ChillPower_background.gdshader" id="1_jh1si"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cq33g"]
 

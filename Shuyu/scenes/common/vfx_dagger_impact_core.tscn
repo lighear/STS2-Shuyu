@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://wt5ycmi5c6wi"]
 
 [ext_resource type="Material" uid="uid://dn7jefh4kp5ox" path="res://Shuyu/assets/materials/common/vfx_dagger_impact_core.tres" id="1_4y5pb"]
-[ext_resource type="Texture2D" uid="uid://4y3ugwj4hg5s" path="res://Shuyu/assets/images/big_slash_impact_core_flipbook.png" id="2_nspgb"]
+[ext_resource type="Texture2D" uid="uid://djrghusp4qg2t" path="res://Shuyu/assets/images/big_slash_impact_core_flipbook.png" id="2_nspgb"]
 
 [sub_resource type="Curve" id="Curve_48vg4"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.2902, 0.0, 0, 0]
