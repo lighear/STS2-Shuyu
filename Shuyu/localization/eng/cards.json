@@ -125,7 +125,7 @@
   "SHUYU_CARD_GAN_YING_SHENG_ZHANG.title": "Inductive Growth",
   "SHUYU_CARD_GAN_YING_SHENG_ZHANG.description": "The first 3 times you take attack damage each turn, gain {IceThornsPower:diff()} [gold]Ice Thorns[/gold].",
   "SHUYU_CARD_JIE_JING_CUI_HUA.title": "Crystal Catalyst",
-  "SHUYU_CARD_JIE_JING_CUI_HUA.description": "Multiply your [gold]Ice Thorns[/gold] by {Multiple:diff()}.\nFor every {IceThornsPower:diff()} [gold]Ice Thorns[/gold] gained this way, take {ExtraDamage:diff()} damage.{InCombat:\n(Take {CalculatedDamage} damage)|}",
+  "SHUYU_CARD_JIE_JING_CUI_HUA.description": "Gain [gold]Ice Thorns[/gold] and [gold]Ice Shield[/gold] equal to {IfUpgraded:show:three quarters|half} of your current [gold]Ice Thorns[/gold] stacks.",
   "SHUYU_CARD_BO_WEN_GONG_ZHEN.title": "Ripple Resonance",
   "SHUYU_CARD_BO_WEN_GONG_ZHEN.description": "Deal damage equal to your [gold]Block[/gold] multiplied by {Multiple:diff()}.\nHalve this damage for each card played this turn, up to 4 times.{InCombat:\n(Deal {CalculatedDamage:diff()} damage)|}",
   "SHUYU_CARD_CHU_XUE_SHENG_JIE.title": "First Snow Sanctuary",

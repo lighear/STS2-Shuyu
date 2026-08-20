@@ -49,8 +49,8 @@ namespace Shuyu.Cards
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Damage.UpgradeValueBy(3);
-            //DynamicVars["IceThornsPower"].UpgradeValueBy(1);
+            DynamicVars.Damage.UpgradeValueBy(2);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(1);
         }
     }
 }
