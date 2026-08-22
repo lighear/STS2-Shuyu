@@ -16,13 +16,13 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class YuJiaXue : ModCardTemplate, IOnFreezingCard, IAfterUnfreezingCard
+    public class YuJiaXue : ModCardTemplate, IOnFreezingCard
     {
         public YuJiaXue() : base(
-            baseCost: 2,
-            CardType.Skill,
+            baseCost: 5,
+            CardType.Power,
             CardRarity.Rare,
-            TargetType.AllEnemies)
+            TargetType.None)
         { }
 
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
@@ -30,11 +30,13 @@ namespace Shuyu.Cards
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.FromPower<ChillPower>(),
             ..HoverTipFactory.FromAffliction<Frozen>(),
-            HoverTipFactory.FromPower<IceShieldPower>()
+            HoverTipFactory.Static(StaticHoverTip.Block),
+            HoverTipFactory.FromKeyword(CardKeyword.Retain)
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<IceShieldPower>(3)
+            new BlockVar(3, ValueProp.Unpowered),
+            new EnergyVar(2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -43,15 +45,13 @@ namespace Shuyu.Cards
                 Owner.Creature,
                 "Cast",
                 Owner.Character.CastAnimDelay);
-            NYuJiaXueVfx.Create();
 
-            await PowerCmd.Apply<ChillPower>(choiceContext, CombatState!.HittableEnemies, 1, Owner.Creature, this);
-            await PowerCmd.Apply<IceShieldPower>(choiceContext, Owner.Creature, DynamicVars["IceShieldPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<YuJiaXuePower>(choiceContext, Owner.Creature, DynamicVars.Block.BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars["IceShieldPower"].UpgradeValueBy(2);
+            base.EnergyCost.UpgradeBy(-1);
         }
 
         public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
@@ -59,18 +59,11 @@ namespace Shuyu.Cards
             if (card == this)
             {
                 await FreezingEffect(choiceContext);
+                base.EnergyCost.AddThisCombat(-base.DynamicVars.Energy.IntValue);
             }
-            return true;
+            return !(card == this);
         }
-
-        public async Task AfterUnfreezingCard(PlayerChoiceContext choiceContext, CardModel card)
-        {
-            if (card == this)
-            {
-                await FreezingEffect(choiceContext);
-            }
-        }
-
+        
         private async Task FreezingEffect(PlayerChoiceContext choiceContext)
         {
             NYuJiaXueVfx.Create();

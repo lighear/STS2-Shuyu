@@ -5,6 +5,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuyu", "Shuyu.csproj", "{58B98F1D-2809-4D59-A937-93181E6FF3EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuyu.Loader", "Shuyu.Loader\Shuyu.Loader.csproj", "{7B69315A-8BC2-4C06-9F6A-BC452E36A9D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{58B98F1D-2809-4D59-A937-93181E6FF3EC} = {58B98F1D-2809-4D59-A937-93181E6FF3EC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

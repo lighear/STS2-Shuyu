@@ -10,6 +10,10 @@
     <RootNamespace>Shuyu.Loader</RootNamespace>
     <Sts2Dir Condition="'$(Sts2Dir)' == ''">$(MSBuildProgramFiles32)\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
     <Sts2DataDir Condition="'$(Sts2DataDir)' == ''">$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    <ModId>Shuyu</ModId>
+    <ModOutputDir>$(Sts2Dir)\mods\$(ModId)\</ModOutputDir>
+    <LoaderDeployPath>$(ModOutputDir)$(ModId).dll</LoaderDeployPath>
+    <CopyModOnBuild Condition="'$(CopyModOnBuild)' == ''">true</CopyModOnBuild>
     <IntermediateOutputPath>..\.godot\mono\temp\obj\loader\$(Configuration)\</IntermediateOutputPath>
     <OutputPath>..\.godot\mono\temp\bin\loader\$(Configuration)\</OutputPath>
   </PropertyGroup>
@@ -22,5 +26,11 @@
   <Target Name="ValidateSts2GameInstall" BeforeTargets="ResolveAssemblyReferences">
     <Error Condition="!Exists('$(Sts2DataDir)\sts2.dll')" Text="Could not find sts2.dll under '$(Sts2DataDir)'." />
     <Error Condition="!Exists('$(Sts2DataDir)\0Harmony.dll')" Text="Could not find 0Harmony.dll under '$(Sts2DataDir)'." />
+  </Target>
+
+  <Target Name="CopyLoader" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true' and '$(CopyModOnBuild)' != 'false'">
+    <MakeDir Directories="$(ModOutputDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(LoaderDeployPath)" />
+    <Message Importance="High" Text="Deployed Shuyu.Loader: $(TargetPath) -&gt; $(LoaderDeployPath)" />
   </Target>
 </Project>

@@ -26,6 +26,7 @@ namespace Shuyu.Cards
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+            HoverTipFactory.FromCard<BingZhen>(IsUpgraded),
             HoverTipFactory.FromPower<ChillPower>()
         ];
 

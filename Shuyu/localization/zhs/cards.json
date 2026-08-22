@@ -166,7 +166,7 @@
     "SHUYU_CARD_JI_BING_YIN_JI.title":  "极冰印记",
     "SHUYU_CARD_JI_BING_YIN_JI.description":  "移除目标的所有[gold]人工制品[/gold]，对目标施加[gold]寒冷[/gold]。\n对目标施加[gold]极冰印记[/gold]。",
     "SHUYU_CARD_YU_JIA_XUE.title":  "雨夹雪",
-    "SHUYU_CARD_YU_JIA_XUE.description":  "获得{IceShieldPower:diff()}层[gold]寒冰护盾[/gold]，对所有敌人施加[gold]寒冷[/gold]。\n每当此牌被[gold]封冻[/gold]或解除[gold]封冻[/gold]时，对所有敌人施加[gold]寒冷[/gold]。",
+    "SHUYU_CARD_YU_JIA_XUE.description":  "此牌被[gold]封冻[/gold]时，解除[gold]封冻[/gold]，向所有敌人施加寒冷，且耗能在本场战斗中减少{Energy:energyIcons()}。\n回合开始时，对所有敌人施加[gold]寒冷[/gold]。\n回合结束时，获得手中[gold]保留[/gold]牌数量{Block:diff()}倍的[gold]格挡[/gold]。",
     "SHUYU_CARD_YIN_ZHI_SHU.title":  "银之书",
     "SHUYU_CARD_YIN_ZHI_SHU.description":  "对所有敌人造成{Damage:diff()}点伤害，施加[gold]寒冷[/gold]。\n若手中至少有{Cards:diff()}张[gold]其他手牌[/gold]，生成1张[gold]冰针[/gold]。",
     "SHUYU_CARD_LING_SHI_YI_ZHI.title":  "零时已至",

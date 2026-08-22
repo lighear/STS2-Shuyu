@@ -45,11 +45,6 @@ namespace Shuyu.Cards
             DynamicVars.Cards.UpgradeValueBy(1);
         }
 
-        public Task FrostforgedEffect()
-        {
-            return Task.CompletedTask;
-        }
-
         public async Task<bool> OnFreezingCard(PlayerChoiceContext choiceContext, CardModel card)
         {
             return !(card == this);

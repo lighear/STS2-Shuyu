@@ -247,6 +247,7 @@ local.props 至少需要：
   <PropertyGroup>
     <Sts2Dir>D:\Steam\steamapps\common\Slay the Spire 2</Sts2Dir>
     <Sts2DataDir>$(Sts2Dir)\data_sts2_windows_x86_64</Sts2DataDir>
+    <Sts2CompatVersion>107</Sts2CompatVersion>
     <GodotExe>D:\你的Godot目录\Godot.exe</GodotExe>
   </PropertyGroup>
 </Project>
@@ -396,25 +397,84 @@ Copy-Item .\Shuyu.json .\dist\Shuyu\Shuyu.json -Force
 
 导出时不要把 PCK 放进 lib/0.107.1 或 lib/0.111.0；两个版本共用顶层 Shuyu.pck。
 
-## 13. 普通构建的自动复制行为
+## 13. Rider 构建解决方案与自动部署
 
-Shuyu.csproj 中 CopyModOnBuild 默认是 true，RunPckExport 在普通命令行构建时通常也会启用。
+现在可以使用 Rider 的“构建解决方案”完成当前游戏版本的日常测试部署。
 
-现在自动复制已经改为：
+执行前必须确认：
 
-- 107 内容 DLL 复制到游戏 Mod 目录的 lib/0.107.1。
-- 111 内容 DLL 复制到游戏 Mod 目录的 lib/0.111.0。
-- manifest 复制到 Mod 顶层。
-- 不再用内容 DLL 覆盖顶层加载器。
+1. 游戏进程已经关闭。
+2. release_info.json 是准备测试的游戏版本。
+3. local.props 的 Sts2CompatVersion 与游戏一致。
+4. local.props 的 Sts2Dir、Sts2DataDir 和 GodotExe 路径正确。
 
-为了避免一次普通编译意外修改游戏安装目录，日常检查建议始终显式传入：
+解决方案已经设置为内容工程先构建、加载器工程后构建。默认 Debug 构建顺序是：
+
+~~~text
+构建当前版本 Shuyu 内容 DLL
+        ↓
+复制到 mods/Shuyu/lib/当前版本/Shuyu.dll
+        ↓
+复制 Shuyu.json 到 Mod 顶层
+        ↓
+Godot 重新导出 mods/Shuyu/Shuyu.pck
+        ↓
+构建 Shuyu.Loader
+        ↓
+复制并重命名为 mods/Shuyu/Shuyu.dll
+~~~
+
+当前版本为 107 时，内容 DLL 写入：
+
+~~~text
+mods/Shuyu/lib/0.107.1/Shuyu.dll
+~~~
+
+当前版本为 111 时，内容 DLL 写入：
+
+~~~text
+mods/Shuyu/lib/0.111.0/Shuyu.dll
+~~~
+
+加载器工程使用同一个 CopyModOnBuild 开关，并把 Shuyu.Loader.dll 复制为顶层 Shuyu.dll。程序集内部名称仍然是 Shuyu.Loader。
+
+因此日常测试可以直接：
+
+1. 在 Rider 修改代码或资源。
+2. 点击“构建解决方案”。
+3. 等待内容编译和 PCK 导出完成。
+4. 启动游戏测试。
+
+如果只构建 Shuyu 内容项目而不是整个解决方案，内容 DLL、manifest 和 PCK 仍会更新，但加载器工程不会重新构建。普通业务代码修改通常不影响加载器；若修改过 Shuyu.Loader，必须构建整个解决方案。
+
+一次构建只更新当前 Sts2CompatVersion 对应的内容目录，不会重新构建另一个游戏版本。例如当前是 111 时，lib/0.107.1 不会被更新。这适合本机测试，但不等于完成双版本正式发布。
+
+如果游戏 Mod 目录被手动删除，而 Rider 判断某个项目已经是最新状态，可以使用“重新构建解决方案”，确保所有构建后复制目标重新执行。
+
+Godot 导出过程中可能显示粒子插件 UID 或 GDExtension 平台警告。只要最终显示构建成功且 PCK 已生成，这些已知警告不等于部署失败；出现 error 时仍需单独处理。
+
+### 13.1 只编译、不部署
+
+命令行检查或 CI 不希望修改游戏目录时，显式传入：
 
 ~~~text
 -p:CopyModOnBuild=false
 -p:RunPckExport=false
 ~~~
 
-需要直装测试时再主动复制 dist 文件。
+例如：
+
+~~~powershell
+dotnet build .\Shuyu.sln -c Debug --no-restore -p:CopyModOnBuild=false -p:RunPckExport=false
+~~~
+
+CopyModOnBuild=false 会同时关闭内容 DLL 和加载器的复制；RunPckExport=false 会关闭 PCK 导出。
+
+### 13.2 日常 Debug 测试与正式 Release 的区别
+
+Rider 默认“构建解决方案”通常生成 Debug DLL，适合本机快速测试。
+
+正式发布仍应按第 7～12 节分别构建两套 Release 内容 DLL、Release 加载器并组装 dist。不要直接把游戏 mods/Shuyu 中的一次 Debug 自动部署目录当成最终工坊发布包。
 
 ## 14. 从 dist 安装到游戏进行测试
 
@@ -861,3 +921,126 @@ else if (host >= new Version(0, 111, 0))
 | 大量 API 或补丁目标变化 | 新建独立内容变体目录。 |
 | 新增了独立内容变体 | 修改 csproj、加载器、dist 和文档，并回归旧版本。 |
 | 只改资源格式 | 重新导出 PCK，并在所有支持版本验证。 |
+
+## 21. Rider 出现大量红波浪线怎么办
+
+### 21.1 典型现象
+
+游戏切换到 107.1 后，Rider 可能显示：
+
+~~~text
+FromCard 只能有一个实参
+找不到某个 111 方法
+override 不匹配
+CardPlay 参数不正确
+~~~
+
+这通常不是源码真的损坏，而是 Rider 的设计时构建仍选择 111 配置，同时 Shuyu.csproj 又引用了当前安装的 107 sts2.dll。
+
+结果是：
+
+~~~text
+编译常量和 RitsuLib 包：111
+游戏 sts2.dll：107
+~~~
+
+两套 API 混在一起后，IDE 就会产生大量红线。
+
+### 21.2 设置 Rider 当前使用的版本
+
+打开项目根目录的 local.props。
+
+当前游戏是 107.1 时：
+
+~~~xml
+<Sts2CompatVersion>107</Sts2CompatVersion>
+~~~
+
+当前游戏是 111 时：
+
+~~~xml
+<Sts2CompatVersion>111</Sts2CompatVersion>
+~~~
+
+local.props 已被 Git 忽略，只影响本机 IDE 和不显式传版本参数的本机构建，不会进入发布包。
+
+### 21.3 重新恢复对应 NuGet 包
+
+107：
+
+~~~powershell
+dotnet restore .\Shuyu.csproj -p:CopyModOnBuild=false -p:RunPckExport=false
+~~~
+
+111：
+
+~~~powershell
+dotnet restore .\Shuyu.csproj -p:CopyModOnBuild=false -p:RunPckExport=false
+~~~
+
+两条命令相同，因为 Sts2CompatVersion 已从 local.props 读取。
+
+107 应选择：
+
+~~~text
+STS2.RitsuLib.Compat.0.107.1 0.5.13
+~~~
+
+111 应选择：
+
+~~~text
+STS2.RitsuLib 0.5.13
+~~~
+
+### 21.4 让 Rider 重新读取项目
+
+修改 local.props 并 restore 后：
+
+1. 回到 Rider。
+2. 使用 Reload All Projects，或关闭后重新打开解决方案。
+3. 等待 NuGet 恢复和项目索引完成。
+4. 再查看红波浪线。
+
+如果仍然保留旧诊断：
+
+1. 确认 release_info.json 与 local.props 的版本一致。
+2. 再执行一次 restore。
+3. 在 Rider 中执行 Invalidate Caches / Restart。
+4. 重开项目并等待索引完成。
+
+不要为了消除红线而修改 AttackCommandCompat 或删除 cardPlay 参数；配置正确后这些调用会自动按 107 兼容扩展方法解析。
+
+### 21.5 用命令确认 IDE 配置是否正确
+
+不显式传 Sts2CompatVersion，直接构建：
+
+~~~powershell
+dotnet build .\Shuyu.csproj --no-restore -p:CopyModOnBuild=false -p:RunPckExport=false
+~~~
+
+当前 local.props 为 107 时，成功输出路径应包含：
+
+~~~text
+.godot\mono\temp\bin\107\Debug\Shuyu.dll
+~~~
+
+当前 local.props 为 111 时，路径应包含：
+
+~~~text
+.godot\mono\temp\bin\111\Debug\Shuyu.dll
+~~~
+
+如果路径版本不对，说明 local.props 没有被读取，或命令行/Rider 另外传入了更高优先级的 Sts2CompatVersion。
+
+### 21.6 哪些警告可以与本问题区分
+
+配置正确后，当前项目仍可能显示少量既有警告，例如：
+
+- CS8600、CS8602、CS8604 等可空引用警告。
+- RITSU013 资源索引警告。
+
+这些警告应单独 review，但与 FromCard 参数数量错误不是同一个问题。判断版本配置是否修复的关键是：
+
+- 不再出现大量 API 签名红线。
+- 命令行构建为 0 个错误。
+- 输出路径是当前选择的 107 或 111。
