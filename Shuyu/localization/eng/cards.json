@@ -166,7 +166,7 @@
   "SHUYU_CARD_JI_BING_YIN_JI.title": "Absolute Zero Mark",
   "SHUYU_CARD_JI_BING_YIN_JI.description": "Remove ALL [gold]Artifact[/gold] from the enemy. Apply [gold]Chill[/gold].\nApply [gold]Absolute Zero Mark[/gold].",
   "SHUYU_CARD_YU_JIA_XUE.title": "Sleet",
-  "SHUYU_CARD_YU_JIA_XUE.description": "Gain {IceShieldPower:diff()} [gold]Ice Shield[/gold]. Apply [gold]Chill[/gold] to ALL enemies.\nWhenever this card becomes [gold]Frozen[/gold] or has [gold]Frozen[/gold] removed, apply [gold]Chill[/gold] to ALL enemies.",
+  "SHUYU_CARD_YU_JIA_XUE.description": "When this card becomes [gold]Frozen[/gold], remove [gold]Frozen[/gold] from it, apply [gold]Chill[/gold] to ALL enemies, and this card costs {Energy:energyIcons()} less this combat.\nAt the start of your turn, apply [gold]Chill[/gold] to ALL enemies.\nAt the end of your turn, gain {Block:diff()} [gold]Block[/gold] for each [gold]Retained[/gold] card in your [gold]Hand[/gold].",
   "SHUYU_CARD_YIN_ZHI_SHU.title": "Silver Grimoire",
   "SHUYU_CARD_YIN_ZHI_SHU.description": "Deal {Damage:diff()} damage and apply [gold]Chill[/gold] to ALL enemies.\nIf you have at least {Cards:diff()} other cards in your [gold]Hand[/gold], add an [gold]Ice Needle[/gold] into your [gold]Hand[/gold].",
   "SHUYU_CARD_LING_SHI_YI_ZHI.title": "Zero Hour",
