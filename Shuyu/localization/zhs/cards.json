@@ -137,7 +137,7 @@
     "SHUYU_CARD_SHUI_SE_LIU_HUO.title":  "水色流火",
     "SHUYU_CARD_SHUI_SE_LIU_HUO.description":  "每当有敌人被[gold]击破[/gold]时，获得{Block:diff()}点格挡和{DexterityPower:diff()}点[gold]敏捷[/gold]。",
     "SHUYU_CARD_YIN_ZHI_BI_LEI.title":  "银之壁垒",
-    "SHUYU_CARD_YIN_ZHI_BI_LEI.description":  "获得{Block:diff()}[gold]格挡[/gold]。\n本回合内每当自身受到攻击，获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]。。",
+    "SHUYU_CARD_YIN_ZHI_BI_LEI.description":  "获得{Block:diff()}[gold]格挡[/gold]。\n获得{IceThornsPower:diff()}层[gold]寒冰荆棘[/gold]。\n本回合内每当自身受到攻击，获得{YinZhiBiLeiPower:diff()}层[gold]寒冰荆棘[/gold]。。",
     "SHUYU_CARD_DUAN_XUE.title":  "「断雪」",
     "SHUYU_CARD_DUAN_XUE.description":  "造成{Damage:diff()}点伤害{Repeat:diff()}次，目标已死亡时剩余段数将作用于随机其他目标。\n[gold]冰器[/gold]：此牌在本场战斗中伤害增加{ExtraDamage:diff()}点。\n每当此牌被丢弃时，将此牌返回[gold]手牌[/gold]，且此牌下一次打出时额外造成1次伤害。",
     "SHUYU_CARD_NING_YU.title":  "「凝雨」",

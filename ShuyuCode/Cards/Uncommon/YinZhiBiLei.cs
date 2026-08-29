@@ -32,19 +32,22 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new BlockVar(12, ValueProp.Move),
+            new PowerVar<YinZhiBiLeiPower>(3),
             new PowerVar<IceThornsPower>(4)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
             await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-            await PowerCmd.Apply<YinZhiBiLeiPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<YinZhiBiLeiPower>(choiceContext, Owner.Creature, DynamicVars["YinZhiBiLeiPower"].BaseValue, Owner.Creature, this);
+            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
             DynamicVars.Block.UpgradeValueBy(4);
-            DynamicVars["IceThornsPower"].UpgradeValueBy(1);
+            DynamicVars["YinZhiBiLeiPower"].UpgradeValueBy(1);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(2);
         }
     }
 }
