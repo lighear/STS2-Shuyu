@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -14,38 +13,38 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace Shuyu.Cards
 {
     [RegisterCard(typeof(ShuyuCardPool))]
-    public class QingShen : ModCardTemplate
+    public class YinZhiBiLei : ModCardTemplate
     {
-        public QingShen() : base(
-            baseCost: 0,
+        public YinZhiBiLei() : base(
+            baseCost: 2,
             CardType.Skill,
             CardRarity.Uncommon,
             TargetType.Self)
         { }
 
+        public override bool GainsBlock => true;
+
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-            HoverTipFactory.FromPower<StrengthPower>(),
-            HoverTipFactory.FromPower<DexterityPower>()
+            HoverTipFactory.FromPower<IceThornsPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new PowerVar<StrengthPower>(3),
-            new PowerVar<DexterityPower>(3)
+            new BlockVar(12, ValueProp.Move),
+            new PowerVar<IceThornsPower>(4)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await PowerCmd.Apply<QingShenStrengthUpPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue, Owner.Creature, this);
-            await PowerCmd.Apply<QingShenDexterityUpPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue, Owner.Creature, this);
-            await CardCmd.Discard(choiceContext, await CardSelectCmd.FromHandForDiscard(choiceContext, Owner, new CardSelectorPrefs(CardSelectorPrefs.DiscardSelectionPrompt, 1), null, this));
+            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
+            await PowerCmd.Apply<YinZhiBiLeiPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Strength.UpgradeValueBy(2);
-            DynamicVars.Dexterity.UpgradeValueBy(2);
+            DynamicVars.Block.UpgradeValueBy(4);
+            DynamicVars["IceThornsPower"].UpgradeValueBy(1);
         }
     }
 }

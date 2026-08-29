@@ -6,7 +6,9 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using Shuyu.Afflictions;
 using Shuyu.Characters;
+using Shuyu.Commands;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
@@ -31,14 +33,14 @@ namespace Shuyu.Cards
                 if (IsUpgraded)
                 {
                     return [HoverTipFactory.FromKeyword(CardKeyword.Exhaust),
-                        HoverTipFactory.FromKeyword(CardKeyword.Retain),
+                        ..HoverTipFactory.FromAffliction<Frozen>(),
                         HoverTipFactory.FromPower<StrengthPower>(),
                         HoverTipFactory.FromPower<DexterityPower>()];
                 }
                 else
                 {
                     return [HoverTipFactory.FromKeyword(CardKeyword.Exhaust),
-                        HoverTipFactory.FromKeyword(CardKeyword.Retain),
+                        ..HoverTipFactory.FromAffliction<Frozen>(),
                         HoverTipFactory.FromPower<StrengthPower>()];
                 }
             }
@@ -59,7 +61,7 @@ namespace Shuyu.Cards
                 Owner.Creature,
                 "Cast",
                 Owner.Character.CastAnimDelay);
-            List<CardModel> cards = PileType.Hand.GetPile(Owner).Cards.Where(c => c.Keywords.Contains(CardKeyword.Retain)).ToList();
+            List<CardModel> cards = PileType.Hand.GetPile(Owner).Cards.Where(c =>c.IsFrozen()).ToList();
             int count = cards.Count;
             await PowerCmd.Apply<StrengthPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue * count, Owner.Creature, this);
             if (IsUpgraded)

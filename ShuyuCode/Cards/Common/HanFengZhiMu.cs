@@ -12,7 +12,6 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Shuyu.Cards
 {
-    [RegisterCard(typeof(ShuyuCardPool))]
     public class HanFengZhiMu : ModCardTemplate
     {
         public HanFengZhiMu() : base(
