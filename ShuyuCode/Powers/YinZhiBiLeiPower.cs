@@ -25,23 +25,33 @@ public class YinZhiBiLeiPower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.FromPower<IceThornsPower>()
+        HoverTipFactory.Static(StaticHoverTip.Block)
     ];
 
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult _, ValueProp props, Creature? dealer, CardModel? __)
+    public override bool ShouldClearBlock(Creature creature)
     {
-        if (target == Owner && props.IsPoweredAttack())
+        if (base.Owner != creature)
         {
-            Flash();
-            await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner, Amount, Owner, null);
+            return true;
         }
+        return false;
     }
 
-    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override Task AfterPreventingBlockClear(AbstractModel preventer, Creature creature)
     {
-        if (Owner.Side != side)
+        if (this != preventer)
         {
-            await PowerCmd.Remove(this);
+            return Task.CompletedTask;
+        }
+        Flash();
+        return Task.CompletedTask;
+    }
+
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    {
+        if (participants.Contains(base.Owner))
+        {
+            await PowerCmd.Decrement(this);
         }
     }
 }

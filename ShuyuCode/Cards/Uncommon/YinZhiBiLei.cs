@@ -16,38 +16,34 @@ namespace Shuyu.Cards
     public class YinZhiBiLei : ModCardTemplate
     {
         public YinZhiBiLei() : base(
-            baseCost: 2,
+            baseCost: 1,
             CardType.Skill,
             CardRarity.Uncommon,
             TargetType.Self)
         { }
 
-        public override bool GainsBlock => true;
-
         public override CardAssetProfile AssetProfile => new(PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+            HoverTipFactory.Static(StaticHoverTip.Block),
             HoverTipFactory.FromPower<IceThornsPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
-            new BlockVar(12, ValueProp.Move),
-            new PowerVar<YinZhiBiLeiPower>(3),
-            new PowerVar<IceThornsPower>(4)
+            new PowerVar<YinZhiBiLeiPower>(1),
+            new PowerVar<IceThornsPower>(7)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {
-            await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
             await PowerCmd.Apply<YinZhiBiLeiPower>(choiceContext, Owner.Creature, DynamicVars["YinZhiBiLeiPower"].BaseValue, Owner.Creature, this);
             await PowerCmd.Apply<IceThornsPower>(choiceContext, Owner.Creature, DynamicVars["IceThornsPower"].BaseValue, Owner.Creature, this);
         }
 
         protected override void OnUpgrade()
         {
-            DynamicVars.Block.UpgradeValueBy(4);
             DynamicVars["YinZhiBiLeiPower"].UpgradeValueBy(1);
-            DynamicVars["IceThornsPower"].UpgradeValueBy(2);
+            //DynamicVars["IceThornsPower"].UpgradeValueBy(1);
         }
     }
 }
