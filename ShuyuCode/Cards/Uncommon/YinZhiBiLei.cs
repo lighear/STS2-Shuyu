@@ -26,13 +26,14 @@ namespace Shuyu.Cards
 
         protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
             HoverTipFactory.Static(StaticHoverTip.Block),
-            HoverTipFactory.FromPower<IceThornsPower>()
+            HoverTipFactory.FromPower<IceThornsPower>(),
+            HoverTipFactory.FromPower<IceShieldPower>()
         ];
 
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new PowerVar<YinZhiBiLeiPower>(1),
-            new PowerVar<IceThornsPower>(7)
-        ];
+            new PowerVar<IceThornsPower>(5)
+        ];  
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
         {

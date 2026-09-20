@@ -84,7 +84,7 @@ public class IceThornsPower : ModPowerTemplate
                 Flash();
                 await ReflectionEffect(choiceContext, dealer);
             }
-            if (amount >= 1)
+            if (amount >= 1 && !Owner.HasPower<YinZhiBiLeiPower>())
             {
                 await PowerCmd.Decrement(this);
             }

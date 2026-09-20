@@ -25,7 +25,9 @@ public class YinZhiBiLeiPower : ModPowerTemplate
     );
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
-        HoverTipFactory.Static(StaticHoverTip.Block)
+        HoverTipFactory.Static(StaticHoverTip.Block),
+        HoverTipFactory.FromPower<IceThornsPower>(),
+        HoverTipFactory.FromPower<IceShieldPower>()
     ];
 
     public override bool ShouldClearBlock(Creature creature)

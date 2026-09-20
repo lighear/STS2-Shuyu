@@ -100,7 +100,7 @@ public class IceShieldPower : ModPowerTemplate
 
     public override async Task BeforeDamageReceived(PlayerChoiceContext choiceContext, Creature target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        if (target == Owner && props.IsPoweredAttack() && amount >= 1)
+        if (target == Owner && props.IsPoweredAttack() && amount >= 1 && !Owner.HasPower<YinZhiBiLeiPower>())
         {
             int decrementAmount = (int)Math.Ceiling(Amount / 10m);
             await PowerCmd.ModifyAmount(choiceContext, this, -decrementAmount, null, null);
