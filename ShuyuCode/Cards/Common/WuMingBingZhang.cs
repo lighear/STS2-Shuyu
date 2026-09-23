@@ -5,11 +5,13 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
 using Shuyu.Characters;
+using Shuyu.Commands;
 using Shuyu.Interfaces;
 using Shuyu.Vfx;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -62,11 +64,14 @@ namespace Shuyu.Cards
 
         public async Task FrostforgedEffect()
         {
-            foreach (WuMingBingZhang item in base.Owner.PlayerCombatState!.AllCards.OfType<WuMingBingZhang>())
+            decimal extraDamage = DynamicVars["ExtraDamage"].BaseValue;
+            DynamicVars.Damage.BaseValue += extraDamage;
+            ExtraDamageFromFrozen += extraDamage;
+            
+            List<CardModel> cardsfrost = PileType.Hand.GetPile(Owner).Cards.Where(c => c.IsFrostforged() && !(c is WuMingBingZhang)).ToList();
+            foreach (CardModel card in cardsfrost)
             {
-                decimal extraDamage = DynamicVars["ExtraDamage"].BaseValue;
-                item.DynamicVars.Damage.BaseValue += extraDamage;
-                item.ExtraDamageFromFrozen += extraDamage;
+                await ShuyuMechanismCmd.FreezeCard(null, card);
             }
         }
 

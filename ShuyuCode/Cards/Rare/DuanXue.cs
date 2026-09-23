@@ -36,7 +36,7 @@ namespace Shuyu.Cards
         protected override IEnumerable<DynamicVar> CanonicalVars => [
             new DamageVar(6, ValueProp.Move),
             new RepeatVar(2),
-            new DynamicVar("ExtraDamage", 3)
+            new DynamicVar("ExtraDamage", 2)
         ];
 
         protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -63,8 +63,6 @@ namespace Shuyu.Cards
                     .TargetingRandomOpponents(CombatState!)
                     .Execute(choiceContext);
             }
-
-            DynamicVars.Repeat.BaseValue = 2;
         }
 
         public override async Task AfterCardDiscarded(PlayerChoiceContext choiceContext, CardModel card)
