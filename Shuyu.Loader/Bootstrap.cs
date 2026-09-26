@@ -269,7 +269,50 @@ public static class Bootstrap
             VariantAssemblies.Add(variantAssembly);
         }
 
+        RegisterVariantAssemblyWithRitsuLib(variantAssembly);
         EnsureReflectionBridgePatch();
+    }
+
+    private static void RegisterVariantAssemblyWithRitsuLib(Assembly variantAssembly)
+    {
+        const string hubTypeName = "STS2RitsuLib.Interop.ModTypeDiscoveryHub";
+
+        Type? hubType = AppDomain.CurrentDomain
+            .GetAssemblies()
+            .Select(assembly => assembly.GetType(hubTypeName, throwOnError: false))
+            .FirstOrDefault(type => type != null);
+        if (hubType == null)
+        {
+            Log.Warn("[Shuyu.Loader] RitsuLib mod type discovery hub was not found.");
+            return;
+        }
+
+        MethodInfo? registerMethod = hubType.GetMethod(
+            "RegisterModAssembly",
+            BindingFlags.Static | BindingFlags.Public,
+            binder: null,
+            [typeof(string), typeof(Assembly)],
+            modifiers: null);
+        if (registerMethod == null)
+        {
+            Log.Warn("[Shuyu.Loader] RitsuLib RegisterModAssembly API was not found.");
+            return;
+        }
+
+        try
+        {
+            registerMethod.Invoke(null, [ModId, variantAssembly]);
+            Log.Info("[Shuyu.Loader] Registered variant assembly with RitsuLib mod type discovery.");
+        }
+        catch (Exception exception)
+        {
+            Exception rootCause = exception is TargetInvocationException { InnerException: not null }
+                ? exception.InnerException
+                : exception;
+            Log.Warn(
+                "[Shuyu.Loader] RitsuLib variant assembly registration failed: "
+                + rootCause.Message);
+        }
     }
 
     internal static Type[] GetVariantModTypes()
