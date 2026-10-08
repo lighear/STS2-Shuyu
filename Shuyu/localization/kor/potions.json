@@ -1,0 +1,8 @@
+{
+  "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.description": "[gold]얼음 바늘+[/gold]을 [blue]{Cards}[/blue]장 생성합니다.",
+  "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.title": "병에 든 얼음 바늘",
+  "SHUYU_POTION_SU_LENG_JI.description": "카드를 [blue]{Cards}[/blue]장 뽑습니다. [gold]손[/gold]의 카드를 원하는 만큼 [gold]빙결[/gold]시킵니다.",
+  "SHUYU_POTION_SU_LENG_JI.title": "급속 냉각제",
+  "SHUYU_POTION_WEI_SUO_LI_CHANG.description": "[gold]얼음 가시[/gold]를 {IceThornsPower}, [gold]얼음 방패[/gold]를 {IceShieldPower} 얻습니다.",
+  "SHUYU_POTION_WEI_SUO_LI_CHANG.title": "축소 역장"
+}

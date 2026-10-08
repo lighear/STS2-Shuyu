@@ -1,0 +1,7 @@
+{
+  "CHANGE_FROZEN_STATE": "카드 [blue]{Amount}[/blue]장을 선택해 [gold]빙결[/gold]/[gold]빙결 해제[/gold] 상태를 전환하세요.",
+  "TO_FREEZE": "카드 [blue]{Amount}[/blue]장을 선택해 [gold]빙결[/gold]시키세요.",
+  "TO_FREEZE_OPTIONAL": "최대 [blue]{MaxCount}[/blue]장의 카드를 선택해 [gold]빙결[/gold]시키세요.",
+  "TO_UNFREEZE": "카드 [blue]{Amount}[/blue]장을 선택해 [gold]빙결[/gold]을 해제하세요.",
+  "TO_UNFREEZE_OPTIONAL": "최대 [blue]{MaxCount}[/blue]장의 카드를 선택해 [gold]빙결[/gold]을 해제하세요."
+}

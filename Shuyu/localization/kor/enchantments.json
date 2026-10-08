@@ -1,0 +1,5 @@
+{
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.description": "[gold]보존[/gold]을 얻습니다. 이 카드가 [gold]빙결[/gold]되면 즉시 [gold]빙결[/gold]을 해제합니다.",
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.extraCardText": "이 카드가 [gold]빙결[/gold]되면 즉시 [gold]빙결[/gold]을 해제합니다.",
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.title": "서설"
+}

@@ -1,0 +1,17 @@
+{
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.aromaPrinciple": "[sine][blue]추워...[/blue][/sine]",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.alive.endTurnPing": "나 먼저 좀 놀고 있을게냥...",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.dead.endTurnPing": "(꿈틀) 냥...",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierDescription": "소우의 카드가 이제 보상과 상점에 등장합니다.",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierTitle": "소우 카드",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.description": "얼음 마법을 다루는 견습 마법사입니다.\n마법 재료를 모으기 위해 첨탑을 찾아왔습니다.\n고양이입니다!",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.eventDeathPrevention": "나도 죽는 거냥...",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.goldMonologue": "돈 생겼다냥...",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.possessiveAdjective": "그녀의",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounObject": "그녀",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounPossessive": "그녀의",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounSubject": "그녀",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.title": "소우",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.titleObject": "소우",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.unlockText": "[pink]{Prerequisite}[/pink](으)로 한 게임을 플레이하면 이 캐릭터를 해금합니다."
+}

@@ -1,0 +1,4 @@
+{
+  "SHUYU_AFFLICTION_FROZEN.description": "[gold]빙결[/gold]된 카드는 사용할 수 없고 텍스트와 효과를 잃으며 [gold]보존[/gold]을 얻습니다.\n버려지면 무작위 적에게 (3 + 비용 × 5)의 공격 피해를 줍니다. 이를 [gold]투척 얼음[/gold]이라고 합니다.\n그 후 [gold]빙결[/gold]을 해제합니다.",
+  "SHUYU_AFFLICTION_FROZEN.title": "빙결"
+}

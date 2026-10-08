@@ -1,0 +1,8 @@
+{
+  "SHUYU_KEYWORD_BREAK.description": "[gold]균열[/gold] 5를 [gold]취약[/gold] 3으로 전환하고 모든 [gold]방어도[/gold]를 제거합니다. 그 후 현재 [gold]취약[/gold] 수치의 3배만큼 피해를 받습니다.",
+  "SHUYU_KEYWORD_BREAK.title": "파쇄",
+  "SHUYU_KEYWORD_FROSTFORGED.description": "[gold]서리벼림[/gold]을 가진 카드가 [gold]빙결[/gold]될 때, 그 카드의 [gold]빙결[/gold]을 제거하고 [gold]서리벼림[/gold] 효과를 발동합니다.",
+  "SHUYU_KEYWORD_FROSTFORGED.title": "서리벼림",
+  "SHUYU_KEYWORD_TARGETED.description": "버려진 카드가 [gold]빙결[/gold] 상태라면, 그 카드의 [gold]투척 얼음[/gold]가 선택한 적을 우선 대상으로 삼습니다.",
+  "SHUYU_KEYWORD_TARGETED.title": "조준"
+}
