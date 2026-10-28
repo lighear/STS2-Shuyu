@@ -1,0 +1,8 @@
+{
+  "SHUYU_KEYWORD_BREAK.description": "[gold]亀裂[/gold]5個を[gold]弱体[/gold]3個に変換し、すべての[gold]ブロック[/gold]を解除する。その後、現在の[gold]弱体[/gold]の数の3倍に相当するダメージを受ける。",
+  "SHUYU_KEYWORD_BREAK.title": "ブレイク",
+  "SHUYU_KEYWORD_FROSTFORGED.description": "[gold]霜造[/gold]を持つカードが[gold]凍結[/gold]状態になった際、その[gold]凍結[/gold]を解除し、[gold]氷鍛造[/gold]効果を発動する。",
+  "SHUYU_KEYWORD_FROSTFORGED.title": "霜造",
+  "SHUYU_KEYWORD_TARGETED.description": "捨て札となったカードが[gold]凍結[/gold]状態になった際、その[gold]氷の投擲ダメージ[/gold]は標的となった敵を優先対象とする。",
+  "SHUYU_KEYWORD_TARGETED.title": "標的"
+}

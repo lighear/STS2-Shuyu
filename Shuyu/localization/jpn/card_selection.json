@@ -1,0 +1,7 @@
+{
+  "CHANGE_FROZEN_STATE": "[blue]{Amount}[/blue]枚のカードを選び、[gold]凍結[/gold]を付与または解除する。",
+  "TO_FREEZE": "[blue]{Amount}[/blue]枚のカードを選び、[gold]凍結[/gold]を付与する。",
+  "TO_FREEZE_OPTIONAL": "最大[blue]{MaxCount}[/blue]枚までのカードを選び、[gold]凍結[/gold]を付与する。",
+  "TO_UNFREEZE": "[blue]{Amount}[/blue]枚のカードを選び、[gold]凍結[/gold]を解除する。",
+  "TO_UNFREEZE_OPTIONAL": "最大[blue]{MaxCount}[/blue]枚までのカードを選び、[gold]凍結[/gold]を解除する。"
+}

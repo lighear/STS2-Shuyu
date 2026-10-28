@@ -1,0 +1,21 @@
+{
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.aromaPrinciple": "さむい...",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.alive.endTurnPing": "ちょっとひと休み、にゃ…",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.banter.dead.endTurnPing": "（くねくね）にゃ…",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierDescription": "報酬やショップに、梳雨のカードが出現するようになります。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.cardsModifierTitle": "梳雨のカード",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.defeatMessage": "",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.description": "氷魔法を得意とする見習い魔術師。魔法の素材を求めてスパイアを訪れた。ちなみに、猫でもある！",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.eventDeathPrevention": "私も死んじゃう、にゃ…",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.flavor": "",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.goldMonologue": "大金持ちだ、にゃ…",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.possessiveAdjective": "彼女",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounObject": "彼女",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounPossessive": "彼女のもの",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.pronounSubject": "彼女",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.selectMessage": "",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.title": "梳雨",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.titleObject": "梳雨",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.unlockText": "[pink]{Prerequisite}[/pink]で1回のプレイを完了すると、このキャラクターがアンロックされます。",
+  "SHUYU_CHARACTER_SHUYU_CHARACTER.victoryMessage": ""
+}

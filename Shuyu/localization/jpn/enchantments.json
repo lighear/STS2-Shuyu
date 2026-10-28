@@ -1,0 +1,5 @@
+{
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.description": "[gold]保留[/gold]を得る。このカードが[gold]凍結[/gold]状態になった場合、その[gold]凍結[/gold]を解除する。",
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.extraCardText": "このカードが[gold]凍結[/gold]した場合、その[gold]凍結[/gold]を解除する。",
+  "SHUYU_ENCHANTMENT_CANT_FREEZE.title": "瑞雪"
+}

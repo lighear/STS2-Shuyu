@@ -1,0 +1,8 @@
+{
+  "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.description": "[blue]{Cards}[/blue]枚の[gold]氷の針+[/gold]を[gold]手札[/gold]に加える。",
+  "SHUYU_POTION_PING_ZHUANG_BING_ZHEN.title": "瓶詰めの氷の針",
+  "SHUYU_POTION_SU_LENG_JI.description": "[blue]{Cards}[/blue]枚のカードを引く。[gold]手札[/gold]にある任意の枚数のカードに[gold]凍結[/gold]を付与する。",
+  "SHUYU_POTION_SU_LENG_JI.title": "急速冷却剤",
+  "SHUYU_POTION_WEI_SUO_LI_CHANG.description": "[gold]氷の棘[/gold]{IceThornsPower}と[gold]氷の盾[/gold]{IceShieldPower}を得る。",
+  "SHUYU_POTION_WEI_SUO_LI_CHANG.title": "小型フォースフィールド"
+}
