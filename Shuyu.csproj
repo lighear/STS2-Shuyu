@@ -15,10 +15,15 @@
 
         <Sts2CompatVersion Condition="'$(Sts2CompatVersion)' == ''">111</Sts2CompatVersion>
         <RitsuLibRuntimeVersion>0.5.13</RitsuLibRuntimeVersion>
+        <RitsuLibManifestVersion>0.6.11</RitsuLibManifestVersion>
         <ContentVariantFolder Condition="'$(Sts2CompatVersion)' == '107'">0.107.1</ContentVariantFolder>
         <ContentVariantFolder Condition="'$(Sts2CompatVersion)' == '111'">0.111.0</ContentVariantFolder>
+        <ContentVariantFolder Condition="'$(Sts2CompatVersion)' == '113'">0.113.0</ContentVariantFolder>
         <DefineConstants Condition="'$(Sts2CompatVersion)' == '107'">$(DefineConstants);STS2_107</DefineConstants>
         <DefineConstants Condition="'$(Sts2CompatVersion)' == '111'">$(DefineConstants);STS2_111</DefineConstants>
+        <DefineConstants Condition="'$(Sts2CompatVersion)' == '113'">$(DefineConstants);STS2_113</DefineConstants>
+        <RitsuLibBundleDir Condition="'$(RitsuLibBundleDir)' == ''">D:\Steam\steamapps\workshop\content\2868840\3747602295</RitsuLibBundleDir>
+        <RitsuLibReferenceTarget Condition="'$(Sts2CompatVersion)' == '113'">0.113.0</RitsuLibReferenceTarget>
         <IntermediateOutputPath>$(GodotProjectDir).godot\mono\temp\obj\$(Sts2CompatVersion)\$(Configuration)\</IntermediateOutputPath>
         <OutputPath>$(GodotProjectDir).godot\mono\temp\bin\$(Sts2CompatVersion)\$(Configuration)\</OutputPath>
 
@@ -43,6 +48,8 @@
         <PackageReference Include="STS2.RitsuLib.Compat.0.107.1" Version="$(RitsuLibRuntimeVersion)" Condition="'$(Sts2CompatVersion)' == '107'" />
         <PackageReference Include="STS2.RitsuLib" Version="$(RitsuLibRuntimeVersion)" Condition="'$(Sts2CompatVersion)' == '111'" />
     </ItemGroup>
+
+    <Import Project="$(RitsuLibBundleDir)\RitsuLib.References.props" Condition="'$(Sts2CompatVersion)' == '113' and Exists('$(RitsuLibBundleDir)\RitsuLib.References.props')" />
 
     <ItemGroup>
         <Publicize Include="sts2" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false" />
@@ -86,7 +93,8 @@
     </ItemGroup>
 
     <Target Name="ValidateSts2GameInstall" BeforeTargets="ResolveAssemblyReferences">
-        <Error Condition="'$(Sts2CompatVersion)' != '107' and '$(Sts2CompatVersion)' != '111'" Text="Sts2CompatVersion must be either '107' or '111', but was '$(Sts2CompatVersion)'." />
+        <Error Condition="'$(Sts2CompatVersion)' != '107' and '$(Sts2CompatVersion)' != '111' and '$(Sts2CompatVersion)' != '113'" Text="Sts2CompatVersion must be '107', '111', or '113', but was '$(Sts2CompatVersion)'." />
+        <Error Condition="'$(Sts2CompatVersion)' == '113' and !Exists('$(RitsuLibBundleDir)\RitsuLib.References.props')" Text="Set RitsuLibBundleDir to a RitsuLib distribution containing the 0.113.0 reference assemblies." />
         <Error Condition="!Exists('$(Sts2DataDir)\sts2.dll')" Text="Could not find sts2.dll under '$(Sts2DataDir)'. Copy local.props.template to local.props and set Sts2Dir/Sts2DataDir for your local game install." />
     </Target>
 
@@ -104,7 +112,7 @@
 
     <Target Name="SyncManifestDependencies" AfterTargets="Build" BeforeTargets="CopyMod" Condition="'$(DesignTimeBuild)' != 'true'">
         <PropertyGroup>
-            <RitsuLibVersion>$(RitsuLibRuntimeVersion)</RitsuLibVersion>
+            <RitsuLibVersion>$(RitsuLibManifestVersion)</RitsuLibVersion>
             <ManifestFile>$(MSBuildProjectDirectory)\$(MSBuildProjectName).json</ManifestFile>
         </PropertyGroup>
         <PropertyGroup>

@@ -1,5 +1,22 @@
 # 梳雨 Mod 后续开发与构建指南
 
+## 0. STS2 0.113.0 构建与安装补充（2026-11-13）
+
+当前发布包增加 `lib/0.113.0/Shuyu.dll`。加载器按 `0.107.1→107`、`0.111.x→111`、`0.113.x→113` 选择内容 DLL。107/111 变体仍使用原先用 0.5.13 包编译的 DLL；113 变体使用 RitsuLib 0.6.11 工坊发行包的 `compat/0.113.0` 编译引用。统一 manifest 的 RitsuLib 运行依赖下限为 0.6.11，工坊发行包包含三个游戏版本的运行时变体。游戏最低版本仍为 0.107.1。
+
+113 构建前在 `local.props` 设置 `Sts2CompatVersion=113`、`Sts2DataDir` 指向 113 游戏数据目录，并按需设置 `RitsuLibBundleDir` 指向包含 `RitsuLib.References.props` 的工坊 RitsuLib 目录。项目默认的 `RitsuLibBundleDir` 是本机 `D:\Steam\steamapps\workshop\content\2868840\3747602295`；其他安装路径必须自行覆盖。113 只引用发行包的 DLL，不将 RitsuLib 放进梳雨发布包。
+
+~~~powershell
+dotnet restore .\Shuyu.csproj -p:Sts2CompatVersion=113 -p:CopyModOnBuild=false -p:RunPckExport=false
+dotnet build .\Shuyu.csproj -c Release --no-restore -p:Sts2CompatVersion=113 -p:CopyModOnBuild=false -p:RunPckExport=false
+~~~
+
+目标产物在 `.godot\mono\temp\bin\113\Release\Shuyu.dll`。顶层 `Shuyu.dll` 必须由 `Shuyu.Loader` 构建并复制重命名；`lib/0.107.1`、`lib/0.111.0` 的旧 DLL 不得被 113 构建覆盖。当前 113 发行暂存目录为 `build113/package/Shuyu`。旧版依赖的编译仍需切换到相应游戏程序集并按下文 restore；不能用 113 游戏 DLL 验证 107/111 编译。
+
+113 启动日志应显示 `picked variant 0.113.0`、RitsuLib `compat branch: 0.113.0`、梳雨补丁 `4 applied, 0 failed`、`Shuyu initialized` 和自动注册 `0 failed`。2026-11-13 的无界面启动记录为 165 项全部注册成功；无界面启动不能代替图形、战斗、存档和联机实测。
+
+以下旧章节仍记录 107/111 的原有流程；其中只列两套 DLL 或依赖 0.5.13 的发布示例，应以本节的三版本发布要求为准。
+
 ## 1. 先记住这四件事
 
 1. 梳雨只有一套业务源码，但会构建出两套内容程序集。

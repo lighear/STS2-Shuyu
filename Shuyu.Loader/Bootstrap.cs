@@ -15,7 +15,7 @@ public static class Bootstrap
     private const string ModId = "Shuyu";
     private const string RealDllName = "Shuyu.dll";
 
-    private static readonly string[] KnownVersions = ["0.111.0", "0.107.1"];
+    private static readonly string[] KnownVersions = ["0.113.0", "0.111.0", "0.107.1"];
     private static readonly Lock VariantAssembliesLock = new();
     private static readonly List<Assembly> VariantAssemblies = [];
 
@@ -173,18 +173,23 @@ public static class Bootstrap
         {
             requiredTarget = "0.107.1";
         }
-        else if (host >= new Version(0, 111, 0))
+        else if (host.Major == 0 && host.Minor == 113)
+        {
+            requiredTarget = "0.113.0";
+        }
+        else if (host.Major == 0 && host.Minor == 111)
         {
             requiredTarget = "0.111.0";
-            if (host.Major != 0 || host.Minor != 111)
-            {
-                Log.Warn($"[Shuyu.Loader] Host version {host} is newer than 0.111.x; attempting the 0.111.0 variant as a forward-compatibility fallback.");
-            }
+        }
+        else if (host > new Version(0, 113, 0))
+        {
+            requiredTarget = "0.113.0";
+            Log.Warn($"[Shuyu.Loader] Host version {host} is newer than 0.113.x; attempting the 0.113.0 variant as a forward-compatibility fallback.");
         }
 
         if (requiredTarget == null)
         {
-            Log.Error($"[Shuyu.Loader] Unsupported host version {host}; 0.107.1 is supported, 0.108-0.110 are rejected, and 0.111.0+ uses the 0.111.0 variant.");
+            Log.Error($"[Shuyu.Loader] Unsupported host version {host}; supported versions are 0.107.1, 0.111.x, and 0.113.x. Versions 0.108-0.110 and 0.112 are rejected.");
             return null;
         }
 
